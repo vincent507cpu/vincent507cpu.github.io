@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2020/05/14/DL-PyTorch-%E6%8A%98%E6%A1%82-6%EF%BC%9Atorch-nn-Module/</loc>
+    
+    <lastmod>2020-05-14T23:01:03.515Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2020/05/14/DL-PyTorch-%E6%8A%98%E6%A1%82-5%EF%BC%9APyTorch-%E6%A8%A1%E5%9D%97%E6%80%BB%E8%A7%88-torch-utils-data/</loc>
     
     <lastmod>2020-05-14T22:42:35.998Z</lastmod>
