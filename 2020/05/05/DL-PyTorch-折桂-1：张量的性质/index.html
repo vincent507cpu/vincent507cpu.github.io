@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. 张量张量就是在深度学习里，可以使用 GPU 运算的多维数组。  0 维张量是一个标量（scalar）； 1 维张量是一个矢量（vector）； 2 维张量是一个矩阵（matrix）； 3 维以上的张量没有通俗的表示。  2. 张量的数据类型张量一共有三种，整数型、浮点型和布尔型。整数型和浮点型张量的精度分别有 8 位、16 位、32 位、64 位。    类型 精度 表示    整形 8 位">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[DL] PyTorch 折桂 1：张量的性质">
+<meta property="og:url" content="http://yoursite.com/2020/05/05/DL-PyTorch-%E6%8A%98%E6%A1%82-1%EF%BC%9A%E5%BC%A0%E9%87%8F%E7%9A%84%E6%80%A7%E8%B4%A8/index.html">
+<meta property="og:site_name" content="花解语">
+<meta property="og:description" content="1. 张量张量就是在深度学习里，可以使用 GPU 运算的多维数组。  0 维张量是一个标量（scalar）； 1 维张量是一个矢量（vector）； 2 维张量是一个矩阵（matrix）； 3 维以上的张量没有通俗的表示。  2. 张量的数据类型张量一共有三种，整数型、浮点型和布尔型。整数型和浮点型张量的精度分别有 8 位、16 位、32 位、64 位。    类型 精度 表示    整形 8 位">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-06T01:50:58.000Z">
+<meta property="article:modified_time" content="2020-05-13T21:56:31.843Z">
+<meta property="article:author" content="翟文嘉">
+<meta property="article:tag" content="tensor">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/05/05/DL-PyTorch-%E6%8A%98%E6%A1%82-1%EF%BC%9A%E5%BC%A0%E9%87%8F%E7%9A%84%E6%80%A7%E8%B4%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>[DL] PyTorch 折桂 1：张量的性质 | 花解语</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="花解语" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">花解语</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">求知若饥，虚心若愚</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/vincent507cpu/" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/05/DL-PyTorch-%E6%8A%98%E6%A1%82-1%EF%BC%9A%E5%BC%A0%E9%87%8F%E7%9A%84%E6%80%A7%E8%B4%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟文嘉">
+      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花解语">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [DL] PyTorch 折桂 1：张量的性质
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-05 21:50:58" itemprop="dateCreated datePublished" datetime="2020-05-05T21:50:58-04:00">2020-05-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-13 17:56:31" itemprop="dateModified" datetime="2020-05-13T17:56:31-04:00">2020-05-13</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-张量"><a href="#1-张量" class="headerlink" title="1. 张量"></a>1. 张量</h1><p>张量就是在深度学习里，可以使用 GPU 运算的多维数组。</p>
+<ul>
+<li>0 维张量是一个标量（scalar）；</li>
+<li>1 维张量是一个矢量（vector）；</li>
+<li>2 维张量是一个矩阵（matrix）；</li>
+<li>3 维以上的张量没有通俗的表示。</li>
+</ul>
+<h1 id="2-张量的数据类型"><a href="#2-张量的数据类型" class="headerlink" title="2. 张量的数据类型"></a>2. 张量的数据类型</h1><p>张量一共有三种，整数型、浮点型和布尔型。整数型和浮点型张量的精度分别有 8 位、16 位、32 位、64 位。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>精度</th>
+<th>表示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>整形</td>
+<td>8 位</td>
+<td>torch.int8</td>
+</tr>
+<tr>
+<td></td>
+<td>16 位</td>
+<td>torch.int16 或 torch.short</td>
+</tr>
+<tr>
+<td></td>
+<td>32 位</td>
+<td>torch.int 或 torch.int32</td>
+</tr>
+<tr>
+<td></td>
+<td>64 位</td>
+<td>torch.int64 或torch.long</td>
+</tr>
+<tr>
+<td>浮点型</td>
+<td>16 位</td>
+<td>torch.float16 或 torch.half</td>
+</tr>
+<tr>
+<td></td>
+<td>32 位</td>
+<td>torch.float 或 torch.float32</td>
+</tr>
+<tr>
+<td></td>
+<td>64 位</td>
+<td>torch.float64 或 torch.double</td>
+</tr>
+<tr>
+<td>布尔型</td>
+<td></td>
+<td>torch.bool</td>
+</tr>
+<tr>
+<td>获得一个张量的数据类型可以通过 <code>Tensor.dtype</code> 实现；如果给这个表达式赋值则将这个张量的数据类型改为目标类型。</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="more"></a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td># 3.  PyTorch 的不同形态</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>PyTorch 是很灵活，可以通过不同方式达到同样的目的。</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>## 3.1 函数功能：<code>torch.function()</code> 与 <code>Tensor.function()</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>首先，让我们有一个约定：如果我们说 <code>Tensor.xxx()</code>，这个 <code>Tensor</code> 指的是一个具体的张量。</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>在 PyTorch 中，张量的很多运算既可以通过它自身的方法，也可以作为 PyTorch 中的一个低级函数来实现，比如两个张量 <code>a</code> 和 <code>b</code>相加，既可以写成 <code>torch.add(a, b)</code>，也可以写成 <code>a.add(b)</code>。</p>
+<h2 id="3-2-赋值语句："><a href="#3-2-赋值语句：" class="headerlink" title="3.2 赋值语句："></a>3.2 赋值语句：</h2><p>很多张量的属性既可以在创建时声明，也可以在之后任何时间声明。比如我想把一个值为 <code>1</code> 的 32 位整数张量赋给变量 <code>a</code>，我可以在生成时一步到位，</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a = torch.tensor(<span class="number">1</span>, dtype=torch.int32)</span><br></pre></td></tr></table></figure>
+<p>也可以先生成 <code>a</code> 的张量，然后再改变它的数据类型。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = torch.tenor(<span class="number">1</span>)</span><br><span class="line">a.dtype = torch.int32</span><br></pre></td></tr></table></figure>
+<h1 id="4-张量的存储"><a href="#4-张量的存储" class="headerlink" title="4. 张量的存储"></a>4. 张量的存储</h1><p>张量存储在连续的内存中，被 <code>torch.Storage</code>  控制。一个 <em>Storage</em> 是一个一维的包含数据类型的内存块。一个 PyTorch 的 <code>Tensor</code> 本质上是一个能够索引一个 <em>Storage</em> 的视角。你可以访问一个 <code>Tensor</code> 的 <em>Storage</em>：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>points = torch.tensor([[<span class="number">1.0</span>, <span class="number">4.0</span>], [<span class="number">2.0</span>, <span class="number">1.0</span>], [<span class="number">3.0</span>, <span class="number">5.0</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>points.storage()</span><br><span class="line"><span class="number">1.0</span></span><br><span class="line"><span class="number">4.0</span> </span><br><span class="line"><span class="number">2.0</span> </span><br><span class="line"><span class="number">1.0</span> </span><br><span class="line"><span class="number">3.0</span> </span><br><span class="line"><span class="number">5.0</span></span><br><span class="line">[torch.FloatStorage of size <span class="number">6</span>]</span><br></pre></td></tr></table></figure>
+<p>你不能对一个 <em>Storage</em> 进行二维索引，因为 <em>Storage</em> 是一维的。因为 <em>Storage</em> 是一个张量的存储，修改它同样会改变张量本身。</p>
+<h1 id="5-张量的-size，storage-offset-和-stride"><a href="#5-张量的-size，storage-offset-和-stride" class="headerlink" title="5. 张量的 size，storage offset 和 stride"></a>5. 张量的 size，storage offset 和 stride</h1><p>我们先定义一个张量：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>points = torch.tensor([[<span class="number">1.0</span>, <span class="number">4.0</span>], [<span class="number">2.0</span>, <span class="number">1.0</span>], [<span class="number">3.0</span>, <span class="number">5.0</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>points</span><br><span class="line">tensor([[<span class="number">1.</span>, <span class="number">4.</span>],</span><br><span class="line">        [<span class="number">2.</span>, <span class="number">1.</span>],</span><br><span class="line">        [<span class="number">3.</span>, <span class="number">5.</span>]])</span><br></pre></td></tr></table></figure>
+<h2 id="5-1-张量的-size"><a href="#5-1-张量的-size" class="headerlink" title="5.1 张量的 size"></a>5.1 张量的 size</h2><p>获得一个张量的形状有四种方法：</p>
+<ol>
+<li><p><code>Tensor.size()</code></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>points.size()</span><br><span class="line">torch.Size([<span class="number">3</span>, <span class="number">2</span>])</span><br></pre></td></tr></table></figure></li>
+<li><p><code>Tensor.shape</code></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>points.shape</span><br><span class="line">torch.Size([<span class="number">3</span>, <span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<p>可以看出，两者的区别在于 <code>Tensor.shape</code> 没有 <code>()</code>。</p>
+</li>
+<li><p><code>Tensor.numel()</code></p>
+</li>
+</ol>
+<p>查看 tensor 内的元素个数。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>points.numel()</span><br><span class="line"><span class="number">6</span></span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li><code>Tensor.dim()</code> 或 <code>Tensor.ndim</code></li>
+</ol>
+<p>查看张量的维数，即有几维。</p>
+<h2 id="5-2-张量的-storage-offset"><a href="#5-2-张量的-storage-offset" class="headerlink" title="5.2 张量的 storage offset"></a>5.2 张量的 storage offset</h2><p>查看张量内的相应元素与内存中第一个元素的相对位移。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>second_point = points[<span class="number">1</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>second_point.storage_offset()</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>因为 <code>points</code> 的 <code>storage</code> 是 <code>1.0, 4.0, 2.0, 1.0, 3.0, 5.0</code>，<code>second_point</code> 距离这个张量在内存中的第一个元素的距离是 2。</p>
+<h2 id="5-3-张量的-stride"><a href="#5-3-张量的-stride" class="headerlink" title="5.3 张量的 stride"></a>5.3 张量的 stride</h2><p>指的是当索引增加 1 时，每个维度内需要跳过的元素个数，是一个元组。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>points.stride()</span><br><span class="line">(<span class="number">2</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="6-张量的变形、升维与降维"><a href="#6-张量的变形、升维与降维" class="headerlink" title="6. 张量的变形、升维与降维"></a>6. 张量的变形、升维与降维</h1><h2 id="6-1-张量的变形：Tensor-view-，Tensor-reshape-或-Tensor-resize"><a href="#6-1-张量的变形：Tensor-view-，Tensor-reshape-或-Tensor-resize" class="headerlink" title="6.1 张量的变形：Tensor.view()，Tensor.reshape() 或 Tensor.resize()"></a>6.1 张量的变形：<code>Tensor.view()</code>，<code>Tensor.reshape()</code> 或 <code>Tensor.resize()</code></h2><p>括号里面的数值用小括号、中括号或者不用括号括起来都可以，维数自定，只要所有数字的乘积与原尺寸的乘积相同即可。<code>Tensor.view()</code> 和 <code>Tensor.reshape()</code> 的维度中可以有一个 -1，表示该维的长度由其他维度决定。<code>Tensor.resize()</code> 的维度中不能有 -1。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>points.reshape((<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">-1</span>))</span><br><span class="line">tensor([[[[<span class="number">1.</span>, <span class="number">4.</span>, <span class="number">2.</span>]],</span><br><span class="line">         [[<span class="number">1.</span>, <span class="number">3.</span>, <span class="number">5.</span>]]]])</span><br></pre></td></tr></table></figure>
+<h2 id="6-2-张量的转置：Tensor-t-Tensor-T-或-Tensor-transpose-dim1-dim2"><a href="#6-2-张量的转置：Tensor-t-Tensor-T-或-Tensor-transpose-dim1-dim2" class="headerlink" title="6.2 张量的转置：Tensor.t() Tensor.T 或 Tensor.transpose(dim1, dim2)"></a>6.2 张量的转置：<code>Tensor.t()</code> <code>Tensor.T</code> 或 <code>Tensor.transpose(dim1, dim2)</code></h2><p><code>Tensor.t()</code>只能转置维度小于等于 2 的张量，转置第 0、1 维。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = torch.arange(<span class="number">4</span>).reshape(<span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.t()</span><br><span class="line">tensor([[<span class="number">0</span>, <span class="number">2</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">3</span>]])</span><br></pre></td></tr></table></figure>
+<p><code>Tensor.T</code> 把整个张量的维度进行颠倒。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>new_points = points.reshape(<span class="number">1</span>, <span class="number">2</span>, <span class="number">-1</span>, <span class="number">1</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>new_points.shape</span><br><span class="line">torch.Size([<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>new = new_points.T</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>new.shape</span><br><span class="line">torch.Size([<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<p>而 <code>Tensor.transpose(dim1, dim2)</code> 可以转置任意两个维度。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>new2 = new_points.transpose(<span class="number">1</span>, <span class="number">4</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>new2.shape</span><br><span class="line">torch.Size([<span class="number">1</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<h2 id="6-3-张量的降维：Tensor-squeeze"><a href="#6-3-张量的降维：Tensor-squeeze" class="headerlink" title="6.3 张量的降维：Tensor.squeeze()"></a>6.3 张量的降维：<code>Tensor.squeeze()</code></h2><p>所谓降维，就是消去元素个数为 1 的维度。可以指定想消去的维度，若该维度不能消去，则该命令无效，但是不报错。若没有指定维度，则消去所有长度为 1 的维度。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>new_points2 = new.squeeze(<span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>new_points2.shape <span class="comment"># 降维成功</span></span><br><span class="line">torch.Size([<span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>new_points3 = new.squeeze(<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>new_points3.shape <span class="comment"># 降维失败</span></span><br><span class="line">torch.Size([<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>new_points4 = new_points.squeeze()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>new_points4.shape <span class="comment"># 降维成功</span></span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+<h2 id="6-4-张量的升维：Tensor-unsqueeze"><a href="#6-4-张量的升维：Tensor-unsqueeze" class="headerlink" title="6.4 张量的升维：Tensor.unsqueeze()"></a>6.4 张量的升维：<code>Tensor.unsqueeze()</code></h2><p>升维必须指定增加的维度，必须在张量的已有维度 <code>(-dim-1, dim+1)</code> 之间。相当于在两个维度之间“加塞”，后面的维度顺移一位。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>new_points4.unsqueeze(<span class="number">2</span>).shape</span><br><span class="line">torch.Size([<span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<h1 id="7-张量的复制与原地修改"><a href="#7-张量的复制与原地修改" class="headerlink" title="7. 张量的复制与原地修改"></a>7. 张量的复制与原地修改</h1><p>因为张量本质上是连续内存地址的索引，我们把一段内存赋值给一个变量，再赋值给另一个变量后，修改一个变量中的索引往往会改变另一个变量的相同索引：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = torch.tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b[<span class="number">1</span>] = <span class="number">10</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a, b</span><br><span class="line">(tensor([ <span class="number">1</span>, <span class="number">10</span>,  <span class="number">3</span>,  <span class="number">4</span>]), tensor([ <span class="number">1</span>, <span class="number">10</span>,  <span class="number">3</span>,  <span class="number">4</span>]))</span><br></pre></td></tr></table></figure>
+<p>我们希望能够控制这种现象。</p>
+<h2 id="7-1-张量的复制"><a href="#7-1-张量的复制" class="headerlink" title="7.1 张量的复制"></a>7.1 张量的复制</h2><p>使用 <code>Tensor.clone()</code> 复制一段内存上的数据到另一段内存上，这两个张量相互独立。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = torch.tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a.clone()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b[<span class="number">1</span>] = <span class="number">10</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a, b</span><br><span class="line">(tensor([ <span class="number">1</span>, <span class="number">10</span>,  <span class="number">3</span>,  <span class="number">4</span>]), tensor([ <span class="number">1</span>, <span class="number">10</span>,  <span class="number">3</span>,  <span class="number">4</span>]))</span><br></pre></td></tr></table></figure>
+<h2 id="7-2-张量的原地修改"><a href="#7-2-张量的原地修改" class="headerlink" title="7.2 张量的原地修改"></a>7.2 张量的原地修改</h2><p>如果我们能够避免引入新张量，直接在原始张量上修改，不就可以避免混淆了吗？很多张量操作都支持原地（in-place）操作，只要在原始函数后面加上 <code>_</code> 就表明是原地修改。比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a &#x3D; torch.ones(2, 2) # 创建一个 2 x 2 的全 1 张量</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">tensor([[1., 1.],</span><br><span class="line">        [1., 1.]])</span><br><span class="line">&gt;&gt;&gt; a.add_(1) # 原地每个元素加 1</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">tensor([[2., 2.],</span><br><span class="line">        [2., 2.]])</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/deep-learning/" rel="tag"># deep learning</a>
+              <a href="/tags/PyTorch/" rel="tag"># PyTorch</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/28/Python-%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93-1%EF%BC%9A%E6%95%B0%E6%8D%AE%E6%A1%86%E7%9A%84%E5%88%87%E7%89%87/" rel="prev" title="[Python] 经验总结 1：数据框的切片">
+      <i class="fa fa-chevron-left"></i> [Python] 经验总结 1：数据框的切片
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/05/DL-PyTorch-%E6%8A%98%E6%A1%82-2%EF%BC%9A%E5%BC%A0%E9%87%8F%E7%9A%84%E8%BF%90%E7%AE%97-1/" rel="next" title="[DL] PyTorch 折桂 2：张量的运算 1">
+      [DL] PyTorch 折桂 2：张量的运算 1 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-张量"><span class="nav-number">1.</span> <span class="nav-text">1. 张量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-张量的数据类型"><span class="nav-number">2.</span> <span class="nav-text">2. 张量的数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-赋值语句："><span class="nav-number">2.1.</span> <span class="nav-text">3.2 赋值语句：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-张量的存储"><span class="nav-number">3.</span> <span class="nav-text">4. 张量的存储</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-张量的-size，storage-offset-和-stride"><span class="nav-number">4.</span> <span class="nav-text">5. 张量的 size，storage offset 和 stride</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-张量的-size"><span class="nav-number">4.1.</span> <span class="nav-text">5.1 张量的 size</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-张量的-storage-offset"><span class="nav-number">4.2.</span> <span class="nav-text">5.2 张量的 storage offset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-张量的-stride"><span class="nav-number">4.3.</span> <span class="nav-text">5.3 张量的 stride</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-张量的变形、升维与降维"><span class="nav-number">5.</span> <span class="nav-text">6. 张量的变形、升维与降维</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-张量的变形：Tensor-view-，Tensor-reshape-或-Tensor-resize"><span class="nav-number">5.1.</span> <span class="nav-text">6.1 张量的变形：Tensor.view()，Tensor.reshape() 或 Tensor.resize()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-张量的转置：Tensor-t-Tensor-T-或-Tensor-transpose-dim1-dim2"><span class="nav-number">5.2.</span> <span class="nav-text">6.2 张量的转置：Tensor.t() Tensor.T 或 Tensor.transpose(dim1, dim2)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-张量的降维：Tensor-squeeze"><span class="nav-number">5.3.</span> <span class="nav-text">6.3 张量的降维：Tensor.squeeze()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-张量的升维：Tensor-unsqueeze"><span class="nav-number">5.4.</span> <span class="nav-text">6.4 张量的升维：Tensor.unsqueeze()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-张量的复制与原地修改"><span class="nav-number">6.</span> <span class="nav-text">7. 张量的复制与原地修改</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-张量的复制"><span class="nav-number">6.1.</span> <span class="nav-text">7.1 张量的复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-张量的原地修改"><span class="nav-number">6.2.</span> <span class="nav-text">7.2 张量的原地修改</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="翟文嘉"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">翟文嘉</p>
+  <div class="site-description" itemprop="description">一个专注于 computational linguistics 与 natural language processing 的初学者</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">翟文嘉</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://yoursite.com/2020/05/05/DL-PyTorch-%E6%8A%98%E6%A1%82-1%EF%BC%9A%E5%BC%A0%E9%87%8F%E7%9A%84%E6%80%A7%E8%B4%A8/',]
+      });
+      });
+  </script>
+
+</body>
+</html>
