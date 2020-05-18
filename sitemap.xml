@@ -2,16 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-8%EF%BC%9Atorch-nn-init/</loc>
+    <loc>https://vincent507cpu.github.io/2020/05/11/DL-PyTorch-%E6%8A%98%E6%A1%82-3%EF%BC%9A%E5%BC%A0%E9%87%8F%E7%9A%84%E8%BF%90%E7%AE%97-2/</loc>
     
-    <lastmod>2020-05-18T17:15:52.241Z</lastmod>
+    <lastmod>2020-05-18T17:28:04.597Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://vincent507cpu.github.io/2020/05/11/DL-PyTorch-%E6%8A%98%E6%A1%82-4%EF%BC%9Atorch-autograph/</loc>
+    
+    <lastmod>2020-05-18T17:27:02.319Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-7%EF%BC%9Atorch-nn-%E6%80%BB%E8%A7%88-nn-Linear-%E5%B8%B8%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/</loc>
     
-    <lastmod>2020-05-18T17:02:39.607Z</lastmod>
+    <lastmod>2020-05-18T17:24:18.877Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-8%EF%BC%9Atorch-nn-init/</loc>
+    
+    <lastmod>2020-05-18T17:15:52.241Z</lastmod>
     
   </url>
   
@@ -40,20 +54,6 @@
     <loc>https://vincent507cpu.github.io/about/index.html</loc>
     
     <lastmod>2020-05-14T00:53:44.409Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://vincent507cpu.github.io/2020/05/11/DL-PyTorch-%E6%8A%98%E6%A1%82-4%EF%BC%9Atorch-autograph/</loc>
-    
-    <lastmod>2020-05-13T21:58:31.932Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://vincent507cpu.github.io/2020/05/11/DL-PyTorch-%E6%8A%98%E6%A1%82-3%EF%BC%9A%E5%BC%A0%E9%87%8F%E7%9A%84%E8%BF%90%E7%AE%97-2/</loc>
-    
-    <lastmod>2020-05-13T21:57:55.034Z</lastmod>
     
   </url>
   
