@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"vincent507cpu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. 损失函数总览PyTorch 的 Loss Function（损失函数）都在 torch.nn.functional 里，也提供了封装好的类在 torch.nn 里。PyTorch 里有关有 18 个损失函数，常用的有 5 个，分别是：  回归模型：   torch.nn.L1Loss torch.nn.MSELoss   分类模型：   torch.nn.BCELoss torch.nn.B">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[DL] PyTorch 折桂 9：损失函数">
+<meta property="og:url" content="https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-9%EF%BC%9A%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="花解语">
+<meta property="og:description" content="1. 损失函数总览PyTorch 的 Loss Function（损失函数）都在 torch.nn.functional 里，也提供了封装好的类在 torch.nn 里。PyTorch 里有关有 18 个损失函数，常用的有 5 个，分别是：  回归模型：   torch.nn.L1Loss torch.nn.MSELoss   分类模型：   torch.nn.BCELoss torch.nn.B">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-18T22:36:48.000Z">
+<meta property="article:modified_time" content="2020-05-18T22:41:31.946Z">
+<meta property="article:author" content="翟文嘉">
+<meta property="article:tag" content="deep learning">
+<meta property="article:tag" content="PyTorch">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-9%EF%BC%9A%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>[DL] PyTorch 折桂 9：损失函数 | 花解语</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="花解语" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta custom-logo">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">花解语</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">求知若饥，虚心若愚</p>
+      <a>
+        <img class="custom-logo-image" src="logo.jpg" alt="花解语">
+      </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/vincent507cpu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-9%EF%BC%9A%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="翟文嘉">
+      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花解语">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [DL] PyTorch 折桂 9：损失函数
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-05-18 18:36:48 / 修改时间：18:41:31" itemprop="dateCreated datePublished" datetime="2020-05-18T18:36:48-04:00">2020-05-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-损失函数总览"><a href="#1-损失函数总览" class="headerlink" title="1. 损失函数总览"></a>1. 损失函数总览</h1><p>PyTorch 的 Loss Function（损失函数）都在 <code>torch.nn.functional</code> 里，也提供了封装好的类在 <code>torch.nn</code> 里。PyTorch 里有关有 18 个损失函数，常用的有 5 个，分别是：</p>
+<ol>
+<li>回归模型：</li>
+</ol>
+<ul>
+<li><code>torch.nn.L1Loss</code></li>
+<li><code>torch.nn.MSELoss</code></li>
+</ul>
+<ol start="2">
+<li>分类模型：</li>
+</ol>
+<ul>
+<li><code>torch.nn.BCELoss</code></li>
+<li><code>torch.nn.BCEWithLogitsLoss</code></li>
+<li><code>torch.nn.CrossEntropyLoss</code></li>
+<li><code>torch.nn.NLLLoss</code><a id="more"></a>
+损失函数是用来衡量模型的单个预测与真实值的差异的：<br>$$Loss=f(\hat{y}-y)$$<br>还有额外的两个概念：Cost Function（代价函数）是 N 个预测值的损失函数平均值：<br>$$Cost=\frac{1}{N}\sum^N_if(\hat{y_i}-y_i)$$<br>而 Objective Function（目标函数）是最终需要优化的函数：<br>$$Obj=Cost+Regularization$$</li>
+</ul>
+<p>还有其它的损失函数，学识有限，暂时不理解。希望以后有缘能够接触。</p>
+<h1 id="2-回归损失函数"><a href="#2-回归损失函数" class="headerlink" title="2. 回归损失函数"></a>2. 回归损失函数</h1><p>回归模型有两种方法进行评估：MAE（mean absolute error） 和 MSE（mean squared error）。</p>
+<ul>
+<li><code>torch.nn.L1Loss(reduction=&#39;mean&#39;)</code></li>
+</ul>
+<p>这个类对应了 MAE 损失函数：<br>$$\ell=L={l_1,…l_n},\quad l_n=|\hat{y}-y|$$</p>
+<ul>
+<li><code>torch.nn.MSELoss(reduction=&#39;mean&#39;)</code></li>
+</ul>
+<p>这个类对应了 MSE 损失函数：<br>$$\ell=L={l_1,…l_n},\quad l_n=(\hat{y}-y)^2$$<br>上面两个类中的 <code>reduction</code> 规定了获得 $\ell$ 后的行为，有 <code>none</code>、<code>sum</code> 和 <code>mean</code> 三个。<code>none</code> 表示不对 $\ell$ 进行任何处理；<code>sum</code> 表示对 $\ell$ 进行求和；<code>mean</code> 表示对 $\ell$ 进行平均。默认为求平均。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>y = torch.tensor([<span class="number">1.1</span>, <span class="number">1.2</span>, <span class="number">1.3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y_hat = torch.tensor([<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>criterion_none = nn.L1Loss(reduction=<span class="string">'none'</span>) <span class="comment"># 什么都不做</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>criterion_none(y_hat, y)</span><br><span class="line">tensor([<span class="number">0.1000</span>, <span class="number">0.2000</span>, <span class="number">0.3000</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>criterion_mean = nn.L1Loss(reduction=<span class="string">'mean'</span>) <span class="comment"># 求平均</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>criterion_mean(y_hat, y)</span><br><span class="line">tensor(<span class="number">0.2000</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>criterion_sum = nn.L1Loss(reduction=<span class="string">'sum'</span>) <span class="comment"># 求和</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>criterion_sum(y_hat, y)</span><br><span class="line">tensor(<span class="number">0.6000</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="3-分类损失函数"><a href="#3-分类损失函数" class="headerlink" title="3. 分类损失函数"></a>3. 分类损失函数</h1><h2 id="3-1-交叉熵"><a href="#3-1-交叉熵" class="headerlink" title="3.1 交叉熵"></a>3.1 <a href="https://charlesliuyx.github.io/2017/09/11/什么是信息熵、交叉熵和相对熵/" target="_blank" rel="noopener" title="【直观详解】信息熵、交叉熵和相对熵">交叉熵</a></h2><p>自信息是一个事件发生的概率的负对数：<br>$$I(x)=-log[p(x)]$$<br>信息熵用来描述一个事件的不确定性公式为<br>$$H(P)=-\sum^N_iP(x_i)logP(x_i)$$<br>一个确定的事件的信息熵为 0，一个事件越不确定，信息熵就越大。</p>
+<p>交叉熵，用来衡量在给定的真实分布下，使用非真实分布指定的策略消除系统的不确定性所需要付出努力的大小，表达式为<br>$$H(P,Q)=-\sum^B_{i=1}P(x_i)logQ(x_i)$$<br>相对熵又叫 “K-L 散度”，用来描述预测事件对真实事件的概率偏差。<br>$$D_{KL}(P,Q)=E\bigg[log\frac{P(x)}{Q(x)}\bigg]\<br>=E\bigg[logP(x)-logQ(x)\bigg]\<br>=\sum^N_{i=1}P(x_i)[logP(x_i)-logQ(x_i)]\<br>=\sum^N_{i=1}P(x_i)logP(x_i)-\sum^N_{i=1}P(x_i)logQ(x_i)\<br>=H(P,Q)-H(P)$$<br>而交叉熵的表达式为<br>$$H(P,Q)=-\sum^N_{i=1}P(x_i)logQ(x_i)$$<br>可见 $H(P,Q)=H(P)+D_{KL}(P,Q)$，即交叉熵是信息熵和相对熵的和。上面的 $P$ 是事件的真实分布，$Q$ 是预测出来的分布。所以优化 $H(P,Q)$ 等价于优化 $H(Q)$，因为 $H(P)$ 是已知不变的。</p>
+<h2 id="3-2-分类损失函数"><a href="#3-2-分类损失函数" class="headerlink" title="3.2 分类损失函数"></a>3.2 分类损失函数</h2><p>下面我们来了解最常用的四个分类损失函数。</p>
+<ul>
+<li><code>torch.nn.BCELoss(weight=None, reduction=&#39;mean&#39;)</code><br>这个类实现了二分类交叉熵。<br>$$l_n=-w_n[y_n\cdot logx_n+(1-y_n)\cdot log(1-x_n)]$$<br>使用这个类时要注意，输入值（<strong>不是分类</strong>）的范围要在 $(0,1)$ 之间，否则会报错。<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>inputs = torch.tensor([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">4</span>, <span class="number">5</span>]], dtype=torch.float)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>target = torch.tensor([[<span class="number">1</span>, <span class="number">0</span>], [<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>]], dtype=torch.float)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>criterion = nn.BCELoss()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>criterion(inputs, target)</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">RuntimeError                              Traceback (most recent call last)</span><br><span class="line">...</span><br><span class="line">RuntimeError: all elements of input should be between <span class="number">0</span> <span class="keyword">and</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+通常可以先使用 <code>F.sigmoid</code> 处理一下。</li>
+<li><code>torch.nn.BCEWithLogitsLoss(weight=None, reduction=&#39;mean&#39;, pos_weight=None)</code><br>与上面的 <code>torch.nn.BCELoss</code> 相似，只是 $x$ 先使用了 sigmoid 处理了一下，这样就不需要手动使用 sigmoid 的了。<br>$$l_n=-w_n[y_n\cdot log\sigma(x_n)+(1-y_n)\cdot log(1-\sigma(x_n))]$$</li>
+<li><code>torch.nn.NLLLoss(weight=None, ignore_index=-100, reduction=&#39;mean&#39;)</code><br>NLLLoss 的全称为 “negative log likelihood loss”，其作用是实现负对数似然函数中的负号。<br>$$\ell=L={l_1,…,l_N},\quad l_n=-w_{y_n}x_{n,y_n}$$</li>
+<li><code>torch.nn.CrossEntropyLoss(weight=None, ignore_index=-100, reduction=&#39;mean&#39;)</code><br>这个类结合了 <code>nn.LogSoftmax</code> 和 <code>nn.NLLLoss</code>。这个类的运算可以写成：<br>$$loss(class)=weight[class]\bigg(-\text{log}\bigg(\frac{\text{exp}(x[class])}{\sum_j\text{exp}(x[j])}\bigg)\bigg)\<br>=weight[class]\bigg(-x[class]+\text{log}\bigg(\sum_j\text{exp}(x[j]\bigg)\bigg)$$<br>对比上面 $H(P,Q)$ 的公式，因为已知的 $x$ 的事件概率已知，所以 $P(x)$ 为 1；因为是单个事件，所以 $\sum^N_{i=1}$ 也为 1。所以上面的式子就简化成了 $H(P,Q)=-logQ(x)$。然后我们需要把 $x[class]$ 归一化到一个概率分布中，所以使用 softmax。</li>
+</ul>
+<p>这四个类的参数类似，除了上面提到的 <code>reduction</code>，还有一个 <code>weight</code>，就是每一个类别的权重。下面用例子来解释交叉熵和 <code>weight</code> 是如何运作的。我们先定义一组数据，使用 numpy 推演一下：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">inputs = torch.tensor([[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">3</span>]], dtype=torch.float)</span><br><span class="line">target = torch.tensor([<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>],dtype=torch.long)</span><br><span class="line"></span><br><span class="line">idx = target[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">input_ = inputs.detach().numpy()[idx]      <span class="comment"># [1, 1]</span></span><br><span class="line">target_ = target.numpy()[idx]              <span class="comment"># [0]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一项</span></span><br><span class="line">x_class = input_[target_]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二项</span></span><br><span class="line">sigma_exp_x = np.sum(list(map(np.exp, input_)))</span><br><span class="line">log_sigma_exp_x = np.log(sigma_exp_x)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出 loss</span></span><br><span class="line">loss_1 = -x_class + log_sigma_exp_x</span><br></pre></td></tr></table></figure>
+<p>结果为</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">"第一个样本loss为: "</span>, loss_1)</span><br><span class="line">第一个样本loss为:  <span class="number">0.6931473</span></span><br></pre></td></tr></table></figure>
+<p>现在我们再使用 PyTorch 来计算：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>criterion_ce = nn.CrossEntropyLoss(reduction=<span class="string">'none'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>criterion_ce(inputs, target)</span><br><span class="line">tensor([<span class="number">0.6931</span>, <span class="number">1.3133</span>, <span class="number">0.6931</span>])</span><br></pre></td></tr></table></figure>
+<p>可以看到，结果是一致的。现在我们再看看 <code>weight</code>：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>weight = torch.tensor([<span class="number">0.1</span>, <span class="number">0.9</span>], dtype=torch.float)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>criterion_ce = nn.CrossEntropyLoss(weight=weight, reduction=<span class="string">'none'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>criterion_ce(inputs, target)</span><br><span class="line">tensor([<span class="number">0.0693</span>, <span class="number">0.1313</span>, <span class="number">0.6238</span>])</span><br></pre></td></tr></table></figure>
+<p>与没有权重的交叉熵进行比较后可以发现，每一个值都乘以了 $\frac{p_i}{\sum{p_i}}$。当 <code>reduction</code> 为 <code>sum</code> 和 <code>mean</code> 的时候，交叉熵的加权总和或者平均值再除以权重的和。</p>
+<h2 id="3-3-总结"><a href="#3-3-总结" class="headerlink" title="3.3 总结"></a>3.3 总结</h2><ol>
+<li><code>F.sigmoid</code> + <code>torch.nn.BCELoss</code> = <code>torch.nn.BCEWithLogitsLoss</code></li>
+<li><code>nn.LogSoftmax</code> + <code>nn.NLLLoss</code> = <code>torch.nn.CrossEntropyLoss</code></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>翟文嘉
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-9%EF%BC%9A%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/" title="[DL] PyTorch 折桂 9：损失函数">https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-折桂-9：损失函数/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/qrcode_for_gh_07ed45a7b845_258.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/deep-learning/" rel="tag"># deep learning</a>
+              <a href="/tags/PyTorch/" rel="tag"># PyTorch</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-8%EF%BC%9Atorch-nn-init/" rel="prev" title="[DL] PyTorch 折桂 8：torch.nn.init">
+      <i class="fa fa-chevron-left"></i> [DL] PyTorch 折桂 8：torch.nn.init
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-损失函数总览"><span class="nav-number">1.</span> <span class="nav-text">1. 损失函数总览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-回归损失函数"><span class="nav-number">2.</span> <span class="nav-text">2. 回归损失函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-分类损失函数"><span class="nav-number">3.</span> <span class="nav-text">3. 分类损失函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-交叉熵"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 交叉熵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-分类损失函数"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 分类损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-总结"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="翟文嘉"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">翟文嘉</p>
+  <div class="site-description" itemprop="description">一个专注于 computational linguistics 与 natural language processing 的初学者</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/vincent507cpu" title="https:&#x2F;&#x2F;github.com&#x2F;vincent507cpu" rel="noopener" target="_blank">Title</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">翟文嘉</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

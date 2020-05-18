@@ -187,6 +187,80 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/14/DL-PyTorch-%E6%8A%98%E6%A1%82-6%EF%BC%9Atorch-nn-Module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="翟文嘉">
+      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花解语">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/14/DL-PyTorch-%E6%8A%98%E6%A1%82-6%EF%BC%9Atorch-nn-Module/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 6：torch.nn.Module</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-14 18:59:56" itemprop="dateCreated datePublished" datetime="2020-05-14T18:59:56-04:00">2020-05-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-15 18:04:54" itemprop="dateModified" datetime="2020-05-15T18:04:54-04:00">2020-05-15</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本文中，我们看一看如何构建模型。<br>创造一个模型分两步：构建模型和权值初始化。而构建模型又有“定义单独的网络层”和“把它们拼在一起”两步。</p>
+<h1 id="1-torch-nn-Module"><a href="#1-torch-nn-Module" class="headerlink" title="1. torch.nn.Module"></a>1. <code>torch.nn.Module</code></h1><p><code>torch.nn.Module</code> 是所有 <code>torch.nn</code> 中的类的父类。我们来看一个非常简单的神经网络：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleNet</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        super(SimpleNet,self).__init__()</span><br><span class="line">        self.fc = nn.Linear(x.shape[<span class="number">0</span>], <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        x = self.fc(x)</span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/05/14/DL-PyTorch-%E6%8A%98%E6%A1%82-6%EF%BC%9Atorch-nn-Module/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/14/DL-PyTorch-%E6%8A%98%E6%A1%82-5%EF%BC%9APyTorch-%E6%A8%A1%E5%9D%97%E6%80%BB%E8%A7%88-torch-utils-data/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -322,80 +396,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/11/DL-PyTorch-%E6%8A%98%E6%A1%82-3%EF%BC%9A%E5%BC%A0%E9%87%8F%E7%9A%84%E8%BF%90%E7%AE%97-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/11/DL-PyTorch-%E6%8A%98%E6%A1%82-3%EF%BC%9A%E5%BC%A0%E9%87%8F%E7%9A%84%E8%BF%90%E7%AE%97-2/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 3：张量的运算 2</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-11 19:35:08" itemprop="dateCreated datePublished" datetime="2020-05-11T19:35:08-04:00">2020-05-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-18 13:28:04" itemprop="dateModified" datetime="2020-05-18T13:28:04-04:00">2020-05-18</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>接上文 <a href="https://vincent507cpu.github.io/2020/05/05/DL-PyTorch-折桂-2：张量的运算-1/#more">[DL] PyTorch 折桂 2：张量的运算 1</a></p>
-<h1 id="3-math-操作"><a href="#3-math-操作" class="headerlink" title="3. math 操作"></a>3. math 操作</h1><h2 id="3-1-pointwize-操作"><a href="#3-1-pointwize-操作" class="headerlink" title="3.1 pointwize 操作"></a>3.1 pointwize 操作</h2><p>pointwise 指的是元素对元素。比如</p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">A = torch.Tensor([a1, a2])</span><br><span class="line">A + <span class="number">2.</span> = torch.Tensor([a1+<span class="number">2.</span>, a2+<span class="number">2.</span>])</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/11/DL-PyTorch-%E6%8A%98%E6%A1%82-3%EF%BC%9A%E5%BC%A0%E9%87%8F%E7%9A%84%E8%BF%90%E7%AE%97-2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -467,7 +467,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
