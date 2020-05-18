@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"vincent507cpu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="@[toc] 1. torch.nn.init 概述因为神经网络的训练过程其实是寻找最优解的过程，所以神经元的初始值非常重要。如果初始值恰好在最优解附近，神经网络的训练会非常简单。而当神经网络的层数增加以后，一个突出的问题就是梯度消失和梯度爆炸。前者指的是由于梯度接近 0，导致神经元无法进行更新；后者指的是误差梯度在更新中累积得到一个非常大的梯度，这样的梯度会大幅度更新网络参数，进而导致网络不稳定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[DL] PyTorch 折桂 8：torch.nn.init">
+<meta property="og:url" content="https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-8%EF%BC%9Atorch-nn-init/index.html">
+<meta property="og:site_name" content="花解语">
+<meta property="og:description" content="@[toc] 1. torch.nn.init 概述因为神经网络的训练过程其实是寻找最优解的过程，所以神经元的初始值非常重要。如果初始值恰好在最优解附近，神经网络的训练会非常简单。而当神经网络的层数增加以后，一个突出的问题就是梯度消失和梯度爆炸。前者指的是由于梯度接近 0，导致神经元无法进行更新；后者指的是误差梯度在更新中累积得到一个非常大的梯度，这样的梯度会大幅度更新网络参数，进而导致网络不稳定">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020051809553052.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDYxNDY4Nw==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2020-05-18T17:03:19.000Z">
+<meta property="article:modified_time" content="2020-05-18T17:04:14.803Z">
+<meta property="article:author" content="翟文嘉">
+<meta property="article:tag" content="deep learning">
+<meta property="article:tag" content="PyTorch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2020051809553052.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDYxNDY4Nw==,size_16,color_FFFFFF,t_70#pic_center">
+
+<link rel="canonical" href="https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-8%EF%BC%9Atorch-nn-init/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>[DL] PyTorch 折桂 8：torch.nn.init | 花解语</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="花解语" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta custom-logo">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">花解语</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">求知若饥，虚心若愚</p>
+      <a>
+        <img class="custom-logo-image" src="logo.jpg" alt="花解语">
+      </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/vincent507cpu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-8%EF%BC%9Atorch-nn-init/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟文嘉">
+      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花解语">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [DL] PyTorch 折桂 8：torch.nn.init
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-05-18 13:03:19 / 修改时间：13:04:14" itemprop="dateCreated datePublished" datetime="2020-05-18T13:03:19-04:00">2020-05-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>@[toc]</p>
+<h1 id="1-torch-nn-init-概述"><a href="#1-torch-nn-init-概述" class="headerlink" title="1. torch.nn.init 概述"></a>1. torch.nn.init 概述</h1><p>因为神经网络的训练过程其实是寻找最优解的过程，所以神经元的初始值非常重要。如果初始值恰好在最优解附近，神经网络的训练会非常简单。而当神经网络的层数增加以后，一个突出的问题就是梯度消失和梯度爆炸。前者指的是由于梯度接近 0，导致神经元无法进行更新；后者指的是<a href="https://zhuanlan.zhihu.com/p/32154263" target="_blank" rel="noopener" title="浅谈神经网络中的梯度爆炸问题">误差梯度在更新中累积得到一个非常大的梯度，这样的梯度会大幅度更新网络参数，进而导致网络不稳定</a>。</p>
+<p><code>torch.nn.init</code> 模块提供了合理初始化初始值的方法。它一共提供了四类初始化方法：</p>
+<ol>
+<li>Xavier 分布初始化；</li>
+<li>Kaiming 分布初始化；</li>
+<li>均匀分布、正态分布、常数分布初始化；</li>
+<li>其它初始化。<a id="more"></a>
+有梯度边界的激活函数如 <code>sigmoid</code>、<code>tanh</code> 和 <code>softmax</code> 等被称为饱和函数，没有梯度边界的激活函数如 <code>relu</code> 被称为不饱和函数，它们对应的初始化方法不同。<h1 id="2-梯度消失和梯度爆炸"><a href="#2-梯度消失和梯度爆炸" class="headerlink" title="2. 梯度消失和梯度爆炸"></a>2. 梯度消失和梯度爆炸</h1>假设我们有一个 3 层的全连接网络：<br><img src="https://img-blog.csdnimg.cn/2020051809553052.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDYxNDY4Nw==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>对倒数第二层神经元的权重进行反向传播的公式为：<br>$$\Delta W_3=\frac{\partial loss}{\partial W_3}=\frac{\partial loss}{\partial out}<em>\frac{\partial out}{\partial H_3}</em>\frac{\partial H_3}{\partial W_3}$$<br>而 $H_3=H_2<em>W_3$，所以<br>$$\Delta W_3=\frac{\partial loss}{\partial out}</em>\frac{\partial out}{\partial H_3}*H_2$$<br>即 $H_2$ ，即上一层的神经元的输出值，决定了 $\Delta W_3$ 的大小。如果 $H_2$ 太大或太小，即梯度消失或梯度爆炸，将导致神经网络无法训练。对于 <code>sigmoid</code> 和 <code>tanh</code> 等梯度绝对值小于 1 的激活函数来说，神经元的值会越来越小；对于其它情况，假设我们构建了一个 100 层的全连接网络：<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MLP</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, neural_num, layers)</span>:</span></span><br><span class="line">        super(MLP, self).__init__()</span><br><span class="line">        self.linears = nn.ModuleList([nn.Linear(neural_num, neural_num, bias=<span class="literal">False</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> range(layers)])</span><br><span class="line">        self.neural_num = neural_num</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> (i, linear) <span class="keyword">in</span> enumerate(self.linears):</span><br><span class="line">            x = linear(x)</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">            </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">init</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> self.modules():</span><br><span class="line">            <span class="keyword">if</span> isinstance(m, nn.Linear):</span><br><span class="line">                nn.init.normal_(m.weight.data)</span><br><span class="line"></span><br><span class="line">layers=<span class="number">100</span></span><br><span class="line">neural_num=<span class="number">256</span></span><br><span class="line">batch_size=<span class="number">16</span></span><br><span class="line"></span><br><span class="line">net = MLP(neural_num, layers)</span><br><span class="line">net.init()</span><br><span class="line"></span><br><span class="line">inputs = torch.randn(batch_size, neural_num)</span><br><span class="line">output = net(inputs)</span><br></pre></td></tr></table></figure>
+打印一下神经网络的输出：<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(output)</span><br><span class="line">tensor([[nan, nan, nan,  ..., nan, nan, nan],</span><br><span class="line">        [nan, nan, nan,  ..., nan, nan, nan],</span><br><span class="line">        [nan, nan, nan,  ..., nan, nan, nan],</span><br><span class="line">        ...,</span><br><span class="line">        [nan, nan, nan,  ..., nan, nan, nan],</span><br><span class="line">        [nan, nan, nan,  ..., nan, nan, nan],</span><br><span class="line">        [nan, nan, nan,  ..., nan, nan, nan]], grad_fn=&lt;MmBackward&gt;)</span><br></pre></td></tr></table></figure>
+可以看到，神经元的值都变成了 <code>nan</code>。这是为什么呢？</li>
+</ol>
+<p>因为方差可以表征数据的离散程度，让我们来打印一下每次神经元的值的方差：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">layers: <span class="number">0</span>, std: <span class="number">15.7603178024292</span></span><br><span class="line">layers: <span class="number">1</span>, std: <span class="number">253.5698699951172</span></span><br><span class="line">layers: <span class="number">2</span>, std: <span class="number">4018.8212890625</span></span><br><span class="line">layers: <span class="number">3</span>, std: <span class="number">64962.9453125</span></span><br><span class="line">layers: <span class="number">4</span>, std: <span class="number">1050192.125</span></span><br><span class="line">layers: <span class="number">5</span>, std: <span class="number">16682177.0</span></span><br><span class="line">...</span><br><span class="line">layers: <span class="number">28</span>, std: <span class="number">8.295319341711625e+34</span></span><br><span class="line">layers: <span class="number">29</span>, std: <span class="number">1.2787049888311946e+36</span></span><br><span class="line">layers: <span class="number">30</span>, std: <span class="number">2.0164275976565801e+37</span></span><br><span class="line">layers: <span class="number">31</span>, std: nan</span><br><span class="line"></span><br><span class="line">output <span class="keyword">is</span> nan at <span class="number">31</span>th layers</span><br><span class="line"></span><br><span class="line">tensor([[ <span class="number">1.3354e+38</span>, <span class="number">-2.0165e+38</span>, <span class="number">-3.2402e+37</span>,  ...,  <span class="number">1.0439e+37</span>,</span><br><span class="line">                -inf,  <span class="number">1.2574e+38</span>],</span><br><span class="line">        [       -inf,        -inf,         inf,  ...,        -inf,</span><br><span class="line">                -inf,         inf],</span><br><span class="line">        [ <span class="number">1.2230e+37</span>,        -inf,  <span class="number">5.6356e+37</span>,  ..., <span class="number">-1.2776e+38</span>,</span><br><span class="line">                 inf,        -inf],</span><br><span class="line">        ...,</span><br><span class="line">        [ <span class="number">2.1591e+37</span>,  <span class="number">2.5838e+38</span>, <span class="number">-2.9146e+38</span>,  ...,         inf,</span><br><span class="line">                -inf,        -inf],</span><br><span class="line">        [        inf,  <span class="number">1.9056e+38</span>,        -inf,  ...,         inf,</span><br><span class="line">                -inf,        -inf],</span><br><span class="line">        [       -inf,         inf, <span class="number">-1.7735e+38</span>,  ...,  <span class="number">4.8110e+37</span>,</span><br><span class="line">                 inf,        -inf]], grad_fn=&lt;MmBackward&gt;)</span><br></pre></td></tr></table></figure>
+<p>可以看到，到第 30 层的时候，神经元的值已经非常大或非常小，终于在第 31 层的时候，神经元的值突破了存储精度的极限，只好变成了 <code>nan</code>。</p>
+<p>我们知道，一组数的方差 $D$ 和 期望 $E$ 在 $X$ 与 $Y$ 相互独立的条件下满足下面的性质：<br>$$E(X<em>Y)=E(X)<em>E(Y)$$<br>$$D(X)=E(X^2)-[E(X)]^2$$<br>$$D(X+Y)=D(X)+D(Y)$$<br>所以有：<br>$$D(X</em>Y)=D(X)*D(Y)+D(X)</em>[E(Y)]^2+D(Y)<em>[E(X)]^2$$<br>当 $E(X)=0$，$E(Y)=0$ 的时候：<br>$$D(X<em>Y)=D(X)</em>D(Y)$$<br>在神经网络中，由于全连接层的性质<br>$$H_{11}=\sum^n_{i=0}X_I<em>W_{1i}$$<br>得<br>$$D(H_{11})=\sum^n_{i=0}D(X_i)</em>D(W_{1i})\<br>=n</em>(1*1)\<br>=n$$<br>因为 $X_i$ 服从一个方差为 1 的正态分布，而 $W_i$ 也服从一个方差为 1 的分布，所以 $D(H_{11})$ 的值就是神经元的个数，因此标准差就是 $\sqrt{n}$。而全连接的性质决定了第 $k$ 层的神经元的标准差为 $\sqrt{n^k}$，与上面例子中 256 个神经元的情况基本吻合。</p>
+<p>为了让神经网络的神经元值稳定，我们希望将每一层神经元的方差维持在 1，这样每一次前向传播后的方差仍然是 1，使模型保持稳定。这被称为“方差一致性准则”。因为$D(H_{11})=n<em>D(X_i)</em>D(W_{1i})$，为了让 $D(H_i)=1$，我们只需要让 $D(W_i)=\frac{1}{n}$ 即 $std(W)=\sqrt{\frac{1}{n}}$。我们验证一下：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MLP</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, neural_num, layers)</span>:</span></span><br><span class="line">        super(MLP, self).__init__()</span><br><span class="line">        self.linears = nn.ModuleList([nn.Linear(neural_num, neural_num, bias=<span class="literal">False</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> range(layers)])</span><br><span class="line">        self.neural_num = neural_num</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> (i, linear) <span class="keyword">in</span> enumerate(self.linears):</span><br><span class="line">            x = linear(x)</span><br><span class="line">            print(<span class="string">f'layers: <span class="subst">&#123;i&#125;</span>, std: <span class="subst">&#123;x.std()&#125;</span>'</span>)</span><br><span class="line">            <span class="keyword">if</span> torch.isnan(x.std()):</span><br><span class="line">                print(<span class="string">f'output is nan at <span class="subst">&#123;i&#125;</span>th layers'</span>)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">            </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">init</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> self.modules():</span><br><span class="line">            <span class="keyword">if</span> isinstance(m, nn.Linear):</span><br><span class="line">                nn.init.normal_(m.weight.data, std=np.sqrt(<span class="number">1</span>/self.neural_num))</span><br><span class="line">layers=<span class="number">100</span></span><br><span class="line">neural_num=<span class="number">256</span></span><br><span class="line">batch_size=<span class="number">16</span></span><br><span class="line"></span><br><span class="line">net = MLP(neural_num, layers)</span><br><span class="line">net.init()</span><br><span class="line"></span><br><span class="line">inputs = torch.randn(batch_size, neural_num)</span><br><span class="line">output = net(inputs)</span><br></pre></td></tr></table></figure>
+<p>打印一下神经网络的神经元值：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">layers: <span class="number">0</span>, std: <span class="number">0.9983504414558411</span></span><br><span class="line">layers: <span class="number">1</span>, std: <span class="number">0.9868919253349304</span></span><br><span class="line">layers: <span class="number">2</span>, std: <span class="number">0.9728540778160095</span></span><br><span class="line">layers: <span class="number">3</span>, std: <span class="number">0.9823500514030457</span></span><br><span class="line">layers: <span class="number">4</span>, std: <span class="number">0.9672497510910034</span></span><br><span class="line">layers: <span class="number">5</span>, std: <span class="number">0.9902626276016235</span></span><br><span class="line">...</span><br><span class="line">layers: <span class="number">95</span>, std: <span class="number">1.0507267713546753</span></span><br><span class="line">layers: <span class="number">96</span>, std: <span class="number">1.0782362222671509</span></span><br><span class="line">layers: <span class="number">97</span>, std: <span class="number">1.1384222507476807</span></span><br><span class="line">layers: <span class="number">98</span>, std: <span class="number">1.1450780630111694</span></span><br><span class="line">layers: <span class="number">99</span>, std: <span class="number">1.138461709022522</span></span><br><span class="line">tensor([[<span class="number">-0.6622</span>,  <span class="number">0.4439</span>,  <span class="number">0.5704</span>,  ..., <span class="number">-2.2066</span>, <span class="number">-1.1012</span>,  <span class="number">0.0450</span>],</span><br><span class="line">        [<span class="number">-0.1037</span>, <span class="number">-0.3485</span>, <span class="number">-0.0313</span>,  ..., <span class="number">-0.1562</span>, <span class="number">-0.0520</span>,  <span class="number">0.6481</span>],</span><br><span class="line">        [ <span class="number">0.3136</span>, <span class="number">-0.0966</span>, <span class="number">-1.5647</span>,  ..., <span class="number">-0.8760</span>, <span class="number">-0.7498</span>,  <span class="number">0.6339</span>],</span><br><span class="line">        ...,</span><br><span class="line">        [<span class="number">-0.6644</span>, <span class="number">-0.4354</span>,  <span class="number">0.8103</span>,  ...,  <span class="number">1.1510</span>,  <span class="number">0.7699</span>,  <span class="number">0.0607</span>],</span><br><span class="line">        [<span class="number">-0.7511</span>, <span class="number">-0.1086</span>,  <span class="number">0.4008</span>,  ...,  <span class="number">1.5456</span>,  <span class="number">0.6027</span>, <span class="number">-0.0303</span>],</span><br><span class="line">        [<span class="number">-0.5602</span>, <span class="number">-0.1664</span>, <span class="number">-0.9711</span>,  ..., <span class="number">-1.0884</span>, <span class="number">-0.7040</span>,  <span class="number">0.7415</span>]],</span><br><span class="line">       grad_fn=&lt;MmBackward&gt;)</span><br></pre></td></tr></table></figure>
+<p>神经元的值果然是稳定的。</p>
+<h1 id="3-torch-nn-init-calculate-gain"><a href="#3-torch-nn-init-calculate-gain" class="headerlink" title="3. torch.nn.init.calculate_gain"></a>3. <code>torch.nn.init.calculate_gain</code></h1><p>这个函数计算激活函数之前和之后的方差的比例变化。比如 $D(X)=1$ 经过 <code>rlue</code> 以后还是 1，所以它的增益是 1。PyTorch 给了常见的激活函数的变化增益：<br>|激活函数|变化增益|<br>|:–:|:–:|<br>|Linearity|1|<br>|ConvND|1|<br>|Sigmoid|1|<br>|Tanh|$\frac{5}{3}$|<br>|ReLU|$\sqrt{2}$|<br>|Leaky ReLU|$\sqrt{\frac{2}{1+negative_slope^2}}$|<br>这个函数的参数如下：<code>torch.nn.init.calculate_gain(nonlinearity, param=None)</code></p>
+<ul>
+<li><code>nonlinearity</code>：激活函数；</li>
+<li><code>param</code>激活函数的参数。<h1 id="4-Xavier-initialization"><a href="#4-Xavier-initialization" class="headerlink" title="4. Xavier initialization"></a>4. Xavier initialization</h1>为了解决饱和激活函数里的权重初始化问题，2010 年 Glorot 和 Bengio 发表了<a href="http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf" target="_blank" rel="noopener" title="Understanding the difficulty of training deep feedforward neural networks">《Understanding the difficulty of training deep feedforward neural networks》</a> 论文，正式提出了 Xavier 初始化。Xavier 初始化通常使用均匀分布。由论文得，初始化后的张量中的值采样自 $U[-a,a]$ 且<br>$$a=\text{gain}\times\sqrt{\frac{6}{n_i+n{i+1}}}$$<br>均匀分布下的 Xavier 初始化函数为 <code>torch.nn.init.xavier_uniform_(tensor, gain=1)</code>。</li>
+</ul>
+<p>Xavier 初始化也可以采用正态分布的方式。其初始化后的张量中的值采样自 $U[-a,a]$ 且<br>$$a=\text{gain}\times\sqrt{\frac{2}{n_i+n{i+1}}}$$</p>
+<h1 id="5-Kaiming-initialization"><a href="#5-Kaiming-initialization" class="headerlink" title="5. Kaiming initialization"></a>5. Kaiming initialization</h1><p>2011 年 ReLU 函数横空出世，Xavier 初始化对 ReLU 函数不再适用。2015 年，Kaiming He 提出了<a href="https://arxiv.org/pdf/1502.01852.pdf" title="Delving Deep into Rectifiers:
+Surpassing Human-Level Performance on ImageNet Classification">另一种初始化方法</a>来适应 ReLU：<br>$$a=\frac{2}{(1+a^2)*n_i}$$<br><code>a</code> 是 ReLU 上 $x&lt;0$ 时的斜率。同样的，Kaiming 初始化也有均匀分布和正态分布两种：<br><code>torch.nn.init.kaiming_uniform_(tensor, a=0, mode=&#39;fan_in&#39;, nonlinearity=&#39;leaky_relu&#39;)</code>：均匀分布的 Kaiming 初始化函数；</p>
+<p><code>torch.nn.init.kaiming_normal_(tensor, a=0, mode=&#39;fan_in&#39;, nonlinearity=&#39;leaky_relu&#39;)</code>：正态分布的 Kaiming 初始化函数。</p>
+<h1 id="6-其它初始化方法"><a href="#6-其它初始化方法" class="headerlink" title="6. 其它初始化方法"></a>6. 其它初始化方法</h1><ul>
+<li><code>torch.nn.init.uniform_(tensor, a=0.0, b=1.0)</code>：初始化服从 <code>[a, b]</code> 范围的均匀分布；</li>
+<li><code>torch.nn.init.normal_(tensor, mean=0.0, std=1.0)</code>：初始化服从 <code>mean=0</code>，<code>std=1</code> 时的正态分布；</li>
+<li><code>torch.nn.init.constant_(tensor, val)</code>：初始化为任一常数；</li>
+<li><code>torch.nn.init.ones_(tensor)</code>：初始化为 1；</li>
+<li><code>torch.nn.init.zeros_(tensor)</code>初始化为 0；</li>
+<li><code>torch.nn.init.eye_(tensor)</code>：初始化对角线为 1，其它为 0；</li>
+<li><code>torch.nn.init.orthogonal_(tensor, gain=1)</code>：对张量的矩形区域进行初始化。由于张量都是矩形，个人理解是这个函数会将整个张量进行初始化。</li>
+<li><code>torch.nn.init.sparse_(tensor, sparsity, std=0.01)</code>：以 <code>sparsity</code> 为概率将张量填充 0，剩余的元素的标准差为 <code>std</code>。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>翟文嘉
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-8%EF%BC%9Atorch-nn-init/" title="[DL] PyTorch 折桂 8：torch.nn.init">https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-折桂-8：torch-nn-init/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/qrcode_for_gh_07ed45a7b845_258.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/deep-learning/" rel="tag"># deep learning</a>
+              <a href="/tags/PyTorch/" rel="tag"># PyTorch</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-7%EF%BC%9Atorch-nn-%E6%80%BB%E8%A7%88-nn-Linear-%E5%B8%B8%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" rel="prev" title="[DL] PyTorch 折桂 7：torch.nn 总览 & nn.Linear & 常用激活函数">
+      <i class="fa fa-chevron-left"></i> [DL] PyTorch 折桂 7：torch.nn 总览 & nn.Linear & 常用激活函数
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-torch-nn-init-概述"><span class="nav-number">1.</span> <span class="nav-text">1. torch.nn.init 概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-梯度消失和梯度爆炸"><span class="nav-number">2.</span> <span class="nav-text">2. 梯度消失和梯度爆炸</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-torch-nn-init-calculate-gain"><span class="nav-number">3.</span> <span class="nav-text">3. torch.nn.init.calculate_gain</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Xavier-initialization"><span class="nav-number">4.</span> <span class="nav-text">4. Xavier initialization</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-Kaiming-initialization"><span class="nav-number">5.</span> <span class="nav-text">5. Kaiming initialization</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-其它初始化方法"><span class="nav-number">6.</span> <span class="nav-text">6. 其它初始化方法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">翟文嘉</p>
+  <div class="site-description" itemprop="description">一个专注于 computational linguistics 与 natural language processing 的初学者</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/vincent507cpu" title="https:&#x2F;&#x2F;github.com&#x2F;vincent507cpu" rel="noopener" target="_blank">Title</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">翟文嘉</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
