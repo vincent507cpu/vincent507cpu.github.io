@@ -187,6 +187,86 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-7%EF%BC%9Atorch-nn-%E6%80%BB%E8%A7%88-nn-Linear-%E5%B8%B8%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟文嘉">
+      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花解语">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-7%EF%BC%9Atorch-nn-%E6%80%BB%E8%A7%88-nn-Linear-%E5%B8%B8%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 7：torch.nn 总览 & nn.Linear & 常用激活函数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-05-18 13:01:19 / 修改时间：13:02:39" itemprop="dateCreated datePublished" datetime="2020-05-18T13:01:19-04:00">2020-05-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-torch-nn-总览"><a href="#1-torch-nn-总览" class="headerlink" title="1 torch.nn 总览"></a>1 <code>torch.nn</code> 总览</h1><p><code>PyTorch</code> 把与深度学习模型搭建相关的全部类全部在 <code>torch.nn</code> 这个子模块中。根据类的功能分类，常用的有如下十几个部分：</p>
+<ul>
+<li><strong>Containers</strong>：容器类，如 <code>torch.nn.Module</code>；</li>
+<li><strong>Convolution Layers</strong>：卷积层，如 <code>torch.nn.Conv2d</code>；</li>
+<li><strong>Pooling Layers</strong>：池化层，如 <code>torch.nn.MaxPool2d</code>；</li>
+<li><strong>Non-linear activations</strong>：非线性激活层，如 <code>torch.nn.ReLU</code>；</li>
+<li><strong>Normalization layers</strong>：归一化层，如 <code>torch.nn.BatchNorm2d</code>；</li>
+<li><strong>Recurrent layers</strong>：循环神经层，如 <code>torch.nn.LSTM</code>；</li>
+<li><strong>Transformer layers</strong>：transformer 层，如 <code>torch.nn.TransformerEncoder</code>；</li>
+<li><strong>Linear layers</strong>：线性连接层，如 <code>torch.nn.Linear</code>；</li>
+<li><strong>Dropout layers</strong>：dropout 层，如 <code>torch.nn.Dropout</code>；</li>
+<li><strong>Sparse layers</strong>：稀疏层，如 <code>torch.nn.Embedding</code>；</li>
+<li><strong>Vision layers</strong>：vision 层，如 <code>torch.nn.Upsample</code>；</li>
+<li><strong>DataParallel layers</strong>：平行计算层，如 <code>torch.nn.DataParallel</code>；</li>
+<li><strong>Utilities</strong>：其它功能，如 <code>torch.nn.utils.clip_grad_value_</code>。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-7%EF%BC%9Atorch-nn-%E6%80%BB%E8%A7%88-nn-Linear-%E5%B8%B8%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/14/DL-PyTorch-%E6%8A%98%E6%A1%82-6%EF%BC%9Atorch-nn-Module/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -323,79 +403,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/11/DL-PyTorch-%E6%8A%98%E6%A1%82-4%EF%BC%9Atorch-autograph/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/11/DL-PyTorch-%E6%8A%98%E6%A1%82-4%EF%BC%9Atorch-autograph/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 4：torch.autograph</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-11 20:42:09" itemprop="dateCreated datePublished" datetime="2020-05-11T20:42:09-04:00">2020-05-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-13 17:58:31" itemprop="dateModified" datetime="2020-05-13T17:58:31-04:00">2020-05-13</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>神经网络的训练过程其实就是一个不断更新权重的过程，而更新权重要使用反向传播，而反向传播的本质是求导数。<code>PyTorch.autograd</code> 应运而生，接管了神经网络中不断重复的求导数运算。</p>
-<h1 id="1-计算图"><a href="#1-计算图" class="headerlink" title="1. 计算图"></a>1. 计算图</h1><p>一个深度学习模型是由“计算图”构成的。所谓计算图是一个有向无环图（directed acyclic graph）。数据是这个图的节点（node），运算是这个图的边（edge）。如下图所示：<br><img src="https://img-blog.csdnimg.cn/20200430055244494.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDYxNDY4Nw==,size_16,color_FFFFFF,t_70#pic_center" alt="计算图"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/11/DL-PyTorch-%E6%8A%98%E6%A1%82-4%EF%BC%9Atorch-autograph/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -465,7 +472,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

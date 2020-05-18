@@ -187,6 +187,79 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/11/DL-PyTorch-%E6%8A%98%E6%A1%82-4%EF%BC%9Atorch-autograph/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟文嘉">
+      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花解语">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/11/DL-PyTorch-%E6%8A%98%E6%A1%82-4%EF%BC%9Atorch-autograph/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 4：torch.autograph</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-11 20:42:09" itemprop="dateCreated datePublished" datetime="2020-05-11T20:42:09-04:00">2020-05-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-13 17:58:31" itemprop="dateModified" datetime="2020-05-13T17:58:31-04:00">2020-05-13</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>神经网络的训练过程其实就是一个不断更新权重的过程，而更新权重要使用反向传播，而反向传播的本质是求导数。<code>PyTorch.autograd</code> 应运而生，接管了神经网络中不断重复的求导数运算。</p>
+<h1 id="1-计算图"><a href="#1-计算图" class="headerlink" title="1. 计算图"></a>1. 计算图</h1><p>一个深度学习模型是由“计算图”构成的。所谓计算图是一个有向无环图（directed acyclic graph）。数据是这个图的节点（node），运算是这个图的边（edge）。如下图所示：<br><img src="https://img-blog.csdnimg.cn/20200430055244494.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDYxNDY4Nw==,size_16,color_FFFFFF,t_70#pic_center" alt="计算图"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/05/11/DL-PyTorch-%E6%8A%98%E6%A1%82-4%EF%BC%9Atorch-autograph/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/11/DL-PyTorch-%E6%8A%98%E6%A1%82-3%EF%BC%9A%E5%BC%A0%E9%87%8F%E7%9A%84%E8%BF%90%E7%AE%97-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -347,140 +420,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/05/DL-PyTorch-%E6%8A%98%E6%A1%82-1%EF%BC%9A%E5%BC%A0%E9%87%8F%E7%9A%84%E6%80%A7%E8%B4%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/05/DL-PyTorch-%E6%8A%98%E6%A1%82-1%EF%BC%9A%E5%BC%A0%E9%87%8F%E7%9A%84%E6%80%A7%E8%B4%A8/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 1：张量的性质</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-05 21:50:58" itemprop="dateCreated datePublished" datetime="2020-05-05T21:50:58-04:00">2020-05-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-13 17:56:31" itemprop="dateModified" datetime="2020-05-13T17:56:31-04:00">2020-05-13</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-张量"><a href="#1-张量" class="headerlink" title="1. 张量"></a>1. 张量</h1><p>张量就是在深度学习里，可以使用 GPU 运算的多维数组。</p>
-<ul>
-<li>0 维张量是一个标量（scalar）；</li>
-<li>1 维张量是一个矢量（vector）；</li>
-<li>2 维张量是一个矩阵（matrix）；</li>
-<li>3 维以上的张量没有通俗的表示。</li>
-</ul>
-<h1 id="2-张量的数据类型"><a href="#2-张量的数据类型" class="headerlink" title="2. 张量的数据类型"></a>2. 张量的数据类型</h1><p>张量一共有三种，整数型、浮点型和布尔型。整数型和浮点型张量的精度分别有 8 位、16 位、32 位、64 位。</p>
-<table>
-<thead>
-<tr>
-<th>类型</th>
-<th>精度</th>
-<th>表示</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>整形</td>
-<td>8 位</td>
-<td>torch.int8</td>
-</tr>
-<tr>
-<td></td>
-<td>16 位</td>
-<td>torch.int16 或 torch.short</td>
-</tr>
-<tr>
-<td></td>
-<td>32 位</td>
-<td>torch.int 或 torch.int32</td>
-</tr>
-<tr>
-<td></td>
-<td>64 位</td>
-<td>torch.int64 或torch.long</td>
-</tr>
-<tr>
-<td>浮点型</td>
-<td>16 位</td>
-<td>torch.float16 或 torch.half</td>
-</tr>
-<tr>
-<td></td>
-<td>32 位</td>
-<td>torch.float 或 torch.float32</td>
-</tr>
-<tr>
-<td></td>
-<td>64 位</td>
-<td>torch.float64 或 torch.double</td>
-</tr>
-<tr>
-<td>布尔型</td>
-<td></td>
-<td>torch.bool</td>
-</tr>
-<tr>
-<td>获得一个张量的数据类型可以通过 <code>Tensor.dtype</code> 实现；如果给这个表达式赋值则将这个张量的数据类型改为目标类型。</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/05/DL-PyTorch-%E6%8A%98%E6%A1%82-1%EF%BC%9A%E5%BC%A0%E9%87%8F%E7%9A%84%E6%80%A7%E8%B4%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -550,7 +489,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
