@@ -21,12 +21,14 @@
   </script>
 
   <meta name="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-<meta property="og:type" content="website">
-<meta property="og:title" content="花解语">
-<meta property="og:url" content="https://vincent507cpu.github.io/page/2/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch 折桂 7：nn.Linear &amp; 常用激活函数">
+<meta property="og:url" content="https://vincent507cpu.github.io/2020/05/24/PyTorch-%E6%8A%98%E6%A1%82-7%EF%BC%9Ann-Linear-%E5%B8%B8%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/index.html">
 <meta property="og:site_name" content="花解语">
 <meta property="og:description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-24T20:41:18.000Z">
+<meta property="article:modified_time" content="2020-05-24T20:41:18.338Z">
 <meta property="article:author" content="翟文嘉">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content=" Deep Learning">
@@ -34,20 +36,20 @@
 <meta property="article:tag" content=" Natural Language Processing">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://vincent507cpu.github.io/page/2/">
+<link rel="canonical" href="https://vincent507cpu.github.io/2020/05/24/PyTorch-%E6%8A%98%E6%A1%82-7%EF%BC%9Ann-Linear-%E5%B8%B8%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>花解语</title>
+  <title>PyTorch 折桂 7：nn.Linear & 常用激活函数 | 花解语</title>
   
 
 
@@ -181,13 +183,14 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-8%EF%BC%9Atorch-nn-init/">
+    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/24/PyTorch-%E6%8A%98%E6%A1%82-7%EF%BC%9Ann-Linear-%E5%B8%B8%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -199,10 +202,9 @@
       <meta itemprop="name" content="花解语">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-8%EF%BC%9Atorch-nn-init/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 8：torch.nn.init</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          PyTorch 折桂 7：nn.Linear & 常用激活函数
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -211,86 +213,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-05-18 13:03:19" itemprop="dateCreated datePublished" datetime="2020-05-18T13:03:19-04:00">2020-05-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-19 20:20:05" itemprop="dateModified" datetime="2020-05-19T20:20:05-04:00">2020-05-19</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-torch-nn-init-概述"><a href="#1-torch-nn-init-概述" class="headerlink" title="1. torch.nn.init 概述"></a>1. torch.nn.init 概述</h1><p>因为神经网络的训练过程其实是寻找最优解的过程，所以神经元的初始值非常重要。如果初始值恰好在最优解附近，神经网络的训练会非常简单。而当神经网络的层数增加以后，一个突出的问题就是梯度消失和梯度爆炸。前者指的是由于梯度接近 0，导致神经元无法进行更新；后者指的是<a href="https://zhuanlan.zhihu.com/p/32154263" target="_blank" rel="noopener" title="浅谈神经网络中的梯度爆炸问题">误差梯度在更新中累积得到一个非常大的梯度，这样的梯度会大幅度更新网络参数，进而导致网络不稳定</a>。</p>
-<p><code>torch.nn.init</code> 模块提供了合理初始化初始值的方法。它一共提供了四类初始化方法：</p>
-<ol>
-<li>Xavier 分布初始化；</li>
-<li>Kaiming 分布初始化；</li>
-<li>均匀分布、正态分布、常数分布初始化；</li>
-<li>其它初始化。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-8%EF%BC%9Atorch-nn-init/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-7%EF%BC%9Atorch-nn-%E6%80%BB%E8%A7%88-nn-Linear-%E5%B8%B8%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-7%EF%BC%9Atorch-nn-%E6%80%BB%E8%A7%88-nn-Linear-%E5%B8%B8%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 7：torch.nn 总览 & nn.Linear & 常用激活函数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-05-18 13:01:19 / 修改时间：13:24:18" itemprop="dateCreated datePublished" datetime="2020-05-18T13:01:19-04:00">2020-05-18</time>
+              <time title="创建时间：2020-05-24 16:41:18" itemprop="dateCreated datePublished" datetime="2020-05-24T16:41:18-04:00">2020-05-24</time>
             </span>
 
           
@@ -304,122 +227,71 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="1-torch-nn-总览"><a href="#1-torch-nn-总览" class="headerlink" title="1 torch.nn 总览"></a>1 <code>torch.nn</code> 总览</h1><p><code>PyTorch</code> 把与深度学习模型搭建相关的全部类全部在 <code>torch.nn</code> 这个子模块中。根据类的功能分类，常用的有如下十几个部分：</p>
-<ul>
-<li><strong>Containers</strong>：容器类，如 <code>torch.nn.Module</code>；</li>
-<li><strong>Convolution Layers</strong>：卷积层，如 <code>torch.nn.Conv2d</code>；</li>
-<li><strong>Pooling Layers</strong>：池化层，如 <code>torch.nn.MaxPool2d</code>；</li>
-<li><strong>Non-linear activations</strong>：非线性激活层，如 <code>torch.nn.ReLU</code>；</li>
-<li><strong>Normalization layers</strong>：归一化层，如 <code>torch.nn.BatchNorm2d</code>；</li>
-<li><strong>Recurrent layers</strong>：循环神经层，如 <code>torch.nn.LSTM</code>；</li>
-<li><strong>Transformer layers</strong>：transformer 层，如 <code>torch.nn.TransformerEncoder</code>；</li>
-<li><strong>Linear layers</strong>：线性连接层，如 <code>torch.nn.Linear</code>；</li>
-<li><strong>Dropout layers</strong>：dropout 层，如 <code>torch.nn.Dropout</code>；</li>
-<li><strong>Sparse layers</strong>：稀疏层，如 <code>torch.nn.Embedding</code>；</li>
-<li><strong>Vision layers</strong>：vision 层，如 <code>torch.nn.Upsample</code>；</li>
-<li><strong>DataParallel layers</strong>：平行计算层，如 <code>torch.nn.DataParallel</code>；</li>
-<li><strong>Utilities</strong>：其它功能，如 <code>torch.nn.utils.clip_grad_value_</code>。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-7%EF%BC%9Atorch-nn-%E6%80%BB%E8%A7%88-nn-Linear-%E5%B8%B8%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+        
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/14/DL-PyTorch-%E6%8A%98%E6%A1%82-6%EF%BC%9Atorch-nn-Module/">
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>翟文嘉
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://vincent507cpu.github.io/2020/05/24/PyTorch-%E6%8A%98%E6%A1%82-7%EF%BC%9Ann-Linear-%E5%B8%B8%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" title="PyTorch 折桂 7：nn.Linear &amp; 常用激活函数">https://vincent507cpu.github.io/2020/05/24/PyTorch-折桂-7：nn-Linear-常用激活函数/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
+        
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/14/DL-PyTorch-%E6%8A%98%E6%A1%82-6%EF%BC%9Atorch-nn-Module/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 6：torch.nn.Module</a>
-        </h2>
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
+    <div class="social-list">
 
-              <time title="创建时间：2020-05-14 18:59:56" itemprop="dateCreated datePublished" datetime="2020-05-14T18:59:56-04:00">2020-05-14</time>
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/qrcode_for_gh_07ed45a7b845_258.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-15 18:04:54" itemprop="dateModified" datetime="2020-05-15T18:04:54-04:00">2020-05-15</time>
-              </span>
 
-          
-
+            <span class="label">WeChat</span>
+          </a>
         </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文中，我们看一看如何构建模型。<br>创造一个模型分两步：构建模型和权值初始化。而构建模型又有“定义单独的网络层”和“把它们拼在一起”两步。</p>
-<h1 id="1-torch-nn-Module"><a href="#1-torch-nn-Module" class="headerlink" title="1. torch.nn.Module"></a>1. <code>torch.nn.Module</code></h1><p><code>torch.nn.Module</code> 是所有 <code>torch.nn</code> 中的类的父类。我们来看一个非常简单的神经网络：</p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleNet</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        super(SimpleNet,self).__init__()</span><br><span class="line">        self.fc = nn.Linear(x.shape[<span class="number">0</span>], <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        x = self.fc(x)</span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/14/DL-PyTorch-%E6%8A%98%E6%A1%82-6%EF%BC%9Atorch-nn-Module/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
     </div>
+  </div>
 
-    
-    
-    
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-9%EF%BC%9A%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/" rel="prev" title="[DL] PyTorch 折桂 9：损失函数">
+      <i class="fa fa-chevron-left"></i> [DL] PyTorch 折桂 9：损失函数
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/24/DL-PyTorch-%E6%8A%98%E6%A1%82-10%EF%BC%9Atorch-optim/" rel="next" title="[DL] PyTorch 折桂 10：torch.optim">
+      [DL] PyTorch 折桂 10：torch.optim <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
+    
   </article>
   
   
   
-
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
