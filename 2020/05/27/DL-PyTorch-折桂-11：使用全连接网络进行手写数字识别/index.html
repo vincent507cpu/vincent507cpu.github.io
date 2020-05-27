@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"vincent507cpu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="光说不练假把式，现在我们已经积累了那么多的 PyTorch 知识，让我们实践一下吧！ 本文从简单的手写数字识别入手，参考了若干文章：  Handwritten Digit Recognition Using PyTorch — Intro To Neural Networks Building Your First PyTorch Solution">
+  <meta name="description" content="光说不练假把式，现在我们已经积累了那么多的 PyTorch 知识，让我们实践一下吧！ 本文从简单的手写数字识别入手，参考了若干文章：  Handwritten Digit Recognition Using PyTorch — Intro To Neural Networks Building Your First PyTorch Solution  1. PyTotch 使用总览使用 PyTor">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[DL] PyTorch 折桂 11：使用全连接网络进行手写数字识别">
 <meta property="og:url" content="https://vincent507cpu.github.io/2020/05/27/DL-PyTorch-%E6%8A%98%E6%A1%82-11%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%85%A8%E8%BF%9E%E6%8E%A5%E7%BD%91%E7%BB%9C%E8%BF%9B%E8%A1%8C%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/index.html">
 <meta property="og:site_name" content="花解语">
-<meta property="og:description" content="光说不练假把式，现在我们已经积累了那么多的 PyTorch 知识，让我们实践一下吧！ 本文从简单的手写数字识别入手，参考了若干文章：  Handwritten Digit Recognition Using PyTorch — Intro To Neural Networks Building Your First PyTorch Solution">
+<meta property="og:description" content="光说不练假把式，现在我们已经积累了那么多的 PyTorch 知识，让我们实践一下吧！ 本文从简单的手写数字识别入手，参考了若干文章：  Handwritten Digit Recognition Using PyTorch — Intro To Neural Networks Building Your First PyTorch Solution  1. PyTotch 使用总览使用 PyTor">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200527195745560.png">
 <meta property="article:published_time" content="2020-05-27T13:36:00.000Z">
-<meta property="article:modified_time" content="2020-05-27T13:45:15.611Z">
+<meta property="article:modified_time" content="2020-05-27T13:46:12.229Z">
 <meta property="article:author" content="翟文嘉">
 <meta property="article:tag" content="deep learning">
 <meta property="article:tag" content="PyTorch">
@@ -214,7 +214,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-05-27 09:36:00 / 修改时间：09:45:15" itemprop="dateCreated datePublished" datetime="2020-05-27T09:36:00-04:00">2020-05-27</time>
+              <time title="创建时间：2020-05-27 09:36:00 / 修改时间：09:46:12" itemprop="dateCreated datePublished" datetime="2020-05-27T09:36:00-04:00">2020-05-27</time>
             </span>
 
           
@@ -232,9 +232,9 @@
 <p>本文从简单的手写数字识别入手，参考了若干文章：</p>
 <ul>
 <li><a href="https://towardsdatascience.com/handwritten-digit-mnist-pytorch-977b5338e627" target="_blank" rel="noopener" title="Handwritten Digit Recognition Using PyTorch — Intro To Neural Networks">Handwritten Digit Recognition Using PyTorch — Intro To Neural Networks</a></li>
-<li><a href="https://www.pluralsight.com/guides/building-your-first-pytorch-solution" target="_blank" rel="noopener" title="Building Your First PyTorch Solution">Building Your First PyTorch Solution</a><a id="more"></a>
-<h1 id="1-PyTotch-使用总览"><a href="#1-PyTotch-使用总览" class="headerlink" title="1. PyTotch 使用总览"></a>1. PyTotch 使用总览</h1>使用 PyTorch 进行深度学习的步骤主要分以下七步：</li>
+<li><a href="https://www.pluralsight.com/guides/building-your-first-pytorch-solution" target="_blank" rel="noopener" title="Building Your First PyTorch Solution">Building Your First PyTorch Solution</a></li>
 </ul>
+<h1 id="1-PyTotch-使用总览"><a href="#1-PyTotch-使用总览" class="headerlink" title="1. PyTotch 使用总览"></a>1. PyTotch 使用总览</h1><p>使用 PyTorch 进行深度学习的步骤主要分以下七步：</p>
 <ol>
 <li>准备数据，包括数据的预处理和封装；</li>
 <li>模型搭建；</li>
@@ -242,9 +242,9 @@
 <li>选择优化器；</li>
 <li>迭代训练；</li>
 <li>评估模型；</li>
-<li>保存模型。</li>
+<li>保存模型。<a id="more"></a>
+其实第 3 - 5 步反而是最简单的，复杂的地方主要集中在第 1、6 步上。在本文中，我们将使用 PyTorch 搭建一个全连接神经网络，用来识别 MNIST 数据框中的手写数字。本文不涉及 GPU 的使用。</li>
 </ol>
-<p>其实第 3 - 5 步反而是最简单的，复杂的地方主要集中在第 1、6 步上。在本文中，我们将使用 PyTorch 搭建一个全连接神经网络，用来识别 MNIST 数据框中的手写数字。本文不涉及 GPU 的使用。</p>
 <h1 id="2-PyTorch实践"><a href="#2-PyTorch实践" class="headerlink" title="2. PyTorch实践"></a>2. PyTorch实践</h1><h2 id="2-0-载入必须的库"><a href="#2-0-载入必须的库" class="headerlink" title="2.0 载入必须的库"></a>2.0 载入必须的库</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> datasets, transforms</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn, optim</span><br></pre></td></tr></table></figure>
 <h2 id="2-1-准备数据"><a href="#2-1-准备数据" class="headerlink" title="2.1 准备数据"></a>2.1 准备数据</h2><p>首先简单介绍一下我们使用的数据库。MNIST 数据库由美国国家标准和科技局推出，包含了 70000 张手写的 0 - 9 的图片，每个数字 7000 张。训练集 60000 张，测试集 10000 张。每张图片都经过预处理，转换成了 28*28 尺寸的一维黑白图像。</p>
 <h3 id="2-1-1-获取数据"><a href="#2-1-1-获取数据" class="headerlink" title="2.1.1 获取数据"></a>2.1.1 获取数据</h3><p>我们从 <code>torchvision.datasets</code> 获取数据：</p>
