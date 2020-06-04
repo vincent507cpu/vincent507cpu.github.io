@@ -20,34 +20,34 @@
     var CONFIG = {"hostname":"vincent507cpu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-<meta property="og:type" content="website">
-<meta property="og:title" content="花解语">
-<meta property="og:url" content="https://vincent507cpu.github.io/index.html">
+  <meta name="description" content="本以为 PyTorch 的文章要写两个月，结果发现 PyTorch 真的太轻了，写了不到一个月就写完了。本篇为完结篇，对一些零星的功能进行总结。 1. torch.nn.utils 里的一些功能1.1 梯度剪枝在 PyTorch 折桂 8：torch.nn.init 里提到过梯度爆炸的问题，当时我们的解决方法是对神经元权重的初始化进行控制，这里再介绍一个简单粗暴的方式：直接限制权重的上限。对应导数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[DL] PyTorch 折桂 14：其它功能">
+<meta property="og:url" content="https://vincent507cpu.github.io/2020/06/04/DL-PyTorch-%E6%8A%98%E6%A1%82-14%EF%BC%9A%E5%85%B6%E5%AE%83%E5%8A%9F%E8%83%BD/index.html">
 <meta property="og:site_name" content="花解语">
-<meta property="og:description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
+<meta property="og:description" content="本以为 PyTorch 的文章要写两个月，结果发现 PyTorch 真的太轻了，写了不到一个月就写完了。本篇为完结篇，对一些零星的功能进行总结。 1. torch.nn.utils 里的一些功能1.1 梯度剪枝在 PyTorch 折桂 8：torch.nn.init 里提到过梯度爆炸的问题，当时我们的解决方法是对神经元权重的初始化进行控制，这里再介绍一个简单粗暴的方式：直接限制权重的上限。对应导数">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-04T17:09:33.000Z">
+<meta property="article:modified_time" content="2020-06-04T17:12:48.023Z">
 <meta property="article:author" content="翟文嘉">
-<meta property="article:tag" content="Python">
-<meta property="article:tag" content=" Deep Learning">
-<meta property="article:tag" content=" Computational Linguistics">
-<meta property="article:tag" content=" Natural Language Processing">
+<meta property="article:tag" content="deep learning">
+<meta property="article:tag" content="PyTorch">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://vincent507cpu.github.io/">
+<link rel="canonical" href="https://vincent507cpu.github.io/2020/06/04/DL-PyTorch-%E6%8A%98%E6%A1%82-14%EF%BC%9A%E5%85%B6%E5%AE%83%E5%8A%9F%E8%83%BD/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>花解语</title>
+  <title>[DL] PyTorch 折桂 14：其它功能 | 花解语</title>
   
 
 
@@ -181,9 +181,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -199,10 +200,9 @@
       <meta itemprop="name" content="花解语">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/04/DL-PyTorch-%E6%8A%98%E6%A1%82-14%EF%BC%9A%E5%85%B6%E5%AE%83%E5%8A%9F%E8%83%BD/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 14：其它功能</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          [DL] PyTorch 折桂 14：其它功能
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -226,7 +226,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>本以为 PyTorch 的文章要写两个月，结果发现 PyTorch 真的太轻了，写了不到一个月就写完了。本篇为完结篇，对一些零星的功能进行总结。</p>
+        <p>本以为 PyTorch 的文章要写两个月，结果发现 PyTorch 真的太轻了，写了不到一个月就写完了。本篇为完结篇，对一些零星的功能进行总结。</p>
 <h1 id="1-torch-nn-utils-里的一些功能"><a href="#1-torch-nn-utils-里的一些功能" class="headerlink" title="1. torch.nn.utils 里的一些功能"></a>1. <code>torch.nn.utils</code> 里的一些功能</h1><h2 id="1-1-梯度剪枝"><a href="#1-1-梯度剪枝" class="headerlink" title="1.1 梯度剪枝"></a>1.1 梯度剪枝</h2><p>在 <a href="https://mp.weixin.qq.com/s?__biz=Mzg3OTIwODUzMQ==&mid=2247484983&idx=1&sn=814762bcc217f57ae9507083875963ca&chksm=cf06b70bf8713e1d01b79eaa0cebad4acc66ea622c027f6110d3662fc6844f7435ba62cb93d1&token=885036689&lang=zh_CN#rd" target="_blank" rel="noopener">PyTorch 折桂 8：torch.nn.init</a> 里提到过梯度爆炸的问题，当时我们的解决方法是对神经元权重的初始化进行控制，这里再介绍一个简单粗暴的方式：直接限制权重的上限。对应导数超过上限的权重，将其导数重置为上限值。</p>
 <p><code>torch.nn.utils.clip_grad_value_(parameters, clip_value)</code></p>
 <ul>
@@ -281,163 +281,71 @@
 <h1 id="3-模型的保存与读取"><a href="#3-模型的保存与读取" class="headerlink" title="3. 模型的保存与读取"></a>3. 模型的保存与读取</h1><p>保存的模型如果在 GPU 上，需要先转移到 CPU 上。保存模型既可以保存整个模型，也可以只保存模型的参数权重。</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保存整个模型</span></span><br><span class="line">torch.save(the_model, PATH)</span><br><span class="line"><span class="comment"># 只保存模型的参数</span></span><br><span class="line">torch.save(the_model.state_dict(), PATH)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取整个模型</span></span><br><span class="line">the_model = torch.load(PATH)</span><br><span class="line"><span class="comment"># 只读取模型的权重</span></span><br><span class="line">the_model.load_state_dict(torch.load(PATH))</span><br></pre></td></tr></table></figure>
 
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/30/DL-PyTorch-%E6%8A%98%E6%A1%82-13%EF%BC%9ARNN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/30/DL-PyTorch-%E6%8A%98%E6%A1%82-13%EF%BC%9ARNN/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 13：RNN</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-30 14:49:05" itemprop="dateCreated datePublished" datetime="2020-05-30T14:49:05-04:00">2020-05-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-01 13:54:52" itemprop="dateModified" datetime="2020-06-01T13:54:52-04:00">2020-06-01</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>RNN（recurrent neural network）擅长处理序列内容，因此在 NLP 中应用较多。然而 RNN 的拓扑结构与 MLP、CNN 完全不同，因此学习起来会有很大的困扰。本文是介绍如何用锤子敲钉子的，而不是如何造锤子或者为什么要敲的。所以 RNN 的原理与使用场景在这里从略。然而了解 RNN 的工作原理对正确使用 RNN 大有裨益，所以在此附上参考资料<a href="https://zhuanlan.zhihu.com/p/32103001" target="_blank" rel="noopener" title="读PyTorch源码学习RNN（1）"></a><a href="https://zhuanlan.zhihu.com/p/80866196" target="_blank" rel="noopener" title="PyTorch 学习笔记（十一）：循环神经网络（RNN）"></a><a href="https://zybuluo.com/hanbingtao/note/541458" target="_blank" rel="noopener" title="零基础入门深度学习(5) - 循环神经网络"></a> ，供读者参考。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/30/DL-PyTorch-%E6%8A%98%E6%A1%82-13%EF%BC%9ARNN/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>翟文嘉
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://vincent507cpu.github.io/2020/06/04/DL-PyTorch-%E6%8A%98%E6%A1%82-14%EF%BC%9A%E5%85%B6%E5%AE%83%E5%8A%9F%E8%83%BD/" title="[DL] PyTorch 折桂 14：其它功能">https://vincent507cpu.github.io/2020/06/04/DL-PyTorch-折桂-14：其它功能/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/27/DL-PyTorch-%E6%8A%98%E6%A1%82-12%EF%BC%9ACNN/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/27/DL-PyTorch-%E6%8A%98%E6%A1%82-12%EF%BC%9ACNN/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 12：CNN</a>
-        </h2>
+    <div class="social-list">
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-05-27 13:31:32 / 修改时间：13:59:06" itemprop="dateCreated datePublished" datetime="2020-05-27T13:31:32-04:00">2020-05-27</time>
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/qrcode_for_gh_07ed45a7b845_258.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
             </span>
 
-          
-
+            <span class="label">WeChat</span>
+          </a>
         </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p> 本文尽量不涉及 CNN（卷积神经网络）的原理，仅讨论 CNN 的 PyTorch 实现。CNN 独有的层包括卷积层（convolution layer），池化层（pooling layer），转置卷积层（transposed convolution layer），反池化层（unpooling layer）。卷积层与池化层在 CNN 中最常用，而转置卷积层与反池化层通常用于计算机视觉应用里的图像再生，对于 NLP 来说应用不多，不再赘述。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/27/DL-PyTorch-%E6%8A%98%E6%A1%82-12%EF%BC%9ACNN/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
     </div>
+  </div>
 
-    
-    
-    
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+          <div class="post-tags">
+              <a href="/tags/deep-learning/" rel="tag"># deep learning</a>
+              <a href="/tags/PyTorch/" rel="tag"># PyTorch</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/30/DL-PyTorch-%E6%8A%98%E6%A1%82-13%EF%BC%9ARNN/" rel="prev" title="[DL] PyTorch 折桂 13：RNN">
+      <i class="fa fa-chevron-left"></i> [DL] PyTorch 折桂 13：RNN
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
   
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
@@ -489,6 +397,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-torch-nn-utils-里的一些功能"><span class="nav-number">1.</span> <span class="nav-text">1. torch.nn.utils 里的一些功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-梯度剪枝"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 梯度剪枝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-PyTorch-对可变长度序列的处理"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 PyTorch 对可变长度序列的处理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-GPU-的使用"><span class="nav-number">2.</span> <span class="nav-text">2. GPU 的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-检查系统内-GPU-的状态"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 检查系统内 GPU 的状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-在-PyTorch-内检查可用-GPU"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 在 PyTorch 内检查可用 GPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-将神经网络与张量在-CPU-与-GPU-之间移动"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 将神经网络与张量在 CPU 与 GPU 之间移动</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-模型的保存与读取"><span class="nav-number">3.</span> <span class="nav-text">3. 模型的保存与读取</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
