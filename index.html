@@ -212,7 +212,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-06-04 13:09:33 / 修改时间：13:12:48" itemprop="dateCreated datePublished" datetime="2020-06-04T13:09:33-04:00">2020-06-04</time>
+              <time title="创建时间：2020-06-04 13:09:33 / 修改时间：13:14:27" itemprop="dateCreated datePublished" datetime="2020-06-04T13:09:33-04:00">2020-06-04</time>
             </span>
 
           
@@ -280,6 +280,7 @@
 <p>以上仅为一张 GPU 的情况。GPU 上仅可以进行运算，其它操作需要将张量移动到 CPU 上完成。</p>
 <h1 id="3-模型的保存与读取"><a href="#3-模型的保存与读取" class="headerlink" title="3. 模型的保存与读取"></a>3. 模型的保存与读取</h1><p>保存的模型如果在 GPU 上，需要先转移到 CPU 上。保存模型既可以保存整个模型，也可以只保存模型的参数权重。</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保存整个模型</span></span><br><span class="line">torch.save(the_model, PATH)</span><br><span class="line"><span class="comment"># 只保存模型的参数</span></span><br><span class="line">torch.save(the_model.state_dict(), PATH)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取整个模型</span></span><br><span class="line">the_model = torch.load(PATH)</span><br><span class="line"><span class="comment"># 只读取模型的权重</span></span><br><span class="line">the_model.load_state_dict(torch.load(PATH))</span><br></pre></td></tr></table></figure>
+<p>欢迎关注我的微信公众号“花解语 NLP”：<br><img src="https://img-blog.csdnimg.cn/20200514100635366.jpg#pic_center" alt=""></p>
 
       
     </div>
