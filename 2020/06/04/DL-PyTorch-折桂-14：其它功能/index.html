@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"vincent507cpu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="本以为 PyTorch 的文章要写两个月，结果发现 PyTorch 真的太轻了，写了不到一个月就写完了。本篇为完结篇，对一些零星的功能进行总结。 1. torch.nn.utils 里的一些功能1.1 梯度剪枝在 PyTorch 折桂 8：torch.nn.init 里提到过梯度爆炸的问题，当时我们的解决方法是对神经元权重的初始化进行控制，这里再介绍一个简单粗暴的方式：直接限制权重的上限。对应导数">
+  <meta name="description" content="本以为 PyTorch 的文章要写两个月，结果发现 PyTorch 真的太轻了，写了不到一个月就写完了。本篇为完结篇，对一些零星的功能进行总结。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[DL] PyTorch 折桂 14：其它功能">
 <meta property="og:url" content="https://vincent507cpu.github.io/2020/06/04/DL-PyTorch-%E6%8A%98%E6%A1%82-14%EF%BC%9A%E5%85%B6%E5%AE%83%E5%8A%9F%E8%83%BD/index.html">
 <meta property="og:site_name" content="花解语">
-<meta property="og:description" content="本以为 PyTorch 的文章要写两个月，结果发现 PyTorch 真的太轻了，写了不到一个月就写完了。本篇为完结篇，对一些零星的功能进行总结。 1. torch.nn.utils 里的一些功能1.1 梯度剪枝在 PyTorch 折桂 8：torch.nn.init 里提到过梯度爆炸的问题，当时我们的解决方法是对神经元权重的初始化进行控制，这里再介绍一个简单粗暴的方式：直接限制权重的上限。对应导数">
+<meta property="og:description" content="本以为 PyTorch 的文章要写两个月，结果发现 PyTorch 真的太轻了，写了不到一个月就写完了。本篇为完结篇，对一些零星的功能进行总结。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200514100635366.jpg#pic_center">
 <meta property="article:published_time" content="2020-06-04T17:09:33.000Z">
-<meta property="article:modified_time" content="2020-06-04T17:14:27.018Z">
+<meta property="article:modified_time" content="2020-06-04T19:29:20.408Z">
 <meta property="article:author" content="翟文嘉">
 <meta property="article:tag" content="deep learning">
 <meta property="article:tag" content="PyTorch">
@@ -214,7 +214,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-06-04 13:09:33 / 修改时间：13:14:27" itemprop="dateCreated datePublished" datetime="2020-06-04T13:09:33-04:00">2020-06-04</time>
+              <time title="创建时间：2020-06-04 13:09:33 / 修改时间：15:29:20" itemprop="dateCreated datePublished" datetime="2020-06-04T13:09:33-04:00">2020-06-04</time>
             </span>
 
           
@@ -229,6 +229,7 @@
 
       
         <p>本以为 PyTorch 的文章要写两个月，结果发现 PyTorch 真的太轻了，写了不到一个月就写完了。本篇为完结篇，对一些零星的功能进行总结。</p>
+<a id="more"></a>
 <h1 id="1-torch-nn-utils-里的一些功能"><a href="#1-torch-nn-utils-里的一些功能" class="headerlink" title="1. torch.nn.utils 里的一些功能"></a>1. <code>torch.nn.utils</code> 里的一些功能</h1><h2 id="1-1-梯度剪枝"><a href="#1-1-梯度剪枝" class="headerlink" title="1.1 梯度剪枝"></a>1.1 梯度剪枝</h2><p>在 <a href="https://mp.weixin.qq.com/s?__biz=Mzg3OTIwODUzMQ==&mid=2247484983&idx=1&sn=814762bcc217f57ae9507083875963ca&chksm=cf06b70bf8713e1d01b79eaa0cebad4acc66ea622c027f6110d3662fc6844f7435ba62cb93d1&token=885036689&lang=zh_CN#rd" target="_blank" rel="noopener">PyTorch 折桂 8：torch.nn.init</a> 里提到过梯度爆炸的问题，当时我们的解决方法是对神经元权重的初始化进行控制，这里再介绍一个简单粗暴的方式：直接限制权重的上限。对应导数超过上限的权重，将其导数重置为上限值。</p>
 <p><code>torch.nn.utils.clip_grad_value_(parameters, clip_value)</code></p>
 <ul>
@@ -341,7 +342,10 @@
     <a href="/2020/05/30/DL-PyTorch-%E6%8A%98%E6%A1%82-13%EF%BC%9ARNN/" rel="prev" title="[DL] PyTorch 折桂 13：RNN">
       <i class="fa fa-chevron-left"></i> [DL] PyTorch 折桂 13：RNN
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/04/DL-PyTorch-%E6%8A%98%E6%A1%82-15%EF%BC%9ATorchText/" rel="next" title="[DL] PyTorch 折桂 15：TorchText">
+      [DL] PyTorch 折桂 15：TorchText <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -416,7 +420,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

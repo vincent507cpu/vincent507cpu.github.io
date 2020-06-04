@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"vincent507cpu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="TorchText 是 PyTorch 的一个功能包，主要提供文本数据读取、创建迭代器的的功能与语料库、词向量的信息，分别对应了 torchtext.data、torchtext.datasets 和 torchtext.vocab 三个子模块。本文参考了三篇文章。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[DL] PyTorch 折桂 15：TorchText">
+<meta property="og:url" content="https://vincent507cpu.github.io/2020/06/04/DL-PyTorch-%E6%8A%98%E6%A1%82-15%EF%BC%9ATorchText/index.html">
+<meta property="og:site_name" content="花解语">
+<meta property="og:description" content="TorchText 是 PyTorch 的一个功能包，主要提供文本数据读取、创建迭代器的的功能与语料库、词向量的信息，分别对应了 torchtext.data、torchtext.datasets 和 torchtext.vocab 三个子模块。本文参考了三篇文章。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-04T19:29:44.000Z">
+<meta property="article:modified_time" content="2020-06-04T19:30:55.859Z">
+<meta property="article:author" content="翟文嘉">
+<meta property="article:tag" content="deep learning">
+<meta property="article:tag" content="PyTorch">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://vincent507cpu.github.io/2020/06/04/DL-PyTorch-%E6%8A%98%E6%A1%82-15%EF%BC%9ATorchText/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>[DL] PyTorch 折桂 15：TorchText | 花解语</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="花解语" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta custom-logo">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">花解语</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">求知若饥，虚心若愚</p>
+      <a>
+        <img class="custom-logo-image" src="logo.jpg" alt="花解语">
+      </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/vincent507cpu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/06/04/DL-PyTorch-%E6%8A%98%E6%A1%82-15%EF%BC%9ATorchText/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="翟文嘉">
+      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花解语">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [DL] PyTorch 折桂 15：TorchText
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-04 15:29:44 / 修改时间：15:30:55" itemprop="dateCreated datePublished" datetime="2020-06-04T15:29:44-04:00">2020-06-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><code>TorchText</code> 是 PyTorch 的一个功能包，主要提供文本数据读取、创建迭代器的的功能与语料库、词向量的信息，分别对应了 <code>torchtext.data</code>、<code>torchtext.datasets</code> 和 <code>torchtext.vocab</code> 三个子模块。本文参考了三篇文章<a href="https://www.jianshu.com/p/0f7107db2f3a" target="_blank" rel="noopener" title="TorchText学习总结"></a><a href="https://zhuanlan.zhihu.com/p/94941514" target="_blank" rel="noopener" title="使用pytorch和torchtext进行文本分类"></a><a href="https://www.jianshu.com/p/71176275fdc5" target="_blank" rel="noopener" title="Torchtext使用教程"></a>。 </p>
+<a id="more"></a>
+<h1 id="1-语料库-torchtext-datasets"><a href="#1-语料库-torchtext-datasets" class="headerlink" title="1. 语料库 torchtext.datasets"></a>1. 语料库 <code>torchtext.datasets</code></h1><p><code>TorchText</code> 内建的语料库有：</p>
+<ul>
+<li>Language Modeling<ul>
+<li>WikiText-2</li>
+<li>WikiText103</li>
+<li>PennTreebank</li>
+</ul>
+</li>
+<li>Sentiment Analysis<ul>
+<li>SST</li>
+<li>IMDb</li>
+</ul>
+</li>
+<li>Text Classification<ul>
+<li>TextClassificationDataset</li>
+<li>AG_NEWS</li>
+<li>SogouNews</li>
+<li>DBpedia</li>
+<li>YelpReviewPolarity</li>
+<li>YelpReviewFull</li>
+<li>YahooAnswers</li>
+<li>AmazonReviewPolarity</li>
+<li>AmazonReviewFull</li>
+</ul>
+</li>
+<li>Question Classification<ul>
+<li>TREC</li>
+</ul>
+</li>
+<li>Entailment<ul>
+<li>SNLI</li>
+<li>MultiNLI</li>
+</ul>
+</li>
+<li>Machine Translation<ul>
+<li>Multi30k</li>
+<li>IWSLT</li>
+<li>WMT14</li>
+</ul>
+</li>
+<li>Sequence Tagging<ul>
+<li>UDPOS</li>
+<li>CoNLL2000Chunking</li>
+</ul>
+</li>
+<li>Question Answering<ul>
+<li>BABI20</li>
+</ul>
+</li>
+<li>Unsupervised Learning<ul>
+<li>EnWik9</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-预训练的词向量-torchtext-vocab"><a href="#2-预训练的词向量-torchtext-vocab" class="headerlink" title="2. 预训练的词向量 torchtext.vocab"></a>2. 预训练的词向量 <code>torchtext.vocab</code></h1><p><code>TorchText</code> 内建的预训练词向量有：</p>
+<ul>
+<li>charngram.100d </li>
+<li>fasttext.en.300d </li>
+<li>fasttext.simple.300d </li>
+<li>glove.42B.300d </li>
+<li>glove.840B.300d </li>
+<li>glove.twitter.27B.25d </li>
+<li>glove.twitter.27B.50d </li>
+<li>glove.twitter.27B.100d </li>
+<li>glove.twitter.27B.200d </li>
+<li>glove.6B.50d </li>
+<li>glove.6B.100d </li>
+<li>glove.6B.200d </li>
+<li>glove.6B.300d</li>
+</ul>
+<h1 id="3-数据读取、数据框的创建-torchtext-data"><a href="#3-数据读取、数据框的创建-torchtext-data" class="headerlink" title="3. 数据读取、数据框的创建 torchtext.data"></a>3. 数据读取、数据框的创建 <code>torchtext.data</code></h1><h2 id="3-1-创建-Field"><a href="#3-1-创建-Field" class="headerlink" title="3.1 创建 Field"></a>3.1 创建 <code>Field</code></h2><p><code>Field</code> 可以理解为一个告诉 TorchText 如何处理字段的声明。</p>
+<p><code>torchtext.data.Field(sequential=True, use_vocab=True, init_token=None, eos_token=None, fix_length=None, dtype=torch.int64, preprocessing=None, postprocessing=None, lower=False, tokenize=None, tokenizer_language=&#39;en&#39;, include_lengths=False, batch_first=False, pad_token=&#39;&lt;pad&gt;&#39;, unk_token=&#39;&lt;unk&gt;&#39;, pad_first=False, truncate_first=False, stop_words=None, is_target=False)</code></p>
+<p>参数很多，这里仅仅介绍主要参数：</p>
+<ul>
+<li><code>sequential</code>：是否为已经被序列化的数据，默认为 True；</li>
+<li><code>use_vocab</code>：是否应用词汇表。若为 False 则数据应该已经是数字形式，默认为 True；</li>
+<li><code>init_token</code>：序列开头填充的 token，默认为 None 即不填充；</li>
+<li><code>eos_token</code>：序列结尾填充的 token，默认为 None 即不填充；</li>
+<li><code>lower</code>：是否将文本转换为小写，默认为 False；</li>
+<li><code>tokenize</code>：分词器，默认为 <code>string.split</code>；</li>
+<li><code>batch_first</code>：batch 是否在第一维上；</li>
+<li><code>pad_token</code>：填充的 token，默认为 “<pad>“；</li>
+<li><code>unk_token</code>：词汇表以外的词汇的表示，默认为 “<unk>“；</li>
+<li><code>pad_first</code>：是否在序列的开头进行填充；默认为 False；</li>
+<li><code>truncate_first</code>：是否在序列的开头将序列超过规定长度的部分进行截断；默认为 False；</li>
+<li><code>stop_words</code>：是否过滤停用词，默认为 False；</li>
+<li><code>is_target</code>：这个 <code>Field</code> 是否为标签，默认为 False。</li>
+</ul>
+<p><code>tokenize</code> 可以使用 SpaCy 的分词功能，使用以前要先构建分词功能：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> spacy</span><br><span class="line">spacy_en = spacy.load(<span class="string">'en'</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tokenizer</span><span class="params">(text)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> [token <span class="keyword">for</span> toekn <span class="keyword">in</span> spacy_en.tokenizer(text)]</span><br></pre></td></tr></table></figure>
+<p><code>spacy</code> 分词的效果比原生的 <code>split</code> 函数好一点，但是速度也慢一些。然后可以创建对应文本的 Field 了：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TEXT = data.Field(sequential=<span class="literal">True</span>, tokenize=tokenizer, lower=<span class="literal">True</span>) <span class="comment"># 假设文本为 raw data</span></span><br><span class="line">LABEL = data.Field(sequential=<span class="literal">False</span>, use_vocab=<span class="literal">False</span>) <span class="comment"># 假设标签为离散的数字变量</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-2-创建-Dataset"><a href="#3-2-创建-Dataset" class="headerlink" title="3.2 创建 Dataset"></a>3.2 创建 Dataset</h2><p>如果文本数据保存在 <code>csv</code>、<code>tsv</code> 或 <code>json</code> 文件中，我们优先使用 <code>torchtext.data.TabularDataset</code> 进行读取。</p>
+<p><code>torchtext.data.TabularDataset(path, format, fields, skip_header=False, csv_reader_params={}, **kwargs)</code></p>
+<ul>
+<li><code>path</code>：数据的路径；</li>
+<li><code>format</code>：文件的格式，为 <code>csv</code>、<code>tsv</code> 或 <code>json</code>；</li>
+<li><code>fields</code>：上面已经定义好的 Field；</li>
+<li><code>skip_header</code>：是否跳过第一行；</li>
+<li><code>csv_reader_params</code>：当文件为 <code>csv</code> 或 <code>tsv</code> 时，可以自定义文件的格式。 </li>
+</ul>
+<p>例子：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">train, val = data.TabularDataset.splits(</span><br><span class="line">        path=<span class="string">'.'</span>, train=<span class="string">'train.csv'</span>,validation=<span class="string">'val.csv'</span>, format=<span class="string">'csv'</span>,skip_header=<span class="literal">True</span>,</span><br><span class="line">        fields=[(<span class="string">'PhraseId'</span>,<span class="literal">None</span>),(<span class="string">'SentenceId'</span>,<span class="literal">None</span>),(<span class="string">'Phrase'</span>, TEXT), (<span class="string">'Sentiment'</span>, LABEL)])</span><br><span class="line"></span><br><span class="line">test = data.TabularDataset(<span class="string">'test.tsv'</span>,</span><br><span class="line">        format=<span class="string">'tsv'</span>,skip_header=<span class="literal">True</span>,</span><br><span class="line">        fields=[(<span class="string">'PhraseId'</span>,<span class="literal">None</span>),(<span class="string">'SentenceId'</span>,<span class="literal">None</span>),(<span class="string">'Phrase'</span>, TEXT)])</span><br></pre></td></tr></table></figure>
+<p>上面的例子说，<code>&#39;PhraseId&#39;</code> 和 <code>&#39;SentenceId&#39;</code> 不读取（<code>Field</code> 为 <code>None</code>），<code>&#39;Phrase&#39;</code> 以 <code>TEXT</code> 的方式进行读取，<code>&#39;Sentiment&#39;</code> 以 <code>LABEL</code> 的方式进行读取。</p>
+<h2 id="3-3-建立词汇表"><a href="#3-3-建立词汇表" class="headerlink" title="3.3 建立词汇表"></a>3.3 建立词汇表</h2><p>现在我们需要将词转化为数字，并在模型中载入预训练好的词向量。词汇表存储在之前声明好的 <code>Field</code> 里面。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">TEXT.build_vocab(train_data, <span class="comment"># 建词表是用训练集建，不要用验证集和测试集</span></span><br><span class="line">                  max_size=<span class="number">400000</span>, <span class="comment"># 单词表容量</span></span><br><span class="line">                  vectors=<span class="string">'glove.6B.300d'</span>, <span class="comment"># 还有'glove.840B.300d'已经很多可以选</span></span><br><span class="line">                  unk_init=torch.init.xavier_uniform <span class="comment"># 初始化train_data中不存在预训练词向量词表中的单词</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在神经网络里加载词向量</span></span><br><span class="line">pretrained_embeddings = TEXT.vocab.vectors</span><br><span class="line">model.embedding.weight.data.copy_(pretrained_embeddings)</span><br><span class="line">UNK_IDX = REVIEW.vocab.stoi[REVIEW.unk_token]</span><br><span class="line">PAD_IDX = REVIEW.vocab.stoi[REVIEW.pad_token]</span><br><span class="line"><span class="comment"># 因为预训练的权重的unk和pad的词向量不是在我们的数据集语料上训练得到的，所以最好置零</span></span><br><span class="line">model.embedding.weight.data[UNK_IDX] = torch.zeros(EMBEDDING_DIM)</span><br><span class="line">model.embedding.weight.data[PAD_IDX] = torch.zeros(EMBEDDING_DIM)</span><br></pre></td></tr></table></figure>
+<h2 id="3-4-创建迭代器"><a href="#3-4-创建迭代器" class="headerlink" title="3.4 创建迭代器"></a>3.4 创建迭代器</h2><p>迭代器推荐使用 <code>BucketIterator</code>，因为它会将文本中长度相似的序列尽量放在同一个 batch 里，减少 padding，从而减少计算量，加速计算。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torchtext.data.BucketIterator(dataset, batch_size, sort_key=<span class="literal">None</span>, device=<span class="literal">None</span>, batch_size_fn=<span class="literal">None</span>, train=<span class="literal">True</span>, repeat=<span class="literal">False</span>, shuffle=<span class="literal">None</span>, sort=<span class="literal">None</span>, sort_within_batch=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>dataset</code>：目标数据；</li>
+<li><code>batch_size</code>：batch 的大小；</li>
+<li><code>sort_key</code>：排序的方式默认为 None；</li>
+<li><code>device</code>：载入的设备，默认为 CPU；</li>
+<li><code>batch_size_fn</code>：取 batch 的函数，默认为 None；</li>
+<li><code>train</code>：是否为训练集，默认为 True；</li>
+<li><code>repeat</code>：在不同的 epoch 中是否重复相同的 iterater，默认为 False；</li>
+<li><code>shuffle</code>：在不同的 epoch 中是否打乱数据的顺序，默认为 None；</li>
+<li><code>sort</code>：是否根据 <code>sort_key</code> 对数据进行排序，默认为 None；</li>
+<li><code>sort_within_batch</code>：是否根据 <code>sort_key</code> 对每个 batch 内的数据进行降序排序。</li>
+</ul>
+<p>举例：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">train_iter, val_iter = data.BucketIterator.split((train, val), batch_size=<span class="number">128</span>, sort_key=<span class="keyword">lambda</span> x: len(x.Phrase), </span><br><span class="line">                                 shuffle=<span class="literal">True</span>,device=DEVICE)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在 test_iter , sort一定要设置成 False, 要不然会被 torchtext 搞乱样本顺序</span></span><br><span class="line">test_iter = data.Iterator(dataset=test, batch_size=<span class="number">128</span>, train=<span class="literal">False</span>,</span><br><span class="line">                          sort=<span class="literal">False</span>, device=DEVICE)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>翟文嘉
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://vincent507cpu.github.io/2020/06/04/DL-PyTorch-%E6%8A%98%E6%A1%82-15%EF%BC%9ATorchText/" title="[DL] PyTorch 折桂 15：TorchText">https://vincent507cpu.github.io/2020/06/04/DL-PyTorch-折桂-15：TorchText/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/qrcode_for_gh_07ed45a7b845_258.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/deep-learning/" rel="tag"># deep learning</a>
+              <a href="/tags/PyTorch/" rel="tag"># PyTorch</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/04/DL-PyTorch-%E6%8A%98%E6%A1%82-14%EF%BC%9A%E5%85%B6%E5%AE%83%E5%8A%9F%E8%83%BD/" rel="prev" title="[DL] PyTorch 折桂 14：其它功能">
+      <i class="fa fa-chevron-left"></i> [DL] PyTorch 折桂 14：其它功能
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-语料库-torchtext-datasets"><span class="nav-number">1.</span> <span class="nav-text">1. 语料库 torchtext.datasets</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-预训练的词向量-torchtext-vocab"><span class="nav-number">2.</span> <span class="nav-text">2. 预训练的词向量 torchtext.vocab</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-数据读取、数据框的创建-torchtext-data"><span class="nav-number">3.</span> <span class="nav-text">3. 数据读取、数据框的创建 torchtext.data</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-创建-Field"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 创建 Field</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-创建-Dataset"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 创建 Dataset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-建立词汇表"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 建立词汇表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-创建迭代器"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 创建迭代器</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="翟文嘉"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">翟文嘉</p>
+  <div class="site-description" itemprop="description">一个专注于 computational linguistics 与 natural language processing 的初学者</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/vincent507cpu" title="https:&#x2F;&#x2F;github.com&#x2F;vincent507cpu" rel="noopener" target="_blank">Title</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">翟文嘉</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
