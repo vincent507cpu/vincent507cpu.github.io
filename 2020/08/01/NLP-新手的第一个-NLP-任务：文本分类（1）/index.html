@@ -20,34 +20,35 @@
     var CONFIG = {"hostname":"vincent507cpu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-<meta property="og:type" content="website">
-<meta property="og:title" content="花解语">
-<meta property="og:url" content="https://vincent507cpu.github.io/index.html">
+  <meta name="description" content="从终端任务来说，NLP 任务有文本分类、文本生成、翻译、文本摘要等等，其中文本分类是一个比较基础的任务。所以让我们从文本分类开始练习，从最简单的模型开始做起，然后尽量一步步提高它的性能。 文本分类有主题分类和感情分类两种。其中感情分类又比主题分类更加简单一点，因为很多感情分类是二分类任务（主题分类其实也可以，但是一般很少只分两个主题），所以我们将使用 IMDB 电影评论数据集进行一个感情分类任务。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[NLP] 新手的第一个 NLP 任务：文本分类（1）">
+<meta property="og:url" content="https://vincent507cpu.github.io/2020/08/01/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E4%BB%BB%E5%8A%A1%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%881%EF%BC%89/index.html">
 <meta property="og:site_name" content="花解语">
-<meta property="og:description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
+<meta property="og:description" content="从终端任务来说，NLP 任务有文本分类、文本生成、翻译、文本摘要等等，其中文本分类是一个比较基础的任务。所以让我们从文本分类开始练习，从最简单的模型开始做起，然后尽量一步步提高它的性能。 文本分类有主题分类和感情分类两种。其中感情分类又比主题分类更加简单一点，因为很多感情分类是二分类任务（主题分类其实也可以，但是一般很少只分两个主题），所以我们将使用 IMDB 电影评论数据集进行一个感情分类任务。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-01T17:57:01.000Z">
+<meta property="article:modified_time" content="2020-08-01T17:58:23.148Z">
 <meta property="article:author" content="翟文嘉">
-<meta property="article:tag" content="Python">
-<meta property="article:tag" content=" Deep Learning">
-<meta property="article:tag" content=" Computational Linguistics">
-<meta property="article:tag" content=" Natural Language Processing">
+<meta property="article:tag" content="deep learning">
+<meta property="article:tag" content="PyTorch">
+<meta property="article:tag" content="NLP">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://vincent507cpu.github.io/">
+<link rel="canonical" href="https://vincent507cpu.github.io/2020/08/01/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E4%BB%BB%E5%8A%A1%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%881%EF%BC%89/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>花解语</title>
+  <title>[NLP] 新手的第一个 NLP 任务：文本分类（1） | 花解语</title>
   
 
 
@@ -181,9 +182,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -199,10 +201,9 @@
       <meta itemprop="name" content="花解语">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/01/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E4%BB%BB%E5%8A%A1%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%881%EF%BC%89/" class="post-title-link" itemprop="url">[NLP] 新手的第一个 NLP 任务：文本分类（1）</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          [NLP] 新手的第一个 NLP 任务：文本分类（1）
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -226,7 +227,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>从终端任务来说，NLP 任务有文本分类、文本生成、翻译、文本摘要等等，其中文本分类是一个比较基础的任务。所以让我们从文本分类开始练习，从最简单的模型开始做起，然后尽量一步步提高它的性能。</p>
+        <p>从终端任务来说，NLP 任务有文本分类、文本生成、翻译、文本摘要等等，其中文本分类是一个比较基础的任务。所以让我们从文本分类开始练习，从最简单的模型开始做起，然后尽量一步步提高它的性能。</p>
 <p>文本分类有主题分类和感情分类两种。其中感情分类又比主题分类更加简单一点，因为很多感情分类是二分类任务（主题分类其实也可以，但是一般很少只分两个主题），所以我们将使用 IMDB 电影评论数据集进行一个感情分类任务。</p>
 <h1 id="NLP-的-pipeline"><a href="#NLP-的-pipeline" class="headerlink" title="NLP 的 pipeline"></a>NLP 的 pipeline</h1><p>简单来说，NLP 的 pipeline 的主要步骤为：</p>
 <ol>
@@ -267,170 +268,72 @@
 <p>首先使用 <code>TensorDataset</code> 将训练集和测试集转换成 PyTorch 可以识别的格式，然后使用 <code>DataLoader</code> 将数据集进行封装，生成一个以 <code>BATCH_SIZE</code> 为读取批量的生成器。</p>
 <p>下一篇文章将进行建模和训练。可以在 <a href="https://github.com/vincent507cpu/nlp_project/blob/master/text%20classification/01%20CNN.ipynb" target="_blank" rel="noopener">https://github.com/vincent507cpu/nlp_project/blob/master/text%20classification/01%20CNN.ipynb</a> 查看全部代码。</p>
 
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/06/10/DL-PyTorch-%E6%8A%98%E6%A1%82-17%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/10/DL-PyTorch-%E6%8A%98%E6%A1%82-17%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 17：使用 TorchText 和 transformers 进行情感分类(1)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-10 15:51:36" itemprop="dateCreated datePublished" datetime="2020-06-10T15:51:36-04:00">2020-06-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-01 12:10:05" itemprop="dateModified" datetime="2020-08-01T12:10:05-04:00">2020-08-01</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p> 我们已经了解了 PyTorch 的基本操作和功能，现在让我们实践一下。自从 transformer 横空出世以后，在 NLP 领域有”大一统“ 的趋势。但 transformer 的本质是什么？transformer 的本质是一个能够有效提取语义信息的词嵌入生成器，它比前辈 word2vec、GloVe 等等能够更有效地提取词语的语义信息，所以以 transformer 生成的词嵌入可以有 SOTA（state-of-the-art，最高水平）的性能。这等于电脑可以更好地理解文本中每个词语的意思，理解了每个词语的意思自然就可以更好地理解文本的整体意思。所以 transformer 只是取代了以前用的 Embedding 层，根据具体的任务的不同还可以接上 CNN、RNN 等层。</p>
-<p> 本文及下一篇文章中，我们将使用 PyTorch，TorchText 和 transformers 库里的 Bert 预训练模型来进行一个基本的情感分类任务：IMDB 影片评论的情感分类。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/10/DL-PyTorch-%E6%8A%98%E6%A1%82-17%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>翟文嘉
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://vincent507cpu.github.io/2020/08/01/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E4%BB%BB%E5%8A%A1%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%881%EF%BC%89/" title="[NLP] 新手的第一个 NLP 任务：文本分类（1）">https://vincent507cpu.github.io/2020/08/01/NLP-新手的第一个-NLP-任务：文本分类（1）/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/06/05/DL-PyTorch-%E6%8A%98%E6%A1%82-16%EF%BC%9Atransformers/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/05/DL-PyTorch-%E6%8A%98%E6%A1%82-16%EF%BC%9Atransformers/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 16：transformers</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-05 12:47:59" itemprop="dateCreated datePublished" datetime="2020-06-05T12:47:59-04:00">2020-06-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-17 07:04:34" itemprop="dateModified" datetime="2020-06-17T07:04:34-04:00">2020-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p> 严格意义上讲 transformers 并不是 PyTorch 的一部分，然而 transformers 与 PyTorch 或 TensorFlow 结合的太紧密了，而且可以把 transformers 看成是 PyTorch 或 TensorFlow 的延伸，所以也在这里一并讨论了。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/05/DL-PyTorch-%E6%8A%98%E6%A1%82-16%EF%BC%9Atransformers/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/qrcode_for_gh_07ed45a7b845_258.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+          <div class="post-tags">
+              <a href="/tags/deep-learning/" rel="tag"># deep learning</a>
+              <a href="/tags/PyTorch/" rel="tag"># PyTorch</a>
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/10/DL-PyTorch-%E6%8A%98%E6%A1%82-17%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB/" rel="prev" title="[DL] PyTorch 折桂 17：使用 TorchText 和 transformers 进行情感分类(1)">
+      <i class="fa fa-chevron-left"></i> [DL] PyTorch 折桂 17：使用 TorchText 和 transformers 进行情感分类(1)
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
   
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
@@ -482,6 +385,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NLP-的-pipeline"><span class="nav-number">1.</span> <span class="nav-text">NLP 的 pipeline</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#准备工作"><span class="nav-number">2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#载入数据"><span class="nav-number">3.</span> <span class="nav-text">载入数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据预处理"><span class="nav-number">4.</span> <span class="nav-text">数据预处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据封装"><span class="nav-number">5.</span> <span class="nav-text">数据封装</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
