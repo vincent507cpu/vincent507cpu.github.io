@@ -212,7 +212,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-08-07 14:00:47 / 修改时间：14:09:48" itemprop="dateCreated datePublished" datetime="2020-08-07T14:00:47-04:00">2020-08-07</time>
+              <time title="创建时间：2020-08-07 14:00:47 / 修改时间：14:27:43" itemprop="dateCreated datePublished" datetime="2020-08-07T14:00:47-04:00">2020-08-07</time>
             </span>
 
           
@@ -230,7 +230,6 @@
 <p>本文的模型参考了论文 <a href="https://arxiv.org/pdf/1408.5882.pdf" target="_blank" rel="noopener" title="Convolutional Neural Networks for Sentence Classification">《Convolutional Neural Networks for Sentence Classification》</a>，原文代码<a href="https://github.com/dennybritz/cnn-text-classification-tf" target="_blank" rel="noopener" title="论文代码">在此</a>。</p>
 <p>论文里使用了两个词嵌入：随模型进行训练的词嵌入和 Google 预训练好的 Word2Vec 词嵌入。本文里为了直观，没有采用预训练的词嵌入。</p>
 <h1 id="构建模型"><a href="#构建模型" class="headerlink" title="构建模型"></a>构建模型</h1><p>论文里使用了三个卷积核分别为 3、4、5 的二维卷积层，拼接后经过一个范围为 4 的池化层。最后经过一个全连接层，经过 sigmoid 函数处理后输出。</p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"><span class="keyword">from</span> torch.nn <span class="keyword">import</span> functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CNN</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, vocab_size, embed_size, dropout, batch_size)</span>:</span></span><br><span class="line">        super(CNN, self).__init__()</span><br><span class="line">        self.batch_size = batch_size</span><br><span class="line">        </span><br><span class="line">        self.embedding = nn.Embedding(vocab_size, embed_size) <span class="comment"># (BATCH_SIZE, SEQ_LEN, embed_size)</span></span><br><span class="line">        </span><br><span class="line">        self.conv1 = nn.Conv2d(<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>)</span><br><span class="line">        self.conv2 = nn.Conv2d(<span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>)</span><br><span class="line">        self.conv3 = nn.Conv2d(<span class="number">1</span>, <span class="number">1</span>, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">        self.dropout = nn.Dropout(dropout)</span><br><span class="line">        </span><br><span class="line">        self.fc = nn.Linear(<span class="number">2232</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        x = self.embedding(x)</span><br><span class="line">        x.unsqueeze_(<span class="number">1</span>) <span class="comment"># (BATCH_SIZE, 1, SEQ_LEN, embed_size)</span></span><br><span class="line">        output1 = self.conv1(x)</span><br><span class="line">        output1 = F.max_pool2d(F.relu(output1), <span class="number">4</span>)</span><br><span class="line">        </span><br><span class="line">        output2 = self.conv2(x)</span><br><span class="line">        output2 = F.max_pool2d(F.relu(output2), <span class="number">4</span>)</span><br><span class="line">        </span><br><span class="line">        output3 = self.conv3(x)</span><br><span class="line">        output3 = F.max_pool2d(F.relu(output3), <span class="number">4</span>)</span><br><span class="line">        output = torch.cat([output1, output2, output3], axis=<span class="number">1</span>)</span><br><span class="line">        output = self.dropout(output)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.fc(output.view(self.batch_size, <span class="number">-1</span>))</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/08/07/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E9%A1%B9%E7%9B%AE%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%882%EF%BC%89/#more" rel="contents">
@@ -280,10 +279,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-08-01 13:57:01 / 修改时间：14:01:09" itemprop="dateCreated datePublished" datetime="2020-08-01T13:57:01-04:00">2020-08-01</time>
+              <time title="创建时间：2020-08-01 13:57:01" itemprop="dateCreated datePublished" datetime="2020-08-01T13:57:01-04:00">2020-08-01</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-07 14:28:24" itemprop="dateModified" datetime="2020-08-07T14:28:24-04:00">2020-08-07</time>
+              </span>
 
           
 
