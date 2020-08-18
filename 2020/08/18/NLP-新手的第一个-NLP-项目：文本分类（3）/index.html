@@ -20,34 +20,35 @@
     var CONFIG = {"hostname":"vincent507cpu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-<meta property="og:type" content="website">
-<meta property="og:title" content="花解语">
-<meta property="og:url" content="https://vincent507cpu.github.io/index.html">
+  <meta name="description" content="前文回顾在前两篇文章新手的第一个 NLP 任务：文本分类（1）和新手的第一个 NLP 项目：文本分类（2）中，我们读取了数据、对数据进行了预处理和封装，并搭建了一个 CNN 模型。本文中，我们将 CNN 模型换为 RNN 模型。 数据的准备同新手的第一个 NLP 任务：文本分类（1）一样，不再赘述。 基础 RNN 模型有关 RNN 的知识可以参考我以前写的文章 PyTorch 折桂 11：CNN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[NLP] 新手的第一个 NLP 项目：文本分类（3）">
+<meta property="og:url" content="https://vincent507cpu.github.io/2020/08/18/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E9%A1%B9%E7%9B%AE%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%883%EF%BC%89/index.html">
 <meta property="og:site_name" content="花解语">
-<meta property="og:description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
+<meta property="og:description" content="前文回顾在前两篇文章新手的第一个 NLP 任务：文本分类（1）和新手的第一个 NLP 项目：文本分类（2）中，我们读取了数据、对数据进行了预处理和封装，并搭建了一个 CNN 模型。本文中，我们将 CNN 模型换为 RNN 模型。 数据的准备同新手的第一个 NLP 任务：文本分类（1）一样，不再赘述。 基础 RNN 模型有关 RNN 的知识可以参考我以前写的文章 PyTorch 折桂 11：CNN">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-18T13:00:27.000Z">
+<meta property="article:modified_time" content="2020-08-18T13:02:48.210Z">
 <meta property="article:author" content="翟文嘉">
-<meta property="article:tag" content="Python">
-<meta property="article:tag" content=" Deep Learning">
-<meta property="article:tag" content=" Computational Linguistics">
-<meta property="article:tag" content=" Natural Language Processing">
+<meta property="article:tag" content="deep learning">
+<meta property="article:tag" content="PyTorch">
+<meta property="article:tag" content="NLP">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://vincent507cpu.github.io/">
+<link rel="canonical" href="https://vincent507cpu.github.io/2020/08/18/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E9%A1%B9%E7%9B%AE%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%883%EF%BC%89/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>花解语</title>
+  <title>[NLP] 新手的第一个 NLP 项目：文本分类（3） | 花解语</title>
   
 
 
@@ -181,9 +182,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -199,10 +201,9 @@
       <meta itemprop="name" content="花解语">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/18/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E9%A1%B9%E7%9B%AE%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%883%EF%BC%89/" class="post-title-link" itemprop="url">[NLP] 新手的第一个 NLP 项目：文本分类（3）</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          [NLP] 新手的第一个 NLP 项目：文本分类（3）
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -226,7 +227,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="前文回顾"><a href="#前文回顾" class="headerlink" title="前文回顾"></a>前文回顾</h1><p>在前两篇文章<a href="https://mp.weixin.qq.com/s?__biz=Mzg3OTIwODUzMQ==&mid=2247485105&idx=1&sn=0fac0adff0dff8812d73a0e510d65e9a&chksm=cf06b78df8713e9b9a4024c7f09d2b031afce20e43dc696006be9bf9c34b6f4bf25f4e71acae&token=1910822964&lang=zh_CN#rd" target="_blank" rel="noopener">新手的第一个 NLP 任务：文本分类（1）</a>和<a href="https://mp.weixin.qq.com/s?__biz=Mzg3OTIwODUzMQ==&mid=2247485108&idx=1&sn=62ec5a9782c5e7dbecd6cac8f7e0eb58&chksm=cf06b788f8713e9e19c8513a687e92e782720f3e851f1219e8f956e02c8f69c1bc5838606cc1&token=134245917&lang=zh_CN#rd" target="_blank" rel="noopener">新手的第一个 NLP 项目：文本分类（2）</a>中，我们读取了数据、对数据进行了预处理和封装，并搭建了一个 CNN 模型。本文中，我们将 CNN 模型换为 RNN 模型。</p>
+        <h1 id="前文回顾"><a href="#前文回顾" class="headerlink" title="前文回顾"></a>前文回顾</h1><p>在前两篇文章<a href="https://mp.weixin.qq.com/s?__biz=Mzg3OTIwODUzMQ==&mid=2247485105&idx=1&sn=0fac0adff0dff8812d73a0e510d65e9a&chksm=cf06b78df8713e9b9a4024c7f09d2b031afce20e43dc696006be9bf9c34b6f4bf25f4e71acae&token=1910822964&lang=zh_CN#rd" target="_blank" rel="noopener">新手的第一个 NLP 任务：文本分类（1）</a>和<a href="https://mp.weixin.qq.com/s?__biz=Mzg3OTIwODUzMQ==&mid=2247485108&idx=1&sn=62ec5a9782c5e7dbecd6cac8f7e0eb58&chksm=cf06b788f8713e9e19c8513a687e92e782720f3e851f1219e8f956e02c8f69c1bc5838606cc1&token=134245917&lang=zh_CN#rd" target="_blank" rel="noopener">新手的第一个 NLP 项目：文本分类（2）</a>中，我们读取了数据、对数据进行了预处理和封装，并搭建了一个 CNN 模型。本文中，我们将 CNN 模型换为 RNN 模型。</p>
 <h1 id="数据的准备"><a href="#数据的准备" class="headerlink" title="数据的准备"></a>数据的准备</h1><p>同<a href="https://mp.weixin.qq.com/s?__biz=Mzg3OTIwODUzMQ==&mid=2247485105&idx=1&sn=0fac0adff0dff8812d73a0e510d65e9a&chksm=cf06b78df8713e9b9a4024c7f09d2b031afce20e43dc696006be9bf9c34b6f4bf25f4e71acae&token=1910822964&lang=zh_CN#rd" target="_blank" rel="noopener">新手的第一个 NLP 任务：文本分类（1）</a>一样，不再赘述。</p>
 <h1 id="基础-RNN-模型"><a href="#基础-RNN-模型" class="headerlink" title="基础 RNN 模型"></a>基础 RNN 模型</h1><p>有关 RNN 的知识可以参考我以前写的文章 <a href="https://mp.weixin.qq.com/s?__biz=Mzg3OTIwODUzMQ==&mid=2247485071&idx=1&sn=b9b570591e340c53b8d5cc161ef382cc&chksm=cf06b7b3f8713ea5f4b689a5c018ef21f5f1e42f32d2f4965acfec589d1260c21e9ceb90cee3&token=129126518&lang=zh_CN#rd" target="_blank" rel="noopener">PyTorch 折桂 11：CNN &amp; RNN</a>。</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn, optim</span><br><span class="line"><span class="keyword">from</span> torch.nn <span class="keyword">import</span> functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RNN</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, vocab_size, embed_dim, hidden_dim)</span>:</span></span><br><span class="line">        super(RNN, self).__init__()</span><br><span class="line">        </span><br><span class="line">        self.embedding = nn.Embedding(vocab_size, embed_dim) <span class="comment"># (BATCH_SIZE, SEQ_LEN, EMBED_DIM)</span></span><br><span class="line">        self.rnn = nn.RNN(embed_dim, hidden_dim, batch_first=<span class="literal">True</span>)</span><br><span class="line">        self.fc = nn.Linear(hidden_dim, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        x = self.embedding(x)</span><br><span class="line"></span><br><span class="line">        output, hidden = self.rnn(x)</span><br><span class="line">        <span class="comment"># output: (BATCH_SIZE, SEQ_LENGTH, HIDDEN_DIM)</span></span><br><span class="line">        <span class="comment"># hidden: (1, BATCH_SIZE, HIDDEN_DIM)</span></span><br><span class="line">    </span><br><span class="line">        <span class="keyword">return</span> self.fc(hidden.squeeze(<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
@@ -254,167 +255,72 @@
 <p>比前面的 CNN 效果稍好。下文中我们将使用 SOTA 的预训练模型 - BERT。</p>
 <p>本文的代码可以在 <a href="https://github.com/vincent507cpu/nlp\_project/blob/master/text%20classification/02%20RNN.ipynb" target="_blank" rel="noopener">https://github.com/vincent507cpu/nlp\_project/blob/master/text%20classification/02%20RNN.ipynb</a> 查看。</p>
 
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+        
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/08/07/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E9%A1%B9%E7%9B%AE%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%882%EF%BC%89/">
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>翟文嘉
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://vincent507cpu.github.io/2020/08/18/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E9%A1%B9%E7%9B%AE%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%883%EF%BC%89/" title="[NLP] 新手的第一个 NLP 项目：文本分类（3）">https://vincent507cpu.github.io/2020/08/18/NLP-新手的第一个-NLP-项目：文本分类（3）/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
+        
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/07/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E9%A1%B9%E7%9B%AE%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%882%EF%BC%89/" class="post-title-link" itemprop="url">[NLP] 新手的第一个 NLP 项目：文本分类（2）</a>
-        </h2>
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
+    <div class="social-list">
 
-              <time title="创建时间：2020-08-07 14:00:47 / 修改时间：14:27:43" itemprop="dateCreated datePublished" datetime="2020-08-07T14:00:47-04:00">2020-08-07</time>
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/qrcode_for_gh_07ed45a7b845_258.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
             </span>
 
-          
-
+            <span class="label">WeChat</span>
+          </a>
         </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>现在数据已经准备就绪，可以构建模型了。</p>
-<p>本文的模型参考了论文 <a href="https://arxiv.org/pdf/1408.5882.pdf" target="_blank" rel="noopener" title="Convolutional Neural Networks for Sentence Classification">《Convolutional Neural Networks for Sentence Classification》</a>，原文代码<a href="https://github.com/dennybritz/cnn-text-classification-tf" target="_blank" rel="noopener" title="论文代码">在此</a>。</p>
-<p>论文里使用了两个词嵌入：随模型进行训练的词嵌入和 Google 预训练好的 Word2Vec 词嵌入。本文里为了直观，没有采用预训练的词嵌入。</p>
-<h1 id="构建模型"><a href="#构建模型" class="headerlink" title="构建模型"></a>构建模型</h1><p>论文里使用了三个卷积核分别为 3、4、5 的二维卷积层，拼接后经过一个范围为 4 的池化层。最后经过一个全连接层，经过 sigmoid 函数处理后输出。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/07/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E9%A1%B9%E7%9B%AE%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%882%EF%BC%89/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
     </div>
+  </div>
 
-    
-    
-    
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+          <div class="post-tags">
+              <a href="/tags/deep-learning/" rel="tag"># deep learning</a>
+              <a href="/tags/PyTorch/" rel="tag"># PyTorch</a>
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/07/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E9%A1%B9%E7%9B%AE%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%882%EF%BC%89/" rel="prev" title="[NLP] 新手的第一个 NLP 项目：文本分类（2）">
+      <i class="fa fa-chevron-left"></i> [NLP] 新手的第一个 NLP 项目：文本分类（2）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
   
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/08/01/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E4%BB%BB%E5%8A%A1%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%881%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/01/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E4%BB%BB%E5%8A%A1%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%881%EF%BC%89/" class="post-title-link" itemprop="url">[NLP] 新手的第一个 NLP 任务：文本分类（1）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-08-01 13:57:01" itemprop="dateCreated datePublished" datetime="2020-08-01T13:57:01-04:00">2020-08-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-07 14:28:24" itemprop="dateModified" datetime="2020-08-07T14:28:24-04:00">2020-08-07</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>从终端任务来说，NLP 任务有文本分类、文本生成、翻译、文本摘要等等，其中文本分类是一个比较基础的任务。所以让我们从文本分类开始练习，从最简单的模型开始做起，然后尽量一步步提高它的性能。</p>
-<p>文本分类有主题分类和感情分类两种。其中感情分类又比主题分类更加简单一点，因为很多感情分类是二分类任务（主题分类其实也可以，但是一般很少只分两个主题），所以我们将使用 IMDB 电影评论数据集进行一个感情分类任务。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/01/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E4%BB%BB%E5%8A%A1%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%881%EF%BC%89/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
@@ -466,6 +372,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前文回顾"><span class="nav-number">1.</span> <span class="nav-text">前文回顾</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据的准备"><span class="nav-number">2.</span> <span class="nav-text">数据的准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基础-RNN-模型"><span class="nav-number">3.</span> <span class="nav-text">基础 RNN 模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#改进-RNN-模型"><span class="nav-number">4.</span> <span class="nav-text">改进 RNN 模型</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
