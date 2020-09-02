@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"vincent507cpu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="今天在班上看完了 NVIDIA 的 GeForce RTX 30 系列发布会。看完感觉，游戏玩家应该做梦都会笑醒：     RTX 3070 RTX 3080 RTX 3090 RTX 2080 Ti    CUDA Core 5888 8704 10496 4352   Core Clock 1500 Mhz 1440 Mhz 1400 Mhz 1350 Mhz   Boost Clock 17">
+  <meta name="description" content="今天在班上看完了 NVIDIA 的 GeForce RTX 30 系列发布会。看完感觉游戏玩家应该做梦都会笑醒：     RTX 3070 RTX 3080 RTX 3090 RTX 2080 Ti    CUDA Core 5888 8704 10496 4352   Core Clock 1500 Mhz 1440 Mhz 1400 Mhz 1350 Mhz   Boost Clock 173">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[工作站] 新 RTX 3090 搭建深度学习工作站的一些思考">
+<meta property="og:title" content="工作站-新-RTX-3090-搭建深度学习工作站的一些思考">
 <meta property="og:url" content="https://vincent507cpu.github.io/2020/09/01/%E5%B7%A5%E4%BD%9C%E7%AB%99-%E6%96%B0-RTX-3090-%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/index.html">
 <meta property="og:site_name" content="花解语">
-<meta property="og:description" content="今天在班上看完了 NVIDIA 的 GeForce RTX 30 系列发布会。看完感觉，游戏玩家应该做梦都会笑醒：     RTX 3070 RTX 3080 RTX 3090 RTX 2080 Ti    CUDA Core 5888 8704 10496 4352   Core Clock 1500 Mhz 1440 Mhz 1400 Mhz 1350 Mhz   Boost Clock 17">
+<meta property="og:description" content="今天在班上看完了 NVIDIA 的 GeForce RTX 30 系列发布会。看完感觉游戏玩家应该做梦都会笑醒：     RTX 3070 RTX 3080 RTX 3090 RTX 2080 Ti    CUDA Core 5888 8704 10496 4352   Core Clock 1500 Mhz 1440 Mhz 1400 Mhz 1350 Mhz   Boost Clock 173">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkEPVr1buRIXzb1FIicicJWBcW2ZmupLZREtGLqic6LdgVEh2Jqahxzjotl204JUVptia0HICk0NTVLCzQ/0?wx_fmt=png">
 <meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkEeWLg0UUrtsztYiasVDzTXABFqoPQKnazZ2kE8mWQCHoBaRj7kU1hHdJ9uwibp1bK6XlgfDic3fa7zw/0?wx_fmt=png">
@@ -34,10 +34,13 @@
 <meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkEeWLg0UUrtsztYiasVDzTXAn2SxuPxZMJJpypazcqu9ClqDg4Mp8C4qS3msZccQ0UToNyUd02djpA/0?wx_fmt=jpeg">
 <meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkEeWLg0UUrtsztYiasVDzTXAXdYqgXaCg16lKakuakvSlUqEzenoH5Po4AUKHibzpBbicBqETcMMmwRw/0?wx_fmt=png">
 <meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkEeWLg0UUrtsztYiasVDzTXAtF8FicIPSbeQHEzxOV8DNpghgDqD0xy4dUCwNpukaD814HaWJalwfLA/0?wx_fmt=png">
-<meta property="article:published_time" content="2020-09-02T02:32:41.000Z">
-<meta property="article:modified_time" content="2020-09-02T02:36:53.814Z">
+<meta property="article:published_time" content="2020-09-02T02:36:53.814Z">
+<meta property="article:modified_time" content="2020-09-02T03:07:00.495Z">
 <meta property="article:author" content="翟文嘉">
-<meta property="article:tag" content="深度学习工作站">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content=" Deep Learning">
+<meta property="article:tag" content=" Computational Linguistics">
+<meta property="article:tag" content=" Natural Language Processing">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkEPVr1buRIXzb1FIicicJWBcW2ZmupLZREtGLqic6LdgVEh2Jqahxzjotl204JUVptia0HICk0NTVLCzQ/0?wx_fmt=png">
 
@@ -54,7 +57,7 @@
   };
 </script>
 
-  <title>[工作站] 新 RTX 3090 搭建深度学习工作站的一些思考 | 花解语</title>
+  <title>工作站-新-RTX-3090-搭建深度学习工作站的一些思考 | 花解语</title>
   
 
 
@@ -208,7 +211,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          [工作站] 新 RTX 3090 搭建深度学习工作站的一些思考
+          工作站-新-RTX-3090-搭建深度学习工作站的一些思考
         </h1>
 
         <div class="post-meta">
@@ -219,7 +222,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-09-01 22:32:41 / 修改时间：22:36:53" itemprop="dateCreated datePublished" datetime="2020-09-01T22:32:41-04:00">2020-09-01</time>
+              <time title="创建时间：2020-09-01 22:36:53 / 修改时间：23:07:00" itemprop="dateCreated datePublished" datetime="2020-09-01T22:36:53-04:00">2020-09-01</time>
             </span>
 
           
@@ -233,7 +236,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>今天在班上看完了 NVIDIA 的 GeForce RTX 30 系列发布会。看完感觉，游戏玩家应该做梦都会笑醒：</p>
+        <p>今天在班上看完了 NVIDIA 的 GeForce RTX 30 系列发布会。看完感觉游戏玩家应该做梦都会笑醒：</p>
 <table>
 <thead>
 <tr>
@@ -308,25 +311,27 @@
 <td>$999 US</td>
 </tr>
 </tbody></table>
+<a id="more"></a>
 <p>一张中端卡吊打上代卡皇：<br><img src="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkEPVr1buRIXzb1FIicicJWBcW2ZmupLZREtGLqic6LdgVEh2Jqahxzjotl204JUVptia0HICk0NTVLCzQ/0?wx_fmt=png" alt=""><br>新一代卡皇 RTX 3090 据老黄说可以以 8k 分辨率全开特效无压力玩任何游戏。苏妈现在应该是压力山大吧。</p>
-<!--mpre-->
-<p>新一代 RTX 30 系列对游戏玩家是一个巨大的提升，但对深度学习研究者呢？假设想组一台 4 块 3090 的服务器，个人认为现在现有的 3090 显卡是不现实的。原因有三：</p>
+<p>RTX 30 系列对游戏玩家是一个巨大的提升，但对深度学习研究者呢？假设想组一台 4 块 RTX 3090 的服务器，个人认为现在现有的 3090 显卡是不现实的。原因有三：</p>
 <ol>
 <li>功耗是一个巨大的隐患</li>
 </ol>
-<p>普通居民区、写字楼内的单根电线的最大载荷约为 2000W，超过这个数字会跳闸，用电器必须放在专门设计的机房里。以前 RTX 2080 Ti 的超频最大功耗为不到 400W，四个 2080 Ti 加上 CPU 的功耗接近 2000W，还可以放在办公室里，而 3090 的 TDP 已经是 350W。NVIDIA 专门设计了一个 12 pin 的供电接口，最大载荷暂时未知，但有传言说最大载荷为 600W。而 2080 Ti 的供电接口为双 8 pin，其最大载荷为 150W * 2 + 75W（PCIE 插槽供电）= 375W。目前已知的 12 pin 接口均为双 8 pin 转接而来，其最大载荷不会超过 375W；一旦电脑电源原生支持 12 pin 接口，功耗就难说了。</p>
+<p>普通居民区、写字楼内的单根电线的最大载荷约为 2000W，超过这个数字会跳闸，用电器必须放在专门设计的机房里。以前 RTX 2080 Ti 在超频时最大功耗为不到 350W，四个 RTX 2080 Ti 加上 CPU 的功耗接近 2000W，还可以放在办公室里，而 RTX 3090 的 TDP 已经是 350W。NVIDIA 专门设计了一个 12 pin 的供电接口，最大载荷暂时未知，但有传言说最大载荷为 600W。而 RTX 2080 Ti 的供电接口为双 8 pin，其最大载荷为 150W （单个 8 pin 接口的供电）* 2 + 75W（PCIE 插槽供电）= 375W。目前已知的 12 pin 接口均为双 8 pin 转接而来，其最大载荷不会超过 375W；一旦电脑电源原生支持 12 pin 接口，功耗就难说了。</p>
 <ol start="2">
 <li>版型太大，主板上容纳不下</li>
 </ol>
-<p>GeForce RTX 3090 is massive…这可能是第一张单卡三插槽的显卡。<br><img src="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkEeWLg0UUrtsztYiasVDzTXABFqoPQKnazZ2kE8mWQCHoBaRj7kU1hHdJ9uwibp1bK6XlgfDic3fa7zw/0?wx_fmt=png" alt=""><br><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkEPVr1buRIXzb1FIicicJWBcWu8DdXpE8v7U7BrHs6S0IicAhWhibA8R43xoBuDrvF0NcVwHzCeosGicbQ/0?wx_fmt=jpeg" alt="RTX 3090 与 RTX 2080 Ti 对比"><br>三插槽就有问题了：主板上没位置插，机箱里也装不下。比如下面的一张主板：<br><img src="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkEPVr1buRIXzb1FIicicJWBcWk7LslqLFYqsTgNwBG91kKM2ZZeL5HH1ctjF97Via4QpbX070Y9BMpCg/0?wx_fmt=png" alt=""><br>一般的双槽显卡可以插四张，而 RTX 3090 只能插两张，因为一张 RTX 3090 需要两边都有空位。就算主板上有充足的空间，一般机箱上只有 8 个 PCI-E 槽位。所以想要 4 x 3090，需要更大的机箱（EATX 或者 WATX）和专用的主板。</p>
+<p>GeForce RTX 3090 is massive…这可能是第一张单卡三插槽的显卡，PCB 板在中间，前后都有风扇。<br><img src="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkEeWLg0UUrtsztYiasVDzTXABFqoPQKnazZ2kE8mWQCHoBaRj7kU1hHdJ9uwibp1bK6XlgfDic3fa7zw/0?wx_fmt=png" alt=""><br><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkEPVr1buRIXzb1FIicicJWBcWu8DdXpE8v7U7BrHs6S0IicAhWhibA8R43xoBuDrvF0NcVwHzCeosGicbQ/0?wx_fmt=jpeg" alt="RTX 3090 与 RTX 2080 Ti 对比"><br>三插槽就有问题了：主板上没位置插，机箱里也装不下。比如下面的一张主板：<br><img src="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkEPVr1buRIXzb1FIicicJWBcWk7LslqLFYqsTgNwBG91kKM2ZZeL5HH1ctjF97Via4QpbX070Y9BMpCg/0?wx_fmt=png" alt=""><br>一般的双槽显卡可以插四张，而 RTX 3090 只能插两张（1x 和 3x），因为一张 RTX 3090 需要两边都有空位。就算主板上有充足的空间，一般机箱上只有 8 个 PCI-E 槽位。所以想要 4 x RTX 3090，需要更大的机箱（EATX 或者 WATX）和专用的主板，或者希望以后会出双卡槽的 RTX 3090。</p>
 <ol start="3">
 <li>散热问题</li>
 </ol>
-<p>如果只有 1 张显卡，那么散热不是主要问题；而如果想放多张显卡，那么显卡一定要是涡轮散热设计。话说回来，显卡散热主要分涡轮散热和涡扇散热两种，主要区别在于出风的方向。涡扇散热的出风口在显卡背板：<br><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkEeWLg0UUrtsztYiasVDzTXAn2SxuPxZMJJpypazcqu9ClqDg4Mp8C4qS3msZccQ0UToNyUd02djpA/0?wx_fmt=jpeg" alt=""><br>而涡扇散热的出风口在显卡的四周：<br><img src="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkEeWLg0UUrtsztYiasVDzTXAXdYqgXaCg16lKakuakvSlUqEzenoH5Po4AUKHibzpBbicBqETcMMmwRw/0?wx_fmt=png" alt=""><br>如果机箱里有超过两张显卡，那么一定要选择涡轮散热，否则散热放出的热风会被其他显卡重新使用，造成散热失效。</p>
-<p>目前公布的所有 RTX 3090 都是涡扇设计，所以并不适合多块显卡组装深度学习工作站。而公版 RTX 3090 简直是单卡的福音，多卡的噩梦，看看 founder edition 的风道设计：<br><img src="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkEeWLg0UUrtsztYiasVDzTXAtF8FicIPSbeQHEzxOV8DNpghgDqD0xy4dUCwNpukaD814HaWJalwfLA/0?wx_fmt=png" alt=""><br>那两张 RTX 3090 能超过四张 RTX 2080 Ti 吗？Only time will tell.</p>
+<p>如果只有 1 张显卡，那么散热不是主要问题；而如果想放多张显卡，那么显卡一定要是涡轮散热设计。话说回来，显卡的风冷散热主要分涡轮散热和涡扇散热两种，主要区别在于出风的方向。涡扇散热的出风口在显卡背板：<br><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkEeWLg0UUrtsztYiasVDzTXAn2SxuPxZMJJpypazcqu9ClqDg4Mp8C4qS3msZccQ0UToNyUd02djpA/0?wx_fmt=jpeg" alt=""><br>而涡扇散热的出风口在显卡的四周：<br><img src="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkEeWLg0UUrtsztYiasVDzTXAXdYqgXaCg16lKakuakvSlUqEzenoH5Po4AUKHibzpBbicBqETcMMmwRw/0?wx_fmt=png" alt=""><br>如果机箱里有超过两张显卡，那么一定要选择涡轮散热，否则散热放出的热风会被其他显卡重新使用，造成散热失效。</p>
+<p>目前公布的所有 RTX 3090 都是涡扇设计，所以并不适合多块显卡组装深度学习工作站。而公版 RTX 3090 简直是单卡的福音，多卡的噩梦，看看 founder edition 的风道设计：<br><img src="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkEeWLg0UUrtsztYiasVDzTXAtF8FicIPSbeQHEzxOV8DNpghgDqD0xy4dUCwNpukaD814HaWJalwfLA/0?wx_fmt=png" alt=""><br>假如几块 RTX 3090 并联排列，头一块显卡的热风直接被第二块显卡利用，以此类推…</p>
+<p>现在已经有板厂（貌似是 EVGA）计划推出双卡槽的水冷散热版 RTX 3090。不过四个水冷风扇也不好摆。</p>
+<p>那两张 RTX 3090 能超过四张 RTX 2080 Ti 吗？Only time will tell.</p>
 <hr>
-<p>有传言说 NVIDIA 其实还有 20GB 显存的 RTX 3080 （个人猜测可能会被叫做 super）和 16GB 显存的 RTX 3070 （super）没有被发布，可能是在观望 AMD 的下一代显卡 Big Navi 的表现。双卡槽的 RTX 3080 如果有 20GB 显存无疑会解决以上的所有问题，成为深度学习 GPU 的理想选择。而希望苏妈能够给力一点，让老黄早点发布 RTX 3080 super 和 RTX 3070 super。</p>
-<p>不过现在没有合适的显卡，不代表以后也没有。现在已经有板厂（貌似是 EVGA）计划推出双卡槽的水冷散热版 RTX 3090。反正我可是准备入 RTX 3070 了哈哈哈。</p>
+<p>有传言说 NVIDIA 其实还有 20GB 显存的 RTX 3080 （个人猜测可能会被叫做 super）和 16GB 显存的 RTX 3070 （super）没有被发布，可能是在观望 AMD 的下一代显卡 Big Navi 的表现。双卡槽的 RTX 3080 如果有 20GB 显存无疑会解决以上的所有问题，成为深度学习 GPU 的理想工具。希望苏妈能够给力一点，让老黄早点发布 RTX 3080 super 和 RTX 3070 super。</p>
+<p>现在没有合适的显卡，不代表以后也没有。反正我准备入一块 RTX 3070 先用着，等 20GB RTX 3080 super 出了直接换 4 卡哈哈哈。</p>
 
     </div>
 
@@ -342,7 +347,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://vincent507cpu.github.io/2020/09/01/%E5%B7%A5%E4%BD%9C%E7%AB%99-%E6%96%B0-RTX-3090-%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/" title="[工作站] 新 RTX 3090 搭建深度学习工作站的一些思考">https://vincent507cpu.github.io/2020/09/01/工作站-新-RTX-3090-搭建深度学习工作站的一些思考/</a>
+    <a href="https://vincent507cpu.github.io/2020/09/01/%E5%B7%A5%E4%BD%9C%E7%AB%99-%E6%96%B0-RTX-3090-%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/" title="工作站-新-RTX-3090-搭建深度学习工作站的一些思考">https://vincent507cpu.github.io/2020/09/01/工作站-新-RTX-3090-搭建深度学习工作站的一些思考/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -371,9 +376,6 @@
 
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99/" rel="tag"># 深度学习工作站</a>
-          </div>
 
         
 
@@ -467,7 +469,7 @@
         <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
