@@ -23,7 +23,7 @@
   <meta name="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
 <meta property="og:type" content="website">
 <meta property="og:title" content="花解语">
-<meta property="og:url" content="https://vincent507cpu.github.io/page/5/index.html">
+<meta property="og:url" content="https://vincent507cpu.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99/index.html">
 <meta property="og:site_name" content="花解语">
 <meta property="og:description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
 <meta property="og:locale" content="zh_CN">
@@ -34,20 +34,20 @@
 <meta property="article:tag" content=" Natural Language Processing">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://vincent507cpu.github.io/page/5/">
+<link rel="canonical" href="https://vincent507cpu.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
+    isHome : false,
     isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>花解语</title>
+  <title>标签: 深度学习工作站 | 花解语</title>
   
 
 
@@ -181,254 +181,52 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content tag">
             
-      
+
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/27/DL-PyTorch-%E6%8A%98%E6%A1%82-11%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%85%A8%E8%BF%9E%E6%8E%A5%E7%BD%91%E7%BB%9C%E8%BF%9B%E8%A1%8C%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/27/DL-PyTorch-%E6%8A%98%E6%A1%82-11%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%85%A8%E8%BF%9E%E6%8E%A5%E7%BD%91%E7%BB%9C%E8%BF%9B%E8%A1%8C%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 11：使用全连接网络进行手写数字识别</a>
+  
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        <h2 class="collection-header">深度学习工作站
+          <small>标签</small>
         </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-05-27 09:36:00 / 修改时间：09:46:12" itemprop="dateCreated datePublished" datetime="2020-05-27T09:36:00-04:00">2020-05-27</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+      </div>
 
       
-          <p>光说不练假把式，现在我们已经积累了那么多的 PyTorch 知识，让我们实践一下吧！</p>
-<p>本文从简单的手写数字识别入手，参考了若干文章：</p>
-<ul>
-<li><a href="https://towardsdatascience.com/handwritten-digit-mnist-pytorch-977b5338e627" target="_blank" rel="noopener" title="Handwritten Digit Recognition Using PyTorch — Intro To Neural Networks">Handwritten Digit Recognition Using PyTorch — Intro To Neural Networks</a></li>
-<li><a href="https://www.pluralsight.com/guides/building-your-first-pytorch-solution" target="_blank" rel="noopener" title="Building Your First PyTorch Solution">Building Your First PyTorch Solution</a></li>
-</ul>
-<h1 id="1-PyTotch-使用总览"><a href="#1-PyTotch-使用总览" class="headerlink" title="1. PyTotch 使用总览"></a>1. PyTotch 使用总览</h1><p>使用 PyTorch 进行深度学习的步骤主要分以下七步：</p>
-<ol>
-<li>准备数据，包括数据的预处理和封装；</li>
-<li>模型搭建；</li>
-<li>选择损失函数；</li>
-<li>选择优化器；</li>
-<li>迭代训练；</li>
-<li>评估模型；</li>
-<li>保存模型。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/27/DL-PyTorch-%E6%8A%98%E6%A1%82-11%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%85%A8%E8%BF%9E%E6%8E%A5%E7%BD%91%E7%BB%9C%E8%BF%9B%E8%A1%8C%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
+    <div class="collection-year">
+      <span class="collection-header">2020</span>
     </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2020-09-20T18:04:45-04:00"
+              content="2020-09-20">
+          09-20
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2020/09/20/%E5%B7%A5%E4%BD%9C%E7%AB%99-2020-%E5%B9%B4-10-%E6%9C%88%E7%9A%84%E5%8D%95-GPU-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/" itemprop="url">
+            <span itemprop="name">[工作站] 2020 年 10 月的单 GPU 深度学习工作站配置指南</span>
+          </a>
+      </div>
+
+    </header>
   </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/24/DL-PyTorch-%E6%8A%98%E6%A1%82-10%EF%BC%9Atorch-optim/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/24/DL-PyTorch-%E6%8A%98%E6%A1%82-10%EF%BC%9Atorch-optim/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 10：torch.optim</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-24 16:44:12" itemprop="dateCreated datePublished" datetime="2020-05-24T16:44:12-04:00">2020-05-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-27 09:46:56" itemprop="dateModified" datetime="2020-05-27T09:46:56-04:00">2020-05-27</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-优化器"><a href="#1-优化器" class="headerlink" title="1. 优化器"></a>1. 优化器</h1><p>优化器就是根据导数对参数进行更新的类，不同的优化器本质上都是梯度下降法，只是在实现的细节上有所不同。类似的，PyTorch 里的所有优化器都继承自 <code>torch.optim.Optimizer</code> 这个基类。</p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.optim.Optimizer(params, defaults)</span><br></pre></td></tr></table></figure>
-<p><code>params</code> 是优化器要优化的权重，是一个迭代器；<code>defaults</code> 是优化器在参数以外的默认参数，根据所被继承的类有所不同。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/24/DL-PyTorch-%E6%8A%98%E6%A1%82-10%EF%BC%9Atorch-optim/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
+  </div>
   
   
   
 
-      
   
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-9%EF%BC%9A%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-9%EF%BC%9A%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 9：损失函数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-18 18:36:48" itemprop="dateCreated datePublished" datetime="2020-05-18T18:36:48-04:00">2020-05-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-24 11:27:10" itemprop="dateModified" datetime="2020-05-24T11:27:10-04:00">2020-05-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-损失函数总览"><a href="#1-损失函数总览" class="headerlink" title="1. 损失函数总览"></a>1. 损失函数总览</h1><p>PyTorch 的 Loss Function（损失函数）都在 <code>torch.nn.functional</code> 里，也提供了封装好的类在 <code>torch.nn</code> 里。PyTorch 里有关有 18 个损失函数，常用的有 5 个，分别是：</p>
-<ol>
-<li>回归模型：</li>
-</ol>
-<ul>
-<li><code>torch.nn.L1Loss</code></li>
-<li><code>torch.nn.MSELoss</code></li>
-</ul>
-<ol start="2">
-<li>分类模型：</li>
-</ol>
-<ul>
-<li><code>torch.nn.BCELoss</code></li>
-<li><code>torch.nn.BCEWithLogitsLoss</code></li>
-<li><code>torch.nn.CrossEntropyLoss</code></li>
-<li><code>torch.nn.NLLLoss</code>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/18/DL-PyTorch-%E6%8A%98%E6%A1%82-9%EF%BC%9A%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 

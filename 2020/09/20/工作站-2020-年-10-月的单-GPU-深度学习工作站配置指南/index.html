@@ -20,23 +20,20 @@
     var CONFIG = {"hostname":"vincent507cpu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="欢迎来到我的博客！ 作为一名自然语言处理爱好者，这个博客将关注自然语言处理以及计算语言学方面的研究及实践。 我还有很多东西要学习。求知若饥，学习若愚。">
+  <meta name="description" content="随着电脑硬件的性能提升、价格下降，搭建个人用深度学习工作站的支出越来越低，需求也会越来越大。因此从今年开始，每年的 5、10 月份均会发布深度学习工作站的配置指南。  随着 NVIDIA 的新一代 Ampere 架构的 GeFore 30 系列显卡的发布，在算力得到了极大提升的同时价格也大幅下降，花费不到 $1000 搭建一台性能强大的深度学习工作站已经成为了可能。适逢 AMD 的新一代 Ryze">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://vincent507cpu.github.io/2020/04/28/hello-world/index.html">
+<meta property="og:title" content="[工作站] 2020 年 10 月的单 GPU 深度学习工作站配置指南">
+<meta property="og:url" content="https://vincent507cpu.github.io/2020/09/20/%E5%B7%A5%E4%BD%9C%E7%AB%99-2020-%E5%B9%B4-10-%E6%9C%88%E7%9A%84%E5%8D%95-GPU-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/index.html">
 <meta property="og:site_name" content="花解语">
-<meta property="og:description" content="欢迎来到我的博客！ 作为一名自然语言处理爱好者，这个博客将关注自然语言处理以及计算语言学方面的研究及实践。 我还有很多东西要学习。求知若饥，学习若愚。">
+<meta property="og:description" content="随着电脑硬件的性能提升、价格下降，搭建个人用深度学习工作站的支出越来越低，需求也会越来越大。因此从今年开始，每年的 5、10 月份均会发布深度学习工作站的配置指南。  随着 NVIDIA 的新一代 Ampere 架构的 GeFore 30 系列显卡的发布，在算力得到了极大提升的同时价格也大幅下降，花费不到 $1000 搭建一台性能强大的深度学习工作站已经成为了可能。适逢 AMD 的新一代 Ryze">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-04-28T21:20:17.000Z">
-<meta property="article:modified_time" content="2020-05-13T21:54:53.510Z">
+<meta property="article:published_time" content="2020-09-20T22:04:45.000Z">
+<meta property="article:modified_time" content="2020-09-20T22:06:52.899Z">
 <meta property="article:author" content="翟文嘉">
-<meta property="article:tag" content="Python">
-<meta property="article:tag" content=" Deep Learning">
-<meta property="article:tag" content=" Computational Linguistics">
-<meta property="article:tag" content=" Natural Language Processing">
+<meta property="article:tag" content="深度学习工作站">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://vincent507cpu.github.io/2020/04/28/hello-world/">
+<link rel="canonical" href="https://vincent507cpu.github.io/2020/09/20/%E5%B7%A5%E4%BD%9C%E7%AB%99-2020-%E5%B9%B4-10-%E6%9C%88%E7%9A%84%E5%8D%95-GPU-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/">
 
 
 <script id="page-configurations">
@@ -49,7 +46,7 @@
   };
 </script>
 
-  <title>Hello World | 花解语</title>
+  <title>[工作站] 2020 年 10 月的单 GPU 深度学习工作站配置指南 | 花解语</title>
   
 
 
@@ -190,7 +187,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/04/28/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/09/20/%E5%B7%A5%E4%BD%9C%E7%AB%99-2020-%E5%B9%B4-10-%E6%9C%88%E7%9A%84%E5%8D%95-GPU-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -203,7 +200,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hello World
+          [工作站] 2020 年 10 月的单 GPU 深度学习工作站配置指南
         </h1>
 
         <div class="post-meta">
@@ -212,24 +209,9 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-04-28 17:20:17" itemprop="dateCreated datePublished" datetime="2020-04-28T17:20:17-04:00">2020-04-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-13 17:54:53" itemprop="dateModified" datetime="2020-05-13T17:54:53-04:00">2020-05-13</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a>
-                </span>
+              <time title="创建时间：2020-09-20 18:04:45 / 修改时间：18:06:52" itemprop="dateCreated datePublished" datetime="2020-09-20T18:04:45-04:00">2020-09-20</time>
             </span>
 
           
@@ -243,9 +225,144 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>欢迎来到我的博客！</p>
-<p>作为一名自然语言处理爱好者，这个博客将关注自然语言处理以及计算语言学方面的研究及实践。</p>
-<p>我还有很多东西要学习。求知若饥，学习若愚。</p>
+        <p>随着电脑硬件的性能提升、价格下降，搭建个人用深度学习工作站的支出越来越低，需求也会越来越大。因此从今年开始，每年的 5、10 月份均会发布深度学习工作站的配置指南。</p>
+<hr>
+<p>随着 NVIDIA 的新一代 Ampere 架构的 GeFore 30 系列显卡的发布，在算力得到了极大提升的同时价格也大幅下降，花费不到 $1000 搭建一台性能强大的深度学习工作站已经成为了可能。适逢 AMD 的新一代 Ryzen 处理器也即将发布，硬件性能的提升毫无疑问会再次推动深度学习的热潮。</p>
+<p>我最近正在准备搭建自己的深度学习工作站，本文（单 GPU 工作站）与下一篇文章（多 GPU 工作站）正是基于本人最近的研究。水平有限，欢迎指正。</p>
+<a id="more"></a>
+<p>本文主要参考了以下文章：</p>
+<ul>
+<li><a href="https://timdettmers.com/2020/09/07/which-gpu-for-deep-learning/" target="_blank" rel="noopener" title="Which GPU(s) to Get for Deep Learning: My Experience and Advice for Using GPUs in Deep Learning">Which GPU(s) to Get for Deep Learning: My Experience and Advice for Using GPUs in Deep Learning</a></li>
+<li><a href="https://timdettmers.com/2018/12/16/deep-learning-hardware-guide/" target="_blank" rel="noopener" title="A Full Hardware Guide to Deep Learning">A Full Hardware Guide to Deep Learning</a></li>
+<li><a href="https://lambdalabs.com/blog/deep-learning-hardware-deep-dive-rtx-30xx/#blower-gpus" target="_blank" rel="noopener" title="Deep Learning Hardware Deep Dive – RTX 3090, RTX 3080, and RTX 3070">Deep Learning Hardware Deep Dive – RTX 3090, RTX 3080, and RTX 3070</a></li>
+</ul>
+<hr>
+<p>工作站毕竟与个人游戏电脑不同，在配置上有一些需要注意的地方。对于深度学习来说，目前的唯一选择是 NVIDIA 的显卡；又因为本文的主题是个人深度学习工作站，所以本文仅涉及 NVIDIA 的 GeForce 系列显卡，不会涉及 Tesla 以及 Quadro 系列显卡。本文首先来讨论深度学习工作站 must have 的组成，然后再讨论 nice to have 的组成，再后是 don’t matter much 的组成，最后是 try to avoid 的组成。</p>
+<h1 id="Must-Have"><a href="#Must-Have" class="headerlink" title="Must Have"></a>Must Have</h1><p>这部分是“不够就不行，但是超过也没用”的组成。</p>
+<ol>
+<li>显存</li>
+</ol>
+<p>由于 RTX 架构的显卡可以以半精度（16bit）进行训练，显存需求减半，所以相比 GTX 显卡在同样的显存下可以训练大一倍的模型。通常来说，对显存的要求如下：</p>
+<ul>
+<li>研究 SOTA 模型：&gt;= 11GB</li>
+<li>探索有趣的模型：&gt;= 8GB</li>
+<li>其它研究：8GB</li>
+<li>Kaggle及其它竞赛：4 - 8GB</li>
+<li>公司：8GB 用于部署及原型测试，&gt;= 11GB 用于训练</li>
+</ul>
+<p>对应到 RTX 30xx 系列显卡来说，可将 3060 Ti/3070 （8GB 显存），3080（10GB 显存）与 3090（24GB 显存）对号入座。</p>
+<ol start="2">
+<li>内存</li>
+</ol>
+<p>对于最大需要多少内存难以下定论，而 Tim Dettmers 说“额外的内存对特征工程非常有帮助”。综上，本人的推荐是 <em>内存容量 = 总显存容量 + 6 ~ 8GB</em>。</p>
+<ol start="3">
+<li>电源</li>
+</ol>
+<p>没人想有训练一半的时候因为供电不足导致电脑重启的问题，因此要预留足够的电源供电。主机内耗电的部分主要为 GPU、CPU 和主板上的其它部件。通过研究 GPU 与 CPU 的耗电数据，我发现 GPU 的峰值功耗要超过 TDP 100w 左右，而 CPU 的峰值功耗大概可以归纳为：<br>|核心数量|峰值功耗（w）|<br>|–|–|<br>|4|100|<br>|6|150|<br>|8|200|<br>|10 - 16|250|<br>|16+|400|</p>
+<p>主板的功耗（内存和硬盘之类的总和）大概为 50w，故电源功率的最低要求为：GPU 峰值功耗 + CPU 峰值功耗 + 50。比如 Ryzen 5 3600 的 TDP 为 65w，RTX 3080 的 TDP 为 320w，故一台 Ryzen 5 3600 与 一张 RTX 3070 的工作站需要一个 150 + 320 + 100 + 50 = 620w 的电源。</p>
+<p>另外不像游戏主机在不运行的时候关闭，工作站一般是 7 * 24 小时开机的，所以电源的转换效率也很重要。以下为 80 Plus 认证在 115V 电压下 100% 负载时的转换效率表：</p>
+<table>
+<thead>
+<tr>
+<th>认证等级</th>
+<th>利用率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>White</td>
+<td>80%</td>
+</tr>
+<tr>
+<td>Bronze</td>
+<td>82%</td>
+</tr>
+<tr>
+<td>Silver</td>
+<td>85%</td>
+</tr>
+<tr>
+<td>Gold</td>
+<td>87%</td>
+</tr>
+<tr>
+<td>Platinum</td>
+<td>89%</td>
+</tr>
+<tr>
+<td>Titanium</td>
+<td>90%</td>
+</tr>
+<tr>
+<td>一般来说，功耗在 600w 以下用 White 或 Bronze 就可以了，600w ~ 1000w 之间推荐用 Gold，1000w 以上推荐至少用 Platinum。</td>
+<td></td>
+</tr>
+<tr>
+<td># Nice to Have</td>
+<td></td>
+</tr>
+<tr>
+<td>以上的因素决定了模型能不能训练，下面的因素决定了训练模型的速度和操作者的体验。</td>
+<td></td>
+</tr>
+<tr>
+<td>1. Tensor Core</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Tensor Core 可以极大地加快矩阵乘法，而且如前所述，有 Tensor Core 的 RTX 显卡可以训练 16bit 的张量，因此除非预算极度有限，应该优先考虑 RTX 20/30 系列显卡。一张显卡有多少 Tensor Core 决定了这张显卡的算力，比用 CUDA Core 衡量深度学习算力更准确。<br>|芯片型号|Tensor Core 数量|<br>|–|–|<br>|2060|240|<br>|2070 super|320|<br>|2080 super|384|<br>|2080 Ti|544|<br>|Titan RTX|576|<br>|3060 Ti（谣言）|152|<br>|3070|184|<br>|3080|272|<br>|3090|328|<br>虽然 30 系列的 Tensor Core 数量比 20 系列少，官方称 30 系列的 Tensor Core 的性能是 20 系列的 4 倍，所以 3060 Ti 的实际算力要强于 2080 Ti。</p>
+<ol start="2">
+<li>外设</li>
+</ol>
+<p>除了 GPU，1 到 2 台额外的显示器和一把趁手的键盘可能是最有价值的投资。不过这部分比较主观，如何选择由各位读者考虑。</p>
+<h1 id="Don’t-Matter-Much"><a href="#Don’t-Matter-Much" class="headerlink" title="Don’t Matter Much"></a>Don’t Matter Much</h1><ol>
+<li>CPU 的核心和主频</li>
+</ol>
+<p>在深度学习中，CPU 的主要工作是数据预处理。有两种策略：</p>
+<p><em>Loop</em>:</p>
+<ul>
+<li>Load mini-batch</li>
+<li>Preprocessing mini-batch</li>
+<li>Train on mini-batch</li>
+</ul>
+<p>或者</p>
+<ul>
+<li>Preprocess data</li>
+<li>Loop:<ul>
+<li>Load preprocessed mini-batch</li>
+<li>Train on mini-batch</li>
+</ul>
+</li>
+</ul>
+<p>对于第一种策略，一颗强大的 CPU 会显著提高性能，推荐为 GPU 配备至少 4 个线程；而第二种策略通常不需要非常好的 CPU，2 个线程足够。所以对于单 GPU 工作站而言，最低端的 Core i3 10100 或者 Ryzen 3 3100 已经足够（两者都是 4 核心 8 线程）。</p>
+<p>而对于 CPU 频率而言，通常架构的设计比频率重要得多，频率的影响非常有限（因为 CPU 在深度学习中不起主导作用），比如主频从 1.1GHz 提升到 3.6GHz 的性能提升在 4% ~ 8% 之间。</p>
+<ol start="2">
+<li>PCI-E 等级 &amp; 通道数</li>
+</ol>
+<p>通常显卡占用 16 条 PCI-E 通道，而一块 NVME M.2 存储器占用 4 条 PCI-E 通道。现在 AMD 的主板支持 PCI-E 4.0，而 Intel 仅支持 PCI-E 3.0。</p>
+<p>虽然显卡接收与传递数据经过 PCI-E 总线，然而在仅有 1 张显卡的时候， PCI-E 总线的通道数量与级别对显卡的影响并不大，PCI-E 的级别对文件的读取/写入性能的影响更大一点。不过在一个 pipeline 里面数据一般仅仅读取/写入一次，因此 PCI-E 4.0 还是 3.0 对性能影响有限。</p>
+<ol start="3">
+<li>内存频率与延迟</li>
+</ol>
+<p>同上面一条，因为数据在 GPU 与 CPU 之间的交互次数有限，故速度更快、延迟更低的内存对性能提升有限。</p>
+<ol start="4">
+<li>散热</li>
+</ol>
+<p>对于一台仅有 1 张显卡的工作站而言，散热不是需要考虑的问题。</p>
+<h1 id="Try-to-Avoid"><a href="#Try-to-Avoid" class="headerlink" title="Try to Avoid"></a>Try to Avoid</h1><ol>
+<li>超频</li>
+</ol>
+<p>对于长时间运行的工作站来说，超频会减少原件的寿命，降低系统的稳定性，增加功耗，因此超频是大忌。不要购买任何出厂预超频的显卡或自己超频。</p>
+<ol start="2">
+<li>灯光效果</li>
+</ol>
+<p>不是说不能有，但是工作站是用来干活的，不是用来秀的，而且工作站一般放在不起眼的地方，有光效也看不见。看得见的光效除了分散注意力以外还耗费额外的电能（还费钱），实在是没有意义。</p>
+<h1 id="配置推荐"><a href="#配置推荐" class="headerlink" title="配置推荐"></a>配置推荐</h1><p>目前 3060 Ti 与 Ryzen 4000 系列 CPU 尚未发布，以下配置仅供参考。</p>
+<ol>
+<li>预算紧张的配置：Core i3 10100 + H410 主板 + 16GB DDR2666 内存（Ryzen 3 3100 + A520 主板 + 16GB DDR3200 内存） + RTX 3060 Ti 显卡 + 500w 电源</li>
+<li>预算稍微宽松一点的配置：Core i5 10400 + B460 主板 + 16GB DDR2666 内存（Ryzen 5 3600 + B550 主板 + 16GB DDR3200 内存）+ RTX 3070 显卡 + 550w 电源</li>
+<li>预算相对充足的配置：Core i5 10400 + B460 主板 + 16GB DDR2666 内存（Ryzen 5 3600 + B550 主板 + 16GB DDR3200 内存）+ RTX 3080 显卡 + 650w 电源</li>
+<li>土豪配置：Core i7 10700 + Z490 主板 + 32GB DDR3000 内存（Ryzen 7 3700x + X570 主板 + 32GB DDR3200 内存）+ RTX 3090 显卡 + 750w 电源</li>
+</ol>
 
     </div>
 
@@ -261,7 +378,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://vincent507cpu.github.io/2020/04/28/hello-world/" title="Hello World">https://vincent507cpu.github.io/2020/04/28/hello-world/</a>
+    <a href="https://vincent507cpu.github.io/2020/09/20/%E5%B7%A5%E4%BD%9C%E7%AB%99-2020-%E5%B9%B4-10-%E6%9C%88%E7%9A%84%E5%8D%95-GPU-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/" title="[工作站] 2020 年 10 月的单 GPU 深度学习工作站配置指南">https://vincent507cpu.github.io/2020/09/20/工作站-2020-年-10-月的单-GPU-深度学习工作站配置指南/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -290,17 +407,20 @@
 
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99/" rel="tag"># 深度学习工作站</a>
+          </div>
 
         
 
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2020/04/28/Python-%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93-1%EF%BC%9A%E6%95%B0%E6%8D%AE%E6%A1%86%E7%9A%84%E5%88%87%E7%89%87/" rel="next" title="[Python] 经验总结 1：数据框的切片">
-      [Python] 经验总结 1：数据框的切片 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/09/01/%E5%B7%A5%E4%BD%9C%E7%AB%99-%E6%96%B0-RTX-3090-%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/" rel="prev" title="工作站-新-RTX-3090-搭建深度学习工作站的一些思考">
+      <i class="fa fa-chevron-left"></i> 工作站-新-RTX-3090-搭建深度学习工作站的一些思考
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -359,6 +479,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Must-Have"><span class="nav-number">1.</span> <span class="nav-text">Must Have</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Don’t-Matter-Much"><span class="nav-number">2.</span> <span class="nav-text">Don’t Matter Much</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Try-to-Avoid"><span class="nav-number">3.</span> <span class="nav-text">Try to Avoid</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置推荐"><span class="nav-number">4.</span> <span class="nav-text">配置推荐</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
