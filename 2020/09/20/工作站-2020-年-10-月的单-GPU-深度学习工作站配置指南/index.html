@@ -28,7 +28,7 @@
 <meta property="og:description" content="随着电脑硬件的性能提升、价格下降，搭建个人用深度学习工作站的支出越来越低，需求也会越来越大。因此从今年开始，每年的 5、10 月份均会发布深度学习工作站的配置指南。  随着 NVIDIA 的新一代 Ampere 架构的 GeFore 30 系列显卡的发布，在算力得到了极大提升的同时价格也大幅下降，花费不到 $1000 搭建一台性能强大的深度学习工作站已经成为了可能。适逢 AMD 的新一代 Ryze">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-20T22:04:45.000Z">
-<meta property="article:modified_time" content="2020-09-20T22:09:19.598Z">
+<meta property="article:modified_time" content="2020-09-20T22:10:07.989Z">
 <meta property="article:author" content="翟文嘉">
 <meta property="article:tag" content="深度学习工作站">
 <meta name="twitter:card" content="summary">
@@ -211,7 +211,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-09-20 18:04:45 / 修改时间：18:09:19" itemprop="dateCreated datePublished" datetime="2020-09-20T18:04:45-04:00">2020-09-20</time>
+              <time title="创建时间：2020-09-20 18:04:45 / 修改时间：18:10:07" itemprop="dateCreated datePublished" datetime="2020-09-20T18:04:45-04:00">2020-09-20</time>
             </span>
 
           
@@ -258,7 +258,35 @@
 <ol start="3">
 <li>电源</li>
 </ol>
-<p>没人想有训练一半的时候因为供电不足导致电脑重启的问题，因此要预留足够的电源供电。主机内耗电的部分主要为 GPU、CPU 和主板上的其它部件。通过研究 GPU 与 CPU 的耗电数据，我发现 GPU 的峰值功耗要超过 TDP 100w 左右，而 CPU 的峰值功耗大概可以归纳为：<br>|核心数量|峰值功耗（w）|<br>|–|–|<br>|4|100|<br>|6|150|<br>|8|200|<br>|10 - 16|250|<br>|16+|400|</p>
+<p>没人想有训练一半的时候因为供电不足导致电脑重启的问题，因此要预留足够的电源供电。主机内耗电的部分主要为 GPU、CPU 和主板上的其它部件。通过研究 GPU 与 CPU 的耗电数据，我发现 GPU 的峰值功耗要超过 TDP 100w 左右，而 CPU 的峰值功耗大概可以归纳为：</p>
+<table>
+<thead>
+<tr>
+<th>核心数量</th>
+<th>峰值功耗（w）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>4</td>
+<td>100</td>
+</tr>
+<tr>
+<td>6</td>
+<td>150</td>
+</tr>
+<tr>
+<td>8</td>
+<td>200</td>
+</tr>
+<tr>
+<td>10 - 16</td>
+<td>250</td>
+</tr>
+<tr>
+<td>16+</td>
+<td>400</td>
+</tr>
+</tbody></table>
 <p>主板的功耗（内存和硬盘之类的总和）大概为 50w，故电源功率的最低要求为：GPU 峰值功耗 + CPU 峰值功耗 + 50。比如 Ryzen 5 3600 的 TDP 为 65w，RTX 3080 的 TDP 为 320w，故一台 Ryzen 5 3600 与 一张 RTX 3070 的工作站需要一个 150 + 320 + 100 + 50 = 620w 的电源。</p>
 <p>另外不像游戏主机在不运行的时候关闭，工作站一般是 7 * 24 小时开机的，所以电源的转换效率也很重要。以下为 80 Plus 认证在 115V 电压下 100% 负载时的转换效率表：</p>
 <table>
