@@ -28,7 +28,7 @@
 <meta property="og:description" content="随着电脑硬件的性能提升、价格下降，搭建个人用深度学习工作站的支出越来越低，需求也会越来越大。因此从今年开始，每年的 5、10 月份均会发布深度学习工作站的配置指南。  随着 NVIDIA 的新一代 Ampere 架构的 GeFore 30 系列显卡的发布，在算力得到了极大提升的同时价格也大幅下降，花费不到 $1000 搭建一台性能强大的深度学习工作站已经成为了可能。适逢 AMD 的新一代 Ryze">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-20T22:04:45.000Z">
-<meta property="article:modified_time" content="2020-09-20T22:10:07.989Z">
+<meta property="article:modified_time" content="2020-09-20T22:12:29.715Z">
 <meta property="article:author" content="翟文嘉">
 <meta property="article:tag" content="深度学习工作站">
 <meta name="twitter:card" content="summary">
@@ -211,7 +211,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-09-20 18:04:45 / 修改时间：18:10:07" itemprop="dateCreated datePublished" datetime="2020-09-20T18:04:45-04:00">2020-09-20</time>
+              <time title="创建时间：2020-09-20 18:04:45 / 修改时间：18:12:29" itemprop="dateCreated datePublished" datetime="2020-09-20T18:04:45-04:00">2020-09-20</time>
             </span>
 
           
@@ -320,23 +320,12 @@
 <td>Titanium</td>
 <td>90%</td>
 </tr>
-<tr>
-<td>一般来说，功耗在 600w 以下用 White 或 Bronze 就可以了，600w ~ 1000w 之间推荐用 Gold，1000w 以上推荐至少用 Platinum。</td>
-<td></td>
-</tr>
-<tr>
-<td># Nice to Have</td>
-<td></td>
-</tr>
-<tr>
-<td>以上的因素决定了模型能不能训练，下面的因素决定了训练模型的速度和操作者的体验。</td>
-<td></td>
-</tr>
-<tr>
-<td>1. Tensor Core</td>
-<td></td>
-</tr>
 </tbody></table>
+<p>一般来说，功耗在 600w 以下用 White 或 Bronze 就可以了，600w ~ 1000w 之间推荐用 Gold，1000w 以上推荐至少用 Platinum。</p>
+<h1 id="Nice-to-Have"><a href="#Nice-to-Have" class="headerlink" title="Nice to Have"></a>Nice to Have</h1><p>以上的因素决定了模型能不能训练，下面的因素决定了训练模型的速度和操作者的体验。</p>
+<ol>
+<li>Tensor Core</li>
+</ol>
 <p>Tensor Core 可以极大地加快矩阵乘法，而且如前所述，有 Tensor Core 的 RTX 显卡可以训练 16bit 的张量，因此除非预算极度有限，应该优先考虑 RTX 20/30 系列显卡。一张显卡有多少 Tensor Core 决定了这张显卡的算力，比用 CUDA Core 衡量深度学习算力更准确。<br>|芯片型号|Tensor Core 数量|<br>|–|–|<br>|2060|240|<br>|2070 super|320|<br>|2080 super|384|<br>|2080 Ti|544|<br>|Titan RTX|576|<br>|3060 Ti（谣言）|152|<br>|3070|184|<br>|3080|272|<br>|3090|328|</p>
 <p>虽然 30 系列的 Tensor Core 数量比 20 系列少，官方称 30 系列的 Tensor Core 的性能是 20 系列的 4 倍，所以 3060 Ti 的实际算力要强于 2080 Ti。</p>
 <ol start="2">
@@ -508,7 +497,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Must-Have"><span class="nav-number">1.</span> <span class="nav-text">Must Have</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Don’t-Matter-Much"><span class="nav-number">2.</span> <span class="nav-text">Don’t Matter Much</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Try-to-Avoid"><span class="nav-number">3.</span> <span class="nav-text">Try to Avoid</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置推荐"><span class="nav-number">4.</span> <span class="nav-text">配置推荐</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Must-Have"><span class="nav-number">1.</span> <span class="nav-text">Must Have</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nice-to-Have"><span class="nav-number">2.</span> <span class="nav-text">Nice to Have</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Don’t-Matter-Much"><span class="nav-number">3.</span> <span class="nav-text">Don’t Matter Much</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Try-to-Avoid"><span class="nav-number">4.</span> <span class="nav-text">Try to Avoid</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置推荐"><span class="nav-number">5.</span> <span class="nav-text">配置推荐</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
