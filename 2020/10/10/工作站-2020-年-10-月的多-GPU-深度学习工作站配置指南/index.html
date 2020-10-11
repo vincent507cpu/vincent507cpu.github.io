@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkHcWd8F0HgaTHaTkAP1opu0jlexAribzFEzmGCI0xtrN22pY5B5RpHrVFkVHrQB2p0OedGq5o9CqNg/0?wx_fmt=jpeg">
 <meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkHcWd8F0HgaTHaTkAP1opu0CvBaiaLA1hDUYeMTBOxtdejCQfqTJa7szfarMI283WwWWccGEqTt4qw/0?wx_fmt=jpeg">
 <meta property="article:published_time" content="2020-10-11T01:58:39.000Z">
-<meta property="article:modified_time" content="2020-10-11T02:28:09.515Z">
+<meta property="article:modified_time" content="2020-10-11T02:33:46.114Z">
 <meta property="article:author" content="翟文嘉">
 <meta property="article:tag" content="深度学习工作站">
 <meta name="twitter:card" content="summary">
@@ -216,7 +216,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-10-10 21:58:39 / 修改时间：22:28:09" itemprop="dateCreated datePublished" datetime="2020-10-10T21:58:39-04:00">2020-10-10</time>
+              <time title="创建时间：2020-10-10 21:58:39 / 修改时间：22:33:46" itemprop="dateCreated datePublished" datetime="2020-10-10T21:58:39-04:00">2020-10-10</time>
             </span>
 
           
@@ -305,7 +305,7 @@
 <li>水冷散热：冷水被水泵抽到芯片上吸收芯片的热量，热水随后被抽到散热片与冷空气进行热交换。</li>
 </ul>
 <p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkHcWd8F0HgaTHaTkAP1opu0jlexAribzFEzmGCI0xtrN22pY5B5RpHrVFkVHrQB2p0OedGq5o9CqNg/0?wx_fmt=jpeg" alt=""><br>使用开放式散热的显卡会面临热空气被其它显卡吸收的问题，会降低散热的效果，极端情况下会造成显卡过热自动降频，从而降低性能。如果显卡之间有超过 1 个 PCI-E 空位，则基本不会存在散热的问题，但是这样由于空间的限制可能仅可以使用双卡；对于三卡或四卡工作站而言，涡轮式散热显卡或水冷散热显卡是必需，然而是否可行仍需实践。</p>
-<h1 id="主板与-PCI-E-总线"><a href="#主板与-PCI-E-总线" class="headerlink" title="主板与 PCI-E 总线"></a>主板与 PCI-E 总线</h1><p>使用多 GPU 的前提是主板上有足够的 PCI-E x16 接口。GPU 越多，GPU 之间的数据交换就越多，对 PCI-E 通道数量的要求就越高。通常来说，有 4 块 GPU 的工作站上的每块显卡最好至少有 8 条 PCI-E 通道。这个时候 AMD 芯片组的优势就显现出来了：AMD 的新主板芯片（X570 和 X399）支持 PCI-E 4.0。就算 PCI-E 插槽只有 4 条通道，这些通道都是 PCI-E 4.0 版的，带宽相当于 8 条 PCI-E 3.0 通道的带宽。而目前 Intel 的主板只支持 PCI-E 3.0。如下图所示，长的插槽为 PCI-E x16 接口，短的插槽为 PCI-E x1 接口。<br><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkHcWd8F0HgaTHaTkAP1opu0CvBaiaLA1hDUYeMTBOxtdejCQfqTJa7szfarMI283WwWWccGEqTt4qw/0?wx_fmt=jpeg" alt=""><br>虽然有的主板上有两根以上 PCI-E x16 插槽，通常只有最上面的 PCI-E 插槽是完整的 16 条通道，第二根 PCI-E 插槽及以下的通道数量只有 4<br>x。这是因为 CPU 和主板芯片能够处理的 PCI-E 通道数量是有限的，除非有桥接芯片，否则 CPU 处理能力不够，需要使用主板芯片上的 PCI-E 通道。有些主板可以在插两张显卡时把一个 PCI-E 插槽的 16 条通道分成 2 组，每组 8 条通道；或者插三张显卡时把 16 条通道分成 3 组，组成 8-4-4 通道。<br>|CPU|支持 PCI-E 等级|通道数|<br>|–|–|–|<br>|Threadripper|4.0|64|<br>|Ryzen 3000/5000|4.0|24|<br>|10 代 Core X-Series|3.0|48|<br>|9 代 Core X-Series|3.0|44|<br>|Core|3.0|20|</p>
+<h1 id="主板与-PCI-E-总线"><a href="#主板与-PCI-E-总线" class="headerlink" title="主板与 PCI-E 总线"></a>主板与 PCI-E 总线</h1><p>使用多 GPU 的前提是主板上有足够的 PCI-E x16 接口。GPU 越多，GPU 之间的数据交换就越多，对 PCI-E 通道数量的要求就越高。通常来说，有 4 块 GPU 的工作站上的每块显卡最好至少有 8 条 PCI-E 通道。这个时候 AMD 芯片组的优势就显现出来了：AMD 的新主板芯片（X570 和 X399）支持 PCI-E 4.0。就算 PCI-E 插槽只有 4 条通道，这些通道都是 PCI-E 4.0 版的，带宽相当于 8 条 PCI-E 3.0 通道的带宽。而目前 Intel 的主板只支持 PCI-E 3.0。如下图所示，长的插槽为 PCI-E x16 接口，短的插槽为 PCI-E x1 接口。<br><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkHcWd8F0HgaTHaTkAP1opu0CvBaiaLA1hDUYeMTBOxtdejCQfqTJa7szfarMI283WwWWccGEqTt4qw/0?wx_fmt=jpeg" alt=""><br>虽然有的主板上有两根以上 PCI-E x16 插槽，通常只有最上面的 PCI-E 插槽是完整的 16 条通道，第二根 PCI-E 插槽及以下的通道数量只有 4 条。这是因为 CPU 和主板芯片能够处理的 PCI-E 通道数量是有限的，除非有桥接芯片，否则 CPU 处理能力不够，需要使用主板芯片上的 PCI-E 通道。有些主板可以在插两张显卡时把一个 PCI-E 插槽的 16 条通道分成 2 组，每组 8 条通道；或者插三张显卡时把 16 条通道分成 3 组，组成 8-4-4 通道。<br>|CPU|支持 PCI-E 等级|通道数|<br>|–|–|–|<br>|Threadripper|4.0|64|<br>|Ryzen 3000/5000|4.0|24|<br>|10 代 Core X-Series|3.0|48|<br>|9 代 Core X-Series|3.0|44|<br>|Core|3.0|20|</p>
 <p>由于 Ryzen 和 Core 系列仅有 24 和 20 条通道，仅能保证两张显卡的通道在 8 条；与 Threadripper 配套的 sTRX4 主板和与 Core X-Series 配套的 X299 主板上的所有 PCI-E 插槽均可以运行在 8x 以上，购买有所需 PCI-E x16 插槽数量的主板即可。</p>
 <p>与 Ryzen 搭配的 X570 主板如果有两条 PCI-E x16 插槽，通常通道分配为 16-4（CPU-主板）；X570 主板中支持双路 8x PCI-E 的型号有：</p>
 <ul>
@@ -316,7 +316,7 @@
 <li>ASRock X570 TAICHI，3 条 PCI-E x16 插槽（8-8 或 8-4-4 分配）；</li>
 <li>MSI MEG X570 GODLIKE，4 条 PCI-E x16 插槽（8-8-0-4 或 8-4-4-4 分配）；</li>
 </ul>
-<p>与 Core 搭配的 400 系列主板只有 Z490 支持双路 8x PCI-E，其它型号的芯片只支持 16-4；貌似所有带两个 PCI-E 16x 插槽的 Z490 主板都支持双路 8x PCI-E。</p>
+<p>与 Core 搭配的 400 系列主板只有 Z490 支持双路 PCI-E x8，其它型号的芯片只支持 16-4；貌似所有带两个 PCI-E x16 插槽的 Z490 主板都支持双路 PCI-E x8。</p>
 <p>对于 Threadripper 的 X399 主板来说，如果有 3 条 PCI-E 插槽，则通道数为 16-8-16；4 条 PCI-E 插槽对应的通道数为 16-8-16-8。</p>
 <p>Core X-Seires 的 X299 主板有点复杂，因为 CPU 的 PCI-E 通道数量不同。</p>
 <table>
