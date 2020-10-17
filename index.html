@@ -290,7 +290,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-17 12:03:57" itemprop="dateModified" datetime="2020-10-17T12:03:57-04:00">2020-10-17</time>
+                <time title="修改时间：2020-10-17 18:13:18" itemprop="dateModified" datetime="2020-10-17T18:13:18-04:00">2020-10-17</time>
               </span>
 
           
@@ -315,8 +315,8 @@
 <li><a href="https://lambdalabs.com/blog/deep-learning-hardware-deep-dive-rtx-30xx/#blower-gpus" target="_blank" rel="noopener" title="Deep Learning Hardware Deep Dive – RTX 3090, RTX 3080, and RTX 3070">Deep Learning Hardware Deep Dive – RTX 3090, RTX 3080, and RTX 3070</a></li>
 </ul>
 <hr>
-<p>工作站与个人游戏电脑不同，在配置上有一些需要调整的地方。对于深度学习来说，目前的唯一选择是 NVIDIA 的 GPU 产品；又因为本文的主题是个人深度学习工作站，所以本文仅涉及 NVIDIA 的 GeForce 系列消费级显卡（Tesla 以及 Quadro 系列都已经成为历史，统一到 GeForce 系列下）。本文首先来讨论深度学习工作站 must have 的部分，然后是 nice to have 的部分，再后是 don’t matter much 的部分，最后是 try to avoid 的部分。</p>
-<h1 id="Must-Have"><a href="#Must-Have" class="headerlink" title="Must Have"></a>Must Have</h1><p>这部分“不够就不行，但是超过就没用”。</p>
+<p>工作站与个人游戏电脑不同，在配置上有一些需要改变的地方。对于深度学习来说，目前的唯一选择是 NVIDIA 的 GPU 产品；又因为本文的主题是个人深度学习工作站，所以本文仅涉及 NVIDIA 的 GeForce 系列消费级显卡（Tesla 以及 Quadro 系列都已经成为历史，统一到 GeForce 系列下）。本文首先来讨论深度学习工作站 must have 的部分，然后是 nice to have 的部分，再后是 don’t matter much 的部分，最后是 try to avoid 的部分。</p>
+<h1 id="Must-Have"><a href="#Must-Have" class="headerlink" title="Must Have"></a>Must Have</h1><p>这部分不够就不行，但是超过也完全没用。</p>
 <h2 id="显存"><a href="#显存" class="headerlink" title="显存"></a>显存</h2><p>通常来说，对显存的要求如下：</p>
 <ul>
 <li>研究 SOTA 模型：&gt;= 11GB</li>
@@ -327,7 +327,7 @@
 <p>对应到 RTX 30xx 系列显卡来说，可将  3060（6GB 显存），3060 Ti/3070 （8GB 显存）/3080（10GB 显存），3070 Super（16GB 显存）/3080 Super（20GB 显存）/3090（24GB 显存）对号入座。</p>
 <p><strong>注</strong>： 3070 显卡将于 10 月 29 日上市，3060 Ti/2070 Super/3080 Super 预计在今年底前会陆续发布，3060 预计在明年年初发布。</p>
 <h2 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h2><p>对于最大需要多少内存难以下定论，而 Tim Dettmers 说“额外的内存对特征工程非常有帮助”。综上，本人的推荐是 <em>内存容量 = 显存容量 + 6 ~ 8GB</em>。</p>
-<h2 id="电源"><a href="#电源" class="headerlink" title="电源"></a>电源</h2><p>没人想有训练一半的时候因为供电不足导致电脑重启的问题，因此要预留足够的电源供电。主机内耗电的部分主要为 GPU、CPU 和主板上的其它部件。通过研究 GPU 与 CPU 的耗电数据，我发现 GPU 的峰值功耗要超过 TDP 100w 左右，而 8 核以下的 CPU 的峰值功耗大概可以归纳为</p>
+<h2 id="电源"><a href="#电源" class="headerlink" title="电源"></a>电源</h2><p>没人想在训练一半的时候因为供电不足而电脑重启，因此要预留足够的电源供电。主机内耗电的部分主要为 GPU、CPU 和主板上的其它部件。通过研究 GPU 与 CPU 的耗电数据，我发现 GPU 的峰值功耗要超过 TDP 100w 左右，而 8 核以下的 CPU 的峰值功耗大概可以归纳为</p>
 <table>
 <thead>
 <tr>
@@ -348,8 +348,8 @@
 <td>200</td>
 </tr>
 </tbody></table>
-<p>主板的功耗（内存和硬盘之类的总和）大概为 80w，故电源功率的最低要求为：CPU 峰值功耗 + GPU 峰值功耗 + 80。比如 RTX 3080 的 TDP 为 320w，故一台 Ryzen 5 3600 与 一张 RTX 3080 的工作站需要一个额定功率最少为 150 + 320 + 100 + 80 = 650w 的电源。</p>
-<p>另外不像游戏主机在不运行的时候关闭，工作站一般是 7 * 24 小时开机的，所以电源的转换效率也很重要。以下为 80 Plus 认证在 115V 电压下 100% 负载时的转换效率表<a href="https://en.wikipedia.org/wiki/80_Plus" target="_blank" rel="noopener" title="80 Plus"></a>：</p>
+<p>主板的功耗（内存和硬盘之类的总和）大概为 80w，故电源功率的最低要求为：CPU 峰值功耗 + GPU 峰值功耗 + 80。因为 CPU 和 GPU 很少同时满负荷工作，因此不需要考虑冗余电源。比如 RTX 3080 的 TDP 为 320w，故一台 Ryzen 5 3600 与 一张 RTX 3080 的工作站需要一个额定功率最少为 150 + 320 + 100 + 80 = 650w 的电源。</p>
+<p>另外不像游戏主机在不运行的时候关闭，工作站一般是 7 * 24 小时开机的，所以电源的转换效率也很重要。以下为 80 Plus 认证在 115V 电压下 100% 负载时的转换效率表<a href="https://en.wikipedia.org/wiki/80_Plus" target="_blank" rel="noopener" title="80 Plus 介绍"></a>：</p>
 <table>
 <thead>
 <tr>
@@ -384,7 +384,7 @@
 </tbody></table>
 <p>一般来说，功耗在 600w 以下 Bronze 就可以了，600w ~ 1000w 之间推荐 Gold，1000w 以上推荐 Platinum 或 Titanium。</p>
 <h1 id="Nice-to-Have"><a href="#Nice-to-Have" class="headerlink" title="Nice to Have"></a>Nice to Have</h1><p>以上的因素决定了模型能不能训练，下面的因素决定了训练模型的速度和操作者的体验。</p>
-<h2 id="Tensor-Core"><a href="#Tensor-Core" class="headerlink" title="Tensor Core"></a>Tensor Core</h2><p>Tensor Core 可以极大地加快矩阵乘法，深度学习优先使用 Tensor Core 进行训练。由于 RTX 架构的 Tensor Core 可以以半精度（16bit）进行训练，显存需求减半，所以相比 GTX 显卡在同样的显存下可以训练大一倍的模型，因此除非预算极度有限，应该优先考虑 RTX 20/30 系列显卡。一张显卡有多少 Tensor Core 决定了这张显卡的算力，而 Tensor FLOPS 则量化了显卡的算力<a href="https://en.wikipedia.org/wiki/GeForce_20_series" target="_blank" rel="noopener" title="GeForce 20 series"></a><a href="https://www.reddit.com/r/buildapcsales/comments/ikqulm/meta_information_thread_for_the_nvidia_30series/" target="_blank" rel="noopener" title="[Meta] Information Thread for the Nvidia 30-series GPUs launch"></a>。</p>
+<h2 id="Tensor-Core"><a href="#Tensor-Core" class="headerlink" title="Tensor Core"></a>Tensor Core</h2><p>Tensor Core 可以极大地加快矩阵乘法，深度学习优先使用 Tensor Core 进行训练。由于 RTX 架构的 Tensor Core 可以以半精度（16bit）进行训练，显存需求减半，所以相比 GTX 显卡在同样的显存下可以训练大一倍的模型，因此除非预算极度有限，应该优先考虑 RTX 20/30 系列显卡。一张显卡有多少 Tensor Core 决定了这张显卡的算力，而 Tensor FLOPS 则量化了显卡的算力<a href="https://en.wikipedia.org/wiki/GeForce_20_series" target="_blank" rel="noopener" title="GeForce 20 series 系列介绍"></a><a href="https://www.reddit.com/r/buildapcsales/comments/ikqulm/meta_information_thread_for_the_nvidia_30series/" target="_blank" rel="noopener" title="[Meta] Information Thread for the Nvidia 30-series GPUs launch"></a>。</p>
 <table>
 <thead>
 <tr>
@@ -478,11 +478,11 @@
 <li>中阶使用者：3070 Super/3080 Super</li>
 <li>高阶使用者：3090</li>
 </ul>
-<p>避免购买任何 2080/2080 Super/2080 Ti 显卡（包括二手显卡）。</p>
+<p>现在避免购买任何 2080/2080 Super/2080 Ti 显卡（包括二手显卡）。</p>
 <h2 id="外设"><a href="#外设" class="headerlink" title="外设"></a>外设</h2><p>除了 GPU，1 到 2 台额外的显示器和一把趁手的键盘可能是最有价值的投资。不过这部分比较主观，如何选择由各位读者考虑。</p>
 <p><strong>购买建议</strong>：</p>
 <ul>
-<li>购买带翻转屏功能的显示器；我现在用的有一台 Dell 2718Q。</li>
+<li>购买带翻转屏功能的显示器；我现在用的两台显示器中有一台 Dell 2718Q。</li>
 <li>购买高分辨率的显示器；我现在用的是两台 27” 4K 显示器。</li>
 <li>选择机械键盘。轴体根据自己的喜好选择，我现在用的是茶轴。</li>
 </ul>
@@ -504,13 +504,42 @@
 </ul>
 </li>
 </ul>
-<p>对于第一种策略，一颗强大的 CPU 会显著提高性能，推荐为 GPU 配备至少 4 个线程；而第二种策略通常不需要非常好的 CPU，2 个线程足够。所以对于单 GPU 工作站而言，最低端的 Core i3 10100F 或者 Ryzen 3 3100 已经足够（两者都是 4 核心 8 线程）。</p>
+<p>对于第一种策略，一颗强大的 CPU 会显著提高性能，推荐为 GPU 配备至少 4 个 CPU 线程；而第二种策略通常不需要非常好的 CPU，2 个线程足够。所以对于单 GPU 工作站而言，最低端的 Core i3 10100F 或者 Ryzen 3 3100 已经足够（两者都是 4 核心 8 线程），6 核以上完全没有必要。</p>
 <p>而对于 CPU 频率而言，频率的影响非常有限（因为 CPU 在深度学习中不起主导作用），主频从 1.1GHz 提升到 3.6GHz 的综合性能提升在 4% ~ 8% 之间。</p>
-<h2 id="PCI-E-等级-amp-通道数"><a href="#PCI-E-等级-amp-通道数" class="headerlink" title="PCI-E 等级 &amp; 通道数"></a>PCI-E 等级 &amp; 通道数</h2><p>通常显卡占用  8 或 16 条 PCI-E 通道，而一块 NVME M.2 存储器占用 4 条 PCI-E 通道。 PCI-E 4.0 的速度是 PCI-E 3.0 的两倍，AMD 的 X570 和 B550 芯片组支持 PCI-E 4.0，而 Intel 目前仅支持 PCI-E 3.0。</p>
-<p>虽然显卡接收与传递数据经过 PCI-E 总线，然而在仅有 1 张显卡的时候， PCI-E 总线的带宽与级别对显卡的影响并不大，PCI-E 的带宽对文件的读取/写入性能的影响更大一点。不过在一个 pipeline 里面数据一般仅仅读取/写入一次，因此 PCI-E 4.0 或者 3.0 对性能影响有限。</p>
+<h2 id="PCI-E-等级-amp-通道数"><a href="#PCI-E-等级-amp-通道数" class="headerlink" title="PCI-E 等级 &amp; 通道数"></a>PCI-E 等级 &amp; 通道数</h2><p>PCI-E（Peripheral Component Interconnect Express）总线在 2003 年推出，取代了曾经的 PCI 和 AGP 总线，目前在使用的标准为 PCI-E 3.0 和 PCI-E 4.0。PCI-E 总线是一种串行总线，单个插槽上可以有 1、2、4、8、16 条通道，带宽如下：</p>
+<table>
+<thead>
+<tr>
+<th>PCI-E 版本</th>
+<th>x1</th>
+<th>x2</th>
+<th>x4</th>
+<th>x8</th>
+<th>x16</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>3.0</td>
+<td>1.97GB/s</td>
+<td>7.88GB/s</td>
+<td>15.75GB/s</td>
+<td>31.5GB/s</td>
+<td></td>
+</tr>
+<tr>
+<td>4.0</td>
+<td>3.98GB/s</td>
+<td>15.75GB/s</td>
+<td>31.51GB/s</td>
+<td>63GB/s</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>可以看到，PCI-E 4.0 的带宽是 PCI-E 3.0 的两倍，因为 AMD 的 X570 和 B550 芯片组支持 PCI-E 4.0，而 Intel 要到明年上半年的 11 代 Core 才支持，所以使用 Ryzen 3 代以后的 CPU 和 500 系列主板会有带宽的优势。</p>
+<p>通常显卡占用 8 或 16 条 PCI-E 通道，而一块 NVME M.2 存储器占用 4 条 PCI-E 通道。虽然显卡接收与传递数据经过 PCI-E 总线，然而在仅有 1 张显卡的时候，PCI-E 总线的带宽与级别对显卡性能的影响并不大，PCI-E 的带宽对文件的读取/写入性能的影响更大一点。不过在一个 pipeline 里面数据一般仅仅读取/写入一次，因此 PCI-E 4.0 或者 3.0 对性能影响有限。</p>
 <h2 id="内存频率与延迟"><a href="#内存频率与延迟" class="headerlink" title="内存频率与延迟"></a>内存频率与延迟</h2><p>同上面一条，因为数据在 GPU 与 CPU 之间的交互次数有限，故速度更快、延迟更低的内存对性能提升有限。</p>
 <h2 id="散热"><a href="#散热" class="headerlink" title="散热"></a>散热</h2><p>对于一台仅有 1 张显卡的工作站而言，散热不是需要考虑的问题。</p>
-<h1 id="Try-to-Avoid"><a href="#Try-to-Avoid" class="headerlink" title="Try to Avoid"></a>Try to Avoid</h1><h2 id="超频"><a href="#超频" class="headerlink" title="超频"></a>超频</h2><p>对于长时间运行的工作站来说，超频会减少原件的寿命，降低系统的稳定性，增加功耗，因此超频是大忌。不要购买任何出厂预超频（OC 版）的显卡或自己超频。</p>
+<h1 id="Try-to-Avoid"><a href="#Try-to-Avoid" class="headerlink" title="Try to Avoid"></a>Try to Avoid</h1><h2 id="超频"><a href="#超频" class="headerlink" title="超频"></a>超频</h2><p>对于长时间运行的工作站来说，超频会减少原件的寿命，降低系统的稳定性，增加功耗，因此超频是大忌。不要购买任何出厂预超频（ Overclock 或 OC 版）的显卡或自己超频。</p>
 <h2 id="灯光效果"><a href="#灯光效果" class="headerlink" title="灯光效果"></a>灯光效果</h2><p>不是说不能有光效，但是工作站是用来干活的，不是用来欣赏的，而且工作站一般放在不起眼的地方，有光效也看不见。看得见的光效除了分散注意力以外还耗费额外的电能（还费钱），实在没有意义。</p>
 
       
