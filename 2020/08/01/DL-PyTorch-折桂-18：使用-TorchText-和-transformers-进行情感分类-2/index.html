@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"vincent507cpu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="接上文 9. 搭建模型首先是载入预训练模型。 123from transformers import BertTokenizer, BertModelbert &#x3D; BertModel.from_pretrained(&#39;bert-base-uncased&#39;) 我们使用 Bert 预训练词向量与 GRU 组成模型，然后接一个全连接层。我们需要使用 with torch.no_grad() 避免预训练词">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DL-PyTorch-折桂-18：使用-TorchText-和-transformers-进行情感分类(2)">
+<meta property="og:url" content="https://vincent507cpu.github.io/2020/08/01/DL-PyTorch-%E6%8A%98%E6%A1%82-18%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB-2/index.html">
+<meta property="og:site_name" content="花解语">
+<meta property="og:description" content="接上文 9. 搭建模型首先是载入预训练模型。 123from transformers import BertTokenizer, BertModelbert &#x3D; BertModel.from_pretrained(&#39;bert-base-uncased&#39;) 我们使用 Bert 预训练词向量与 GRU 组成模型，然后接一个全连接层。我们需要使用 with torch.no_grad() 避免预训练词">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-01T17:52:36.000Z">
+<meta property="article:modified_time" content="2020-11-01T21:36:56.694Z">
+<meta property="article:author" content="翟文嘉">
+<meta property="article:tag" content="deep learning">
+<meta property="article:tag" content="PyTorch">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://vincent507cpu.github.io/2020/08/01/DL-PyTorch-%E6%8A%98%E6%A1%82-18%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB-2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>DL-PyTorch-折桂-18：使用-TorchText-和-transformers-进行情感分类(2) | 花解语</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="花解语" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta custom-logo">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">花解语</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">求知若饥，虚心若愚</p>
+      <a>
+        <img class="custom-logo-image" src="logo.jpg" alt="花解语">
+      </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/vincent507cpu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/08/01/DL-PyTorch-%E6%8A%98%E6%A1%82-18%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="翟文嘉">
+      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花解语">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DL-PyTorch-折桂-18：使用-TorchText-和-transformers-进行情感分类(2)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-01 13:52:36" itemprop="dateCreated datePublished" datetime="2020-08-01T13:52:36-04:00">2020-08-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-01 16:36:56" itemprop="dateModified" datetime="2020-11-01T16:36:56-05:00">2020-11-01</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a href="https://vincent507cpu.github.io/2020/06/10/DL-PyTorch-折桂-17：使用-TorchText-和-transformers-进行情感分类/">接上文</a></p>
+<h1 id="9-搭建模型"><a href="#9-搭建模型" class="headerlink" title="9. 搭建模型"></a>9. 搭建模型</h1><p>首先是载入预训练模型。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> BertTokenizer, BertModel</span><br><span class="line"></span><br><span class="line">bert = BertModel.from_pretrained(<span class="string">'bert-base-uncased'</span>)</span><br></pre></td></tr></table></figure>
+<p>我们使用 Bert 预训练词向量与 GRU 组成模型，然后接一个全连接层。我们需要使用 <code>with torch.no_grad()</code> 避免预训练词向量发生变化。</p>
+<a id="more"></a>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BERTGRUSentiment</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,</span></span></span><br><span class="line"><span class="function"><span class="params">                 bert,</span></span></span><br><span class="line"><span class="function"><span class="params">                 hidden_dim,</span></span></span><br><span class="line"><span class="function"><span class="params">                 output_dim,</span></span></span><br><span class="line"><span class="function"><span class="params">                 n_layers,</span></span></span><br><span class="line"><span class="function"><span class="params">                 bidirectional,</span></span></span><br><span class="line"><span class="function"><span class="params">                 dropout)</span>:</span></span><br><span class="line">        </span><br><span class="line">        super().__init__()</span><br><span class="line">        self.bert = bert</span><br><span class="line">        embedding_dim = bert.config.to_dict()[<span class="string">'hidden_size'</span>]</span><br><span class="line">        self.rnn = nn.GRU(embedding_dim,</span><br><span class="line">                          hidden_dim,</span><br><span class="line">                          num_layers = n_layers,</span><br><span class="line">                          bidirectional = bidirectional,</span><br><span class="line">                          batch_first = <span class="literal">True</span>,</span><br><span class="line">                          dropout = <span class="number">0</span> <span class="keyword">if</span> n_layers &lt; <span class="number">2</span> <span class="keyword">else</span> dropout)</span><br><span class="line">        </span><br><span class="line">        self.out = nn.Linear(hidden_dim * <span class="number">2</span> <span class="keyword">if</span> bidirectional <span class="keyword">else</span> hidden_dim, output_dim)</span><br><span class="line">        self.dropout = nn.Dropout(<span class="number">0.5</span>)</span><br><span class="line">                </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        <span class="comment">#text = [batch size, sent len]</span></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            embedded = self.bert(text)[<span class="number">0</span>]</span><br><span class="line">        <span class="comment">#embedded = [batch size, sent len, emb dim]</span></span><br><span class="line">        _, hidden = self.rnn(embedded)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#hidden = [n layers * n directions, batch size, emb dim]</span></span><br><span class="line">        <span class="keyword">if</span> self.rnn.bidirectional:</span><br><span class="line">            hidden = self.dropout(torch.cat((hidden[<span class="number">-2</span>,:,:], hidden[<span class="number">-1</span>,:,:]), dim = <span class="number">1</span>))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            hidden = self.dropout(hidden[<span class="number">-1</span>,:,:])</span><br><span class="line">                </span><br><span class="line">        <span class="comment">#hidden = [batch size, hid dim]</span></span><br><span class="line">        output = self.out(hidden)</span><br><span class="line">  </span><br><span class="line">        <span class="comment">#output = [batch size, out dim]</span></span><br><span class="line">        <span class="keyword">return</span> output</span><br></pre></td></tr></table></figure>
+<p>接下来我们使用标准超参数将模型实例化。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">HIDDEN_DIM = <span class="number">256</span></span><br><span class="line">OUTPUT_DIM = <span class="number">1</span></span><br><span class="line">N_LAYERS = <span class="number">2</span></span><br><span class="line">BIDIRECTIONAL = <span class="literal">True</span></span><br><span class="line">DROPOUT = <span class="number">0.25</span></span><br><span class="line"></span><br><span class="line">model = BERTGRUSentiment(bert,</span><br><span class="line">                         HIDDEN_DIM,</span><br><span class="line">                         OUTPUT_DIM,</span><br><span class="line">                         N_LAYERS,</span><br><span class="line">                         BIDIRECTIONAL,</span><br><span class="line">                         DROPOUT)</span><br></pre></td></tr></table></figure>
+<p>由于 transformer 的训练量实在比较大，我们设置不更新 bert 的权重：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> name, param <span class="keyword">in</span> model.named_parameters():                </span><br><span class="line">    <span class="keyword">if</span> name.startswith(<span class="string">'bert'</span>):</span><br><span class="line">        param.requires_grad = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h1 id="10-训练模型"><a href="#10-训练模型" class="headerlink" title="10. 训练模型"></a>10. 训练模型</h1><p>优化器使用 Adam，损失函数使用 <code>nn.BCEWithLogitsLoss()</code>。除此以外，我们再定义一个评价准确率的函数：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">binary_accuracy</span><span class="params">(preds, y)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Returns accuracy per batch, i.e. if you get 8/10 right, this returns 0.8, NOT 8</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment">#round predictions to the closest integer</span></span><br><span class="line">    rounded_preds = torch.round(torch.sigmoid(preds))</span><br><span class="line">    correct = (rounded_preds == y).float() <span class="comment">#convert into float for division </span></span><br><span class="line">    acc = correct.sum() / len(correct)</span><br><span class="line">    <span class="keyword">return</span> acc</span><br></pre></td></tr></table></figure>
+<p>训练函数：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">(model, iterator, optimizer, criterion)</span>:</span></span><br><span class="line">    epoch_loss = <span class="number">0</span></span><br><span class="line">    epoch_acc = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    model.train()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> iterator:</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        predictions = model(batch.text).squeeze(<span class="number">1</span>)</span><br><span class="line">        loss = criterion(predictions, batch.label)</span><br><span class="line">        acc = binary_accuracy(predictions, batch.label)</span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line">        epoch_loss += loss.item()</span><br><span class="line">        epoch_acc += acc.item()</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> epoch_loss / len(iterator), epoch_acc / len(iterator)</span><br></pre></td></tr></table></figure>
+<p>验证函数与训练函数类似，区别在于：</p>
+<ol>
+<li>不更新权重；</li>
+<li>没有优化器。<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">evaluate</span><span class="params">(model, iterator, criterion)</span>:</span></span><br><span class="line">    epoch_loss = <span class="number">0</span></span><br><span class="line">    epoch_acc = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    model.eval()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="keyword">for</span> batch <span class="keyword">in</span> iterator:</span><br><span class="line">            predictions = model(batch.text).squeeze(<span class="number">1</span>)</span><br><span class="line">            loss = criterion(predictions, batch.label)</span><br><span class="line">            acc = binary_accuracy(predictions, batch.label)</span><br><span class="line">            epoch_loss += loss.item()</span><br><span class="line">            epoch_acc += acc.item()</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> epoch_loss / len(iterator), epoch_acc / len(iterator)</span><br></pre></td></tr></table></figure>
+训练函数与验证函数都写好了以后就可以进行真正的训练了。在每一轮里，我们首先更新权重，然后用新的权重去验证。如果验证的损失小于之前的最小值，我们保存当前的模型。<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">N_EPOCHS = <span class="number">10</span></span><br><span class="line">best_valid_loss = float(<span class="string">'inf'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(N_EPOCHS):</span><br><span class="line">    train_loss, train_acc = train(model, train_iterator, optimizer, criterion)</span><br><span class="line">    valid_loss, valid_acc = evaluate(model, valid_iterator, criterion)</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">if</span> valid_loss &lt; best_valid_loss:</span><br><span class="line">        best_valid_loss = valid_loss</span><br><span class="line">        torch.save(model.state_dict(), <span class="string">'tut6-model.pt'</span>)</span><br><span class="line">    </span><br><span class="line">    print(<span class="string">f'Epoch: <span class="subst">&#123;epoch+<span class="number">1</span>:<span class="number">02</span>&#125;</span></span></span><br><span class="line"><span class="string">    print(f'</span>\tTrain Loss: &#123;train_loss:<span class="number">.3</span>f&#125; | Train Acc: &#123;train_acc*<span class="number">100</span>:<span class="number">.2</span>f&#125;%<span class="string">')</span></span><br><span class="line"><span class="string">    print(f'</span>\t Val. Loss: &#123;valid_loss:<span class="number">.3</span>f&#125; |  Val. Acc: &#123;valid_acc*<span class="number">100</span>:<span class="number">.2</span>f&#125;%<span class="string">')</span></span><br></pre></td></tr></table></figure>
+训练过程如下：<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Epoch: <span class="number">01</span> | Epoch Time: <span class="number">7</span>m <span class="number">5</span>s</span><br><span class="line">	Train Loss: <span class="number">0.468</span> | Train Acc: <span class="number">76.80</span>%</span><br><span class="line">	 Val. Loss: <span class="number">0.266</span> |  Val. Acc: <span class="number">89.47</span>%</span><br><span class="line">Epoch: <span class="number">02</span> | Epoch Time: <span class="number">7</span>m <span class="number">4</span>s</span><br><span class="line">	Train Loss: <span class="number">0.280</span> | Train Acc: <span class="number">88.42</span>%</span><br><span class="line">	 Val. Loss: <span class="number">0.244</span> |  Val. Acc: <span class="number">90.20</span>%</span><br><span class="line">Epoch: <span class="number">03</span> | Epoch Time: <span class="number">7</span>m <span class="number">4</span>s</span><br><span class="line">	Train Loss: <span class="number">0.239</span> | Train Acc: <span class="number">90.48</span>%</span><br><span class="line">	 Val. Loss: <span class="number">0.220</span> |  Val. Acc: <span class="number">91.07</span>%</span><br><span class="line">Epoch: <span class="number">04</span> | Epoch Time: <span class="number">7</span>m <span class="number">4</span>s</span><br><span class="line">	Train Loss: <span class="number">0.211</span> | Train Acc: <span class="number">91.66</span>%</span><br><span class="line">	 Val. Loss: <span class="number">0.236</span> |  Val. Acc: <span class="number">90.85</span>%</span><br><span class="line">Epoch: <span class="number">05</span> | Epoch Time: <span class="number">7</span>m <span class="number">5</span>s</span><br><span class="line">	Train Loss: <span class="number">0.187</span> | Train Acc: <span class="number">92.91</span>%</span><br><span class="line">	 Val. Loss: <span class="number">0.222</span> |  Val. Acc: <span class="number">91.12</span>%</span><br><span class="line">Epoch: <span class="number">06</span> | Epoch Time: <span class="number">7</span>m <span class="number">5</span>s</span><br><span class="line">	Train Loss: <span class="number">0.164</span> | Train Acc: <span class="number">93.71</span>%</span><br><span class="line">	 Val. Loss: <span class="number">0.251</span> |  Val. Acc: <span class="number">91.29</span>%</span><br><span class="line">Epoch: <span class="number">07</span> | Epoch Time: <span class="number">7</span>m <span class="number">4</span>s</span><br><span class="line">	Train Loss: <span class="number">0.137</span> | Train Acc: <span class="number">94.94</span>%</span><br><span class="line">	 Val. Loss: <span class="number">0.231</span> |  Val. Acc: <span class="number">90.73</span>%</span><br><span class="line">Epoch: <span class="number">08</span> | Epoch Time: <span class="number">7</span>m <span class="number">4</span>s</span><br><span class="line">	Train Loss: <span class="number">0.115</span> | Train Acc: <span class="number">95.73</span>%</span><br><span class="line">	 Val. Loss: <span class="number">0.374</span> |  Val. Acc: <span class="number">86.99</span>%</span><br><span class="line">Epoch: <span class="number">09</span> | Epoch Time: <span class="number">7</span>m <span class="number">4</span>s</span><br><span class="line">	Train Loss: <span class="number">0.095</span> | Train Acc: <span class="number">96.57</span>%</span><br><span class="line">	 Val. Loss: <span class="number">0.259</span> |  Val. Acc: <span class="number">91.22</span>%</span><br><span class="line">Epoch: <span class="number">10</span> | Epoch Time: <span class="number">7</span>m <span class="number">5</span>s</span><br><span class="line">	Train Loss: <span class="number">0.078</span> | Train Acc: <span class="number">97.30</span>%</span><br><span class="line">	 Val. Loss: <span class="number">0.282</span> |  Val. Acc: <span class="number">91.77</span>%</span><br></pre></td></tr></table></figure>
+<h1 id="11-模型推断"><a href="#11-模型推断" class="headerlink" title="11. 模型推断"></a>11. 模型推断</h1>训练好模型以后，我们可以用这个模型来做推断。<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">predict_sentiment</span><span class="params">(model, tokenizer, sentence)</span>:</span></span><br><span class="line">    model.eval()</span><br><span class="line">    tokens = tokenizer.tokenize(sentence)</span><br><span class="line">    tokens = tokens[:max_input_length<span class="number">-2</span>]</span><br><span class="line">    indexed = [init_token_idx] + tokenizer.convert_tokens_to_ids(tokens) + [eos_token_idx]</span><br><span class="line">    tensor = torch.LongTensor(indexed).to(device)</span><br><span class="line">    tensor = tensor.unsqueeze(<span class="number">0</span>)</span><br><span class="line">    prediction = torch.sigmoid(model(tensor))</span><br><span class="line">    <span class="keyword">return</span> prediction.item()</span><br><span class="line">    </span><br><span class="line">predict_sentiment(model, tokenizer, <span class="string">"This film is terrible"</span>) <span class="comment"># 0.021611081436276436</span></span><br><span class="line">predict_sentiment(model, tokenizer, <span class="string">"This film is great"</span>) <span class="comment"># 0.9428628087043762</span></span><br></pre></td></tr></table></figure>
+上面直接返回概率，也可以处理一下返回 positive 或 negative。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>翟文嘉
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://vincent507cpu.github.io/2020/08/01/DL-PyTorch-%E6%8A%98%E6%A1%82-18%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB-2/" title="DL-PyTorch-折桂-18：使用-TorchText-和-transformers-进行情感分类(2)">https://vincent507cpu.github.io/2020/08/01/DL-PyTorch-折桂-18：使用-TorchText-和-transformers-进行情感分类-2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/qrcode_for_gh_07ed45a7b845_258.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/deep-learning/" rel="tag"># deep learning</a>
+              <a href="/tags/PyTorch/" rel="tag"># PyTorch</a>
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/10/DL-PyTorch-%E6%8A%98%E6%A1%82-17%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB/" rel="prev" title="[DL] PyTorch 折桂 17：使用 TorchText 和 transformers 进行情感分类(1)">
+      <i class="fa fa-chevron-left"></i> [DL] PyTorch 折桂 17：使用 TorchText 和 transformers 进行情感分类(1)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/01/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E4%BB%BB%E5%8A%A1%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%881%EF%BC%89/" rel="next" title="[NLP] 新手的第一个 NLP 任务：文本分类（1）">
+      [NLP] 新手的第一个 NLP 任务：文本分类（1） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#9-搭建模型"><span class="nav-number">1.</span> <span class="nav-text">9. 搭建模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-训练模型"><span class="nav-number">2.</span> <span class="nav-text">10. 训练模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-模型推断"><span class="nav-number">3.</span> <span class="nav-text">11. 模型推断</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="翟文嘉"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">翟文嘉</p>
+  <div class="site-description" itemprop="description">一个专注于 computational linguistics 与 natural language processing 的初学者</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/vincent507cpu" title="https:&#x2F;&#x2F;github.com&#x2F;vincent507cpu" rel="noopener" target="_blank">Title</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">翟文嘉</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -329,7 +329,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/06/10/DL-PyTorch-%E6%8A%98%E6%A1%82-17%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB/">
+    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/08/01/DL-PyTorch-%E6%8A%98%E6%A1%82-18%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -343,7 +343,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/06/10/DL-PyTorch-%E6%8A%98%E6%A1%82-17%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 17：使用 TorchText 和 transformers 进行情感分类(1)</a>
+            <a href="/2020/08/01/DL-PyTorch-%E6%8A%98%E6%A1%82-18%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB-2/" class="post-title-link" itemprop="url">DL-PyTorch-折桂-18：使用-TorchText-和-transformers-进行情感分类(2)</a>
         </h2>
 
         <div class="post-meta">
@@ -353,14 +353,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-06-10 15:51:36" itemprop="dateCreated datePublished" datetime="2020-06-10T15:51:36-04:00">2020-06-10</time>
+              <time title="创建时间：2020-08-01 13:52:36" itemprop="dateCreated datePublished" datetime="2020-08-01T13:52:36-04:00">2020-08-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-01 12:10:05" itemprop="dateModified" datetime="2020-08-01T12:10:05-04:00">2020-08-01</time>
+                <time title="修改时间：2020-11-01 16:36:56" itemprop="dateModified" datetime="2020-11-01T16:36:56-05:00">2020-11-01</time>
               </span>
 
           
@@ -374,11 +374,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p> 我们已经了解了 PyTorch 的基本操作和功能，现在让我们实践一下。自从 transformer 横空出世以后，在 NLP 领域有”大一统“ 的趋势。但 transformer 的本质是什么？transformer 的本质是一个能够有效提取语义信息的词嵌入生成器，它比前辈 word2vec、GloVe 等等能够更有效地提取词语的语义信息，所以以 transformer 生成的词嵌入可以有 SOTA（state-of-the-art，最高水平）的性能。这等于电脑可以更好地理解文本中每个词语的意思，理解了每个词语的意思自然就可以更好地理解文本的整体意思。所以 transformer 只是取代了以前用的 Embedding 层，根据具体的任务的不同还可以接上 CNN、RNN 等层。</p>
-<p> 本文及下一篇文章中，我们将使用 PyTorch，TorchText 和 transformers 库里的 Bert 预训练模型来进行一个基本的情感分类任务：IMDB 影片评论的情感分类。</p>
+          <p><a href="https://vincent507cpu.github.io/2020/06/10/DL-PyTorch-折桂-17：使用-TorchText-和-transformers-进行情感分类/">接上文</a></p>
+<h1 id="9-搭建模型"><a href="#9-搭建模型" class="headerlink" title="9. 搭建模型"></a>9. 搭建模型</h1><p>首先是载入预训练模型。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> BertTokenizer, BertModel</span><br><span class="line"></span><br><span class="line">bert = BertModel.from_pretrained(<span class="string">'bert-base-uncased'</span>)</span><br></pre></td></tr></table></figure>
+<p>我们使用 Bert 预训练词向量与 GRU 组成模型，然后接一个全连接层。我们需要使用 <code>with torch.no_grad()</code> 避免预训练词向量发生变化。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/06/10/DL-PyTorch-%E6%8A%98%E6%A1%82-17%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB/#more" rel="contents">
+              <a class="btn" href="/2020/08/01/DL-PyTorch-%E6%8A%98%E6%A1%82-18%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB-2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -401,7 +403,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -469,7 +471,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
