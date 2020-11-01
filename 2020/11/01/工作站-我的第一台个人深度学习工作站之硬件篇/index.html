@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"vincent507cpu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="工作站配置我的计划是使用入门级显卡配一台双 GPU 工作站使用两年，预留两年之内升级一次的空间，在保证性能和可扩展性的前提下，够用就好。经过若干次修改，最终的配置为：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[工作站] 我的第一台个人深度学习工作站之硬件篇">
+<meta property="og:url" content="https://vincent507cpu.github.io/2020/11/01/%E5%B7%A5%E4%BD%9C%E7%AB%99-%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E5%8F%B0%E4%B8%AA%E4%BA%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E4%B9%8B%E7%A1%AC%E4%BB%B6%E7%AF%87/index.html">
+<meta property="og:site_name" content="花解语">
+<meta property="og:description" content="工作站配置我的计划是使用入门级显卡配一台双 GPU 工作站使用两年，预留两年之内升级一次的空间，在保证性能和可扩展性的前提下，够用就好。经过若干次修改，最终的配置为：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicbxcnd3rovL3BCribuely2RckeeQzvoibo2xCMySB5rcKUzvv8HCeE2UQ/0?wx_fmt=jpeg">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZriciczCE9DMrTFk0RX1LTnvRy8LEFoyLvhbibaSRG7J4zaia8JicTt9Htcbjqg/0?wx_fmt=png">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicjib6bJRUiajNISkZQTwvsNN3SRRic6cRmibcZusynv4HqqSIcd7fQEyNAg/0?wx_fmt=jpeg">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicEIqyHQOzKkNib5fBfq4CBOccKQ5Lh0ulZNqiceUBc2YORr7ibx82pkOwQ/0?wx_fmt=jpeg">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicSyXS2WrgXD807y9zSIeEoBMAzzuJ4WZjQic8hIQwHvNkh8o2l7kfHWQ/0?wx_fmt=jpeg">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricic2DP0jVKBE73ib6uv5KK1aRJVQKC5E1okzOiaZjUia23E1KdcfmR2NWoyQ/0?wx_fmt=jpeg">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZriciciabLYYOW9EGv7l3zLW1dzSHWHKXKYaliciaOzqKo7zDnLeD5UddsvKbtA/0?wx_fmt=jpeg">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicNu3n87EzBWzBEv7VYib4POIZ6ia45lYErb0qB7aISAW8qGfg1JvYl6hg/0?wx_fmt=jpeg">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricic3sU0N2zia4l0AIv1kWonDdwFfU1Y1HBSoE0owQxkI0ZUbibnK3gAqpMQ/0?wx_fmt=jpeg">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicfrAbfbmeSpK2JDRogxttZ5za1Vy8Q7hUVCBFKR9WP8YvGHzOadP8gQ/0?wx_fmt=jpeg">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicTTbassaXdRFvoyVYaAKFlopmhdCsOClhPa1rYiaiaO0oo6UIKke8WcLA/0?wx_fmt=jpeg">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkHZxA0uGf9GCaiaFIDSmKk6y9mWic9JiawV9QSmK2PaLzFI6dictjicdal9O7I6VktremGYt3pykpAgqsg/0?wx_fmt=jpeg">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicicAt8umrJTay2EXoib3Ficf2cMMvBehsLGKNsRr6icSKbTxib78pLs7Kxdw/0?wx_fmt=jpeg">
+<meta property="article:published_time" content="2020-11-01T21:32:01.000Z">
+<meta property="article:modified_time" content="2020-11-01T21:35:54.853Z">
+<meta property="article:author" content="翟文嘉">
+<meta property="article:tag" content="深度学习工作站">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicbxcnd3rovL3BCribuely2RckeeQzvoibo2xCMySB5rcKUzvv8HCeE2UQ/0?wx_fmt=jpeg">
+
+<link rel="canonical" href="https://vincent507cpu.github.io/2020/11/01/%E5%B7%A5%E4%BD%9C%E7%AB%99-%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E5%8F%B0%E4%B8%AA%E4%BA%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E4%B9%8B%E7%A1%AC%E4%BB%B6%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>[工作站] 我的第一台个人深度学习工作站之硬件篇 | 花解语</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="花解语" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta custom-logo">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">花解语</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">求知若饥，虚心若愚</p>
+      <a>
+        <img class="custom-logo-image" src="logo.jpg" alt="花解语">
+      </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/vincent507cpu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/11/01/%E5%B7%A5%E4%BD%9C%E7%AB%99-%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E5%8F%B0%E4%B8%AA%E4%BA%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E4%B9%8B%E7%A1%AC%E4%BB%B6%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="翟文嘉">
+      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花解语">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [工作站] 我的第一台个人深度学习工作站之硬件篇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-01 16:32:01 / 修改时间：16:35:54" itemprop="dateCreated datePublished" datetime="2020-11-01T16:32:01-05:00">2020-11-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="工作站配置"><a href="#工作站配置" class="headerlink" title="工作站配置"></a>工作站配置</h1><p>我的计划是使用入门级显卡配一台双 GPU 工作站使用两年，预留两年之内升级一次的空间，在保证性能和可扩展性的前提下，够用就好。经过若干次修改，最终的配置为：</p>
+<a id="more"></a>
+<ul>
+<li>CPU：Ryzen 3 3100</li>
+</ul>
+<p>可能很多人觉得现在都 2020 年了，还用 4 核 CPU 太落伍。其实我想买 3600，但是没货，不得已买了 3100（不想多花钱买 3600X）。在深度学习中 4 核 CPU 搭配 2 块 GPU 已经足够了。不过在考虑明年升级成 5600。</p>
+<ul>
+<li>散热器：九州风神 GAMMAXX 200T</li>
+</ul>
+<p>虽然 CPU 的原装散热器已经可以满足需要，我买它的原因是有折扣，就算为明年换 5600 提前买好了。</p>
+<ul>
+<li>主板：Asus Prime X570-Pro</li>
+</ul>
+<p>随便一块 X570 主板基本都有两条 PCI-E 插槽（ITX 小主板除外），不过通常是 16-4 通道的配置。虽然 PCI-E 4.0 下 x4 应该不是瓶颈，用起来心里还是有点不舒服。所以选择了支持 SLI 的主板中最便宜的一块。</p>
+<ul>
+<li>内存：OLOy DDR4 RAM 16GB (2x8GB) 3200 MHz</li>
+</ul>
+<p>OLOy 是一个新牌子，买它完全是因为便宜。<a href="https://www.tomshardware.com/features/oloy-ram-should-you-buy" target="_blank" rel="noopener" title="Should You Buy OLOy RAM?">Tom Hardware 认为它的产品质量还可以</a>，先买来试试。</p>
+<ul>
+<li>显卡：两块 EVGA 06G-P4-2066-KR GeForce RTX 2060 KO Gaming</li>
+</ul>
+<p>我的目标是 3060 Ti，但是还没有发布，所以先用两块 2060 当亮机卡。</p>
+<ul>
+<li>硬盘：Crucial P1 500GB</li>
+</ul>
+<p>这块硬盘的性能很一般，买它因为折扣很大（超过一半），而且再不济也是一块 NVMe 硬盘，性能与顶级 PCI-E 3.0 NVMe 硬盘最多差 10%，完全够用。</p>
+<p>还有一块差不多 10 年前买的 3T 硬盘，里面有很多以前的文件，现在读不出来了，把外壳拿掉直接插电脑上看看能不能读出来。</p>
+<ul>
+<li>电源：Thermaltake ToughPower 750W 80 Plus Gold Semi Modular Power Supply</li>
+</ul>
+<p>买它的原因也是有折扣，而且 750W 带 5600 + 两块 3060 Ti 应该也没问题。</p>
+<p>显示器、键盘、鼠标用现成的，机箱买的最便宜的，另外买了一个 150M 的 WiFi 接收器。这就是全部配件了：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicbxcnd3rovL3BCribuely2RckeeQzvoibo2xCMySB5rcKUzvv8HCeE2UQ/0?wx_fmt=jpeg" alt=""></p>
+<p>关于配件的选择请参考：</p>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s?__biz=Mzg3OTIwODUzMQ==&mid=2247485308&idx=1&sn=fc687999f159fed9614688e55d948c58&chksm=cf06b640f8713f56ff63c20acebd8c846a517be81a8fdbfae21062bc96819046630238dd0381&token=1239929154&lang=zh_CN#rd" target="_blank" rel="noopener">《2020 年 10 月的多 GPU 深度学习工作站配置指南》</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=Mzg3OTIwODUzMQ==&mid=2247485265&idx=1&sn=9da954f0dd5c00884a6b3b92d7f2349a&chksm=cf06b66df8713f7b7ff0200a8e3b7ab324f3e6a72a0355cd5f9d0479cf802e4bb5df29d21ebc&token=1239929154&lang=zh_CN#rd" target="_blank" rel="noopener">《2020 年 10 月的单 GPU 深度学习工作站配置指南》</a></li>
+</ul>
+<h1 id="升级计划"><a href="#升级计划" class="headerlink" title="升级计划"></a>升级计划</h1><h2 id="第一次升级：2021-年上半年"><a href="#第一次升级：2021-年上半年" class="headerlink" title="第一次升级：2021 年上半年"></a>第一次升级：2021 年上半年</h2><p>把 CPU 升级到 5600，如果 3100 用的还行，就不升级了。</p>
+<p>传说中 NVIDIA 计划在 12 月份发布 16GB 显存的 3070 Super，不过现在有消息说计划已经取消。那就把显卡换成两块 8GB 显存的 30 系列的最低款（目前可能是 3060 Ti）。内存升级到 32GB。</p>
+<h2 id="第二次升级：2022-年下半年"><a href="#第二次升级：2022-年下半年" class="headerlink" title="第二次升级：2022 年下半年"></a>第二次升级：2022 年下半年</h2><p>如果两年以后进步很大，这台电脑不能满足需要了，就再升级一次。这应该是一台全新的工作站，目标是高性能，所有配件都要换，应该可以使用五年。</p>
+<ul>
+<li>CPU：Ryzen 9 5950 的下一代</li>
+<li>内存：64 ~ 128 GB</li>
+<li>显卡：2 块带水冷的 3090 显卡</li>
+<li>硬盘：1 块 2T SSD 硬盘</li>
+<li>电源：1200W 电源</li>
+<li>机箱：具有风道设计的机箱</li>
+</ul>
+<h1 id="装机过程"><a href="#装机过程" class="headerlink" title="装机过程"></a>装机过程</h1><p>首先要了解需要连接哪些线，可以先看说明书。这台工作站没有任何灯效，所以少了一点麻烦。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZriciczCE9DMrTFk0RX1LTnvRy8LEFoyLvhbibaSRG7J4zaia8JicTt9Htcbjqg/0?wx_fmt=png" alt=""></p>
+<p>主板上需要连接的线有：</p>
+<ul>
+<li>24 pin 主板供电（图中右侧 1）</li>
+<li>8 pin CPU 供电（图中上侧 1）</li>
+<li>4 pin CPU 风扇供电（图中上侧 3）</li>
+<li>4 pin 机箱风扇供电（图中中部左侧 3）</li>
+<li>机箱前面板 USB 3 接口（图中中部右侧 9）</li>
+<li>机箱控制面板排针（图中下方右侧 14）</li>
+<li>机箱前面板 USB 2.0 接口（图中下方中部 18）</li>
+<li>机箱音频连接排针（虽然我不用工作站的声音，还是接上了。图中下方左侧 21）</li>
+</ul>
+<p>还有两张显卡需要两条 8 pin 供电线，与电源相连。这些插口都有防呆设计，插反了是插不进去的。</p>
+<h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><p>先把拨杆拉开。主板的 CPU 插槽和 CPU 的一角上都有一个三角标记，对准了把 CPU 放下去，拉下拨杆。拉下拨杆的时候有一点阻力，稍微用力一点就可以了。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicjib6bJRUiajNISkZQTwvsNN3SRRic6cRmibcZusynv4HqqSIcd7fQEyNAg/0?wx_fmt=jpeg" alt=""><br><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicEIqyHQOzKkNib5fBfq4CBOccKQ5Lh0ulZNqiceUBc2YORr7ibx82pkOwQ/0?wx_fmt=jpeg" alt=""></p>
+<h2 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h2><p>现在的电脑都是双通道内存设计，假如有 4 个内存插槽需要插两根内存，要以 1-3 或 2-4 这样插。扳开卡扣，看准了方向把内存插紧，听到“咔”的一声就插好了。插反了是插不进去的。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicSyXS2WrgXD807y9zSIeEoBMAzzuJ4WZjQic8hIQwHvNkh8o2l7kfHWQ/0?wx_fmt=jpeg" alt=""></p>
+<h2 id="SSD-硬盘"><a href="#SSD-硬盘" class="headerlink" title="SSD 硬盘"></a>SSD 硬盘</h2><p>有的主板上有一些 SSD 插槽有扇热片，需要先把扇热片取下来。SSD 硬盘一般是 2280 尺寸，对应离插槽第 3 远的螺丝。先要拧一颗加高螺丝（用手就可以拧），然后将 SSD 硬盘插进去，拧上固定螺丝。扇热片上一般有散热胶贴纸，先把贴纸撕下来，再把扇热片放回去。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricic2DP0jVKBE73ib6uv5KK1aRJVQKC5E1okzOiaZjUia23E1KdcfmR2NWoyQ/0?wx_fmt=jpeg" alt=""></p>
+<h2 id="CPU-散热器"><a href="#CPU-散热器" class="headerlink" title="CPU 散热器"></a>CPU 散热器</h2><p>CPU 插槽的两边有两个卡扣，将 CPU 散热器卡在上面就可以了，需要用点力气。需要插第一根供电线了。</p>
+<h2 id="把电源放进机箱里并固定"><a href="#把电源放进机箱里并固定" class="headerlink" title="把电源放进机箱里并固定"></a>把电源放进机箱里并固定</h2><p>在把电源放进机箱前可以把要用的线先接上。电源分全模组、半模组和非模组三种。非模组电源是所有线事先连接在电源上，全模组电源是所有线都根据需要连接，半模组电源介于二者之间。我的电源是半模组电源，需要再连接两条 8 pin 供电线。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZriciciabLYYOW9EGv7l3zLW1dzSHWHKXKYaliciaOzqKo7zDnLeD5UddsvKbtA/0?wx_fmt=jpeg" alt=""></p>
+<p>现在可以把电源放进机箱了。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicNu3n87EzBWzBEv7VYib4POIZ6ia45lYErb0qB7aISAW8qGfg1JvYl6hg/0?wx_fmt=jpeg" alt=""></p>
+<h2 id="把主板放进机箱并固定"><a href="#把主板放进机箱并固定" class="headerlink" title="把主板放进机箱并固定"></a>把主板放进机箱并固定</h2><p>把主板放进机箱前需要先看看那些螺丝孔需要基座螺丝，需要的话要先拧上。我的这张主板一共需要固定 9 颗螺丝，上中下各 3 颗。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricic3sU0N2zia4l0AIv1kWonDdwFfU1Y1HBSoE0owQxkI0ZUbibnK3gAqpMQ/0?wx_fmt=jpeg" alt=""></p>
+<h2 id="连接所有信号线和供电线"><a href="#连接所有信号线和供电线" class="headerlink" title="连接所有信号线和供电线"></a>连接所有信号线和供电线</h2><p>这应该是整个过程里最麻烦的一步了，然而说明书和接头上都有标记，耐心一点一根根插上就行了。</p>
+<h2 id="插上显卡并连接供电"><a href="#插上显卡并连接供电" class="headerlink" title="插上显卡并连接供电"></a>插上显卡并连接供电</h2><p>首先把机箱上对应位置的挡板拿下去，把 PCI-E 插槽右侧的卡扣扳下去，把显卡插上听见“咔”的一声就行了。然后在显卡上插上对应数量的供电线。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicfrAbfbmeSpK2JDRogxttZ5za1Vy8Q7hUVCBFKR9WP8YvGHzOadP8gQ/0?wx_fmt=jpeg" alt=""></p>
+<h2 id="理线"><a href="#理线" class="headerlink" title="理线"></a>理线</h2><p>这一步不是必须的，但是规整的内部空间有利于风道的畅通。一般电源和机箱会送几根 zip tie 或者尼龙扣，用它们把线捆在一起就可以了。正面的理线在上图里有，下面是背部的理线：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicTTbassaXdRFvoyVYaAKFlopmhdCsOClhPa1rYiaiaO0oo6UIKke8WcLA/0?wx_fmt=jpeg" alt=""></p>
+<p>至此电脑就组装完了，很简单吧？在合上机箱盖之前可以先把电脑点亮测试一下：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkHZxA0uGf9GCaiaFIDSmKk6y9mWic9JiawV9QSmK2PaLzFI6dictjicdal9O7I6VktremGYt3pykpAgqsg/0?wx_fmt=jpeg" alt=""></p>
+<p>这绿油油的光好像魔兽世界西瘟疫之地上的绿光。如果连接到显示器上，应该可以看到开机自检（这里显示的 BIOS）：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/OuEFiapfBFkGDIRyOlnx8uLyibZtHgZricicicAt8umrJTay2EXoib3Ficf2cMMvBehsLGKNsRr6icSKbTxib78pLs7Kxdw/0?wx_fmt=jpeg" alt=""></p>
+<p>至此工作站就组装完毕了，下一篇来谈谈环境设置。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>翟文嘉
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://vincent507cpu.github.io/2020/11/01/%E5%B7%A5%E4%BD%9C%E7%AB%99-%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E5%8F%B0%E4%B8%AA%E4%BA%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E4%B9%8B%E7%A1%AC%E4%BB%B6%E7%AF%87/" title="[工作站] 我的第一台个人深度学习工作站之硬件篇">https://vincent507cpu.github.io/2020/11/01/工作站-我的第一台个人深度学习工作站之硬件篇/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/qrcode_for_gh_07ed45a7b845_258.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99/" rel="tag"># 深度学习工作站</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/10/%E5%B7%A5%E4%BD%9C%E7%AB%99-2020-%E5%B9%B4-10-%E6%9C%88%E7%9A%84%E5%A4%9A-GPU-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/" rel="prev" title="[工作站] 2020 年 10 月的多 GPU 深度学习工作站配置指南">
+      <i class="fa fa-chevron-left"></i> [工作站] 2020 年 10 月的多 GPU 深度学习工作站配置指南
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#工作站配置"><span class="nav-number">1.</span> <span class="nav-text">工作站配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#升级计划"><span class="nav-number">2.</span> <span class="nav-text">升级计划</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一次升级：2021-年上半年"><span class="nav-number">2.1.</span> <span class="nav-text">第一次升级：2021 年上半年</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二次升级：2022-年下半年"><span class="nav-number">2.2.</span> <span class="nav-text">第二次升级：2022 年下半年</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#装机过程"><span class="nav-number">3.</span> <span class="nav-text">装机过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU"><span class="nav-number">3.1.</span> <span class="nav-text">CPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存"><span class="nav-number">3.2.</span> <span class="nav-text">内存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSD-硬盘"><span class="nav-number">3.3.</span> <span class="nav-text">SSD 硬盘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU-散热器"><span class="nav-number">3.4.</span> <span class="nav-text">CPU 散热器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#把电源放进机箱里并固定"><span class="nav-number">3.5.</span> <span class="nav-text">把电源放进机箱里并固定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#把主板放进机箱并固定"><span class="nav-number">3.6.</span> <span class="nav-text">把主板放进机箱并固定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接所有信号线和供电线"><span class="nav-number">3.7.</span> <span class="nav-text">连接所有信号线和供电线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插上显卡并连接供电"><span class="nav-number">3.8.</span> <span class="nav-text">插上显卡并连接供电</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理线"><span class="nav-number">3.9.</span> <span class="nav-text">理线</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="翟文嘉"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">翟文嘉</p>
+  <div class="site-description" itemprop="description">一个专注于 computational linguistics 与 natural language processing 的初学者</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/vincent507cpu" title="https:&#x2F;&#x2F;github.com&#x2F;vincent507cpu" rel="noopener" target="_blank">Title</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">翟文嘉</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
