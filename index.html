@@ -218,7 +218,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-09 20:59:17" itemprop="dateModified" datetime="2020-11-09T20:59:17-05:00">2020-11-09</time>
+                <time title="修改时间：2020-11-09 21:30:32" itemprop="dateModified" datetime="2020-11-09T21:30:32-05:00">2020-11-09</time>
               </span>
 
           
@@ -330,7 +330,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/10/10/%E5%B7%A5%E4%BD%9C%E7%AB%99-2020-%E5%B9%B4-10-%E6%9C%88%E7%9A%84%E5%A4%9A-GPU-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/">
+    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/10/10/%E5%B7%A5%E4%BD%9C%E7%AB%99-%E6%96%B0-RTX-3090-%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png">
@@ -344,7 +344,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/10/10/%E5%B7%A5%E4%BD%9C%E7%AB%99-2020-%E5%B9%B4-10-%E6%9C%88%E7%9A%84%E5%A4%9A-GPU-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/" class="post-title-link" itemprop="url">[工作站] 2020 年 10 月的多 GPU 深度学习工作站配置指南</a>
+            <a href="/2020/10/10/%E5%B7%A5%E4%BD%9C%E7%AB%99-%E6%96%B0-RTX-3090-%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/" class="post-title-link" itemprop="url">[工作站] 新 RTX 3090 搭建深度学习工作站的一些思考</a>
         </h2>
 
         <div class="post-meta">
@@ -361,7 +361,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-24 20:42:15" itemprop="dateModified" datetime="2020-10-24T20:42:15-04:00">2020-10-24</time>
+                <time title="修改时间：2020-10-17 21:33:11" itemprop="dateModified" datetime="2020-10-17T21:33:11-04:00">2020-10-17</time>
               </span>
 
           
@@ -375,10 +375,84 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>本文接上一篇<a href="https://mp.weixin.qq.com/s?__biz=Mzg3OTIwODUzMQ==&mid=2247485265&idx=1&sn=9da954f0dd5c00884a6b3b92d7f2349a&chksm=cf06b66df8713f7b7ff0200a8e3b7ab324f3e6a72a0355cd5f9d0479cf802e4bb5df29d21ebc&token=1032059941&lang=zh_CN#rd" target="_blank" rel="noopener">《2020 年 10 月的单 GPU 深度学习工作站配置指南》</a>，探讨多 GPU 工作站的搭建。很多在单 GPU 工作站中不甚重要的因素在多 GPU 工作站中变得举足轻重。</p>
+          <p>今天在班上看完了 NVIDIA 的 GeForce RTX 30 系列发布会。看完感觉游戏玩家应该做梦都会笑醒：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>RTX 3070</th>
+<th>RTX 3080</th>
+<th>RTX 3090</th>
+<th>RTX 2080 Ti</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CUDA Core</td>
+<td>5888</td>
+<td>8704</td>
+<td>10496</td>
+<td>4352</td>
+</tr>
+<tr>
+<td>Core Clock</td>
+<td>1500 Mhz</td>
+<td>1440 Mhz</td>
+<td>1400 Mhz</td>
+<td>1350 Mhz</td>
+</tr>
+<tr>
+<td>Boost Clock</td>
+<td>1730 Mhz</td>
+<td>1710 Mhz</td>
+<td>1700 Mhz</td>
+<td>1545 Mhz</td>
+</tr>
+<tr>
+<td>Memory Capacity</td>
+<td>8 GB DDR6</td>
+<td>10 GB DDR6X</td>
+<td>24 GB DDR6X</td>
+<td>11 GB DDR6</td>
+</tr>
+<tr>
+<td>Memory Bus</td>
+<td>256 bit</td>
+<td>320 bit</td>
+<td>384 bit</td>
+<td>352 bit</td>
+</tr>
+<tr>
+<td>Memory Speed</td>
+<td>16 Gbps</td>
+<td>19 Gbps</td>
+<td>19.5 Gbps</td>
+<td>14 Gbps</td>
+</tr>
+<tr>
+<td>Memory Bandwidth</td>
+<td>512 Gbps</td>
+<td>760 Gbps</td>
+<td>936 Gbps</td>
+<td>616 Gbps</td>
+</tr>
+<tr>
+<td>TDP</td>
+<td>220w</td>
+<td>320W</td>
+<td>350W</td>
+<td>275W</td>
+</tr>
+<tr>
+<td>MSRP</td>
+<td>$499 US</td>
+<td>$699 US</td>
+<td>$1499 US</td>
+<td>$999 US</td>
+</tr>
+</tbody></table>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/10/10/%E5%B7%A5%E4%BD%9C%E7%AB%99-2020-%E5%B9%B4-10-%E6%9C%88%E7%9A%84%E5%A4%9A-GPU-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97/#more" rel="contents">
+              <a class="btn" href="/2020/10/10/%E5%B7%A5%E4%BD%9C%E7%AB%99-%E6%96%B0-RTX-3090-%E6%90%AD%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
