@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://vincent507cpu.github.io/2020/12/19/DSU-%E9%98%BF%E9%87%8C%E4%BA%91%E5%A4%A9%E6%B1%A0-Python%E8%AE%AD%E7%BB%83%E8%90%A5-Task-1/</loc>
+    
+    <lastmod>2020-12-19</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://vincent507cpu.github.io/2020/11/02/%E5%B7%A5%E4%BD%9C%E7%AB%99-%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E5%8F%B0%E4%B8%AA%E4%BA%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E7%AF%87/</loc>
     
     <lastmod>2020-11-10</lastmod>
@@ -221,7 +228,7 @@
 
   <url>
     <loc>https://vincent507cpu.github.io/</loc>
-    <lastmod>2020-11-10</lastmod>
+    <lastmod>2020-12-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -229,35 +236,35 @@
   
   <url>
     <loc>https://vincent507cpu.github.io/tags/deep-learning/</loc>
-    <lastmod>2020-11-10</lastmod>
+    <lastmod>2020-12-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://vincent507cpu.github.io/tags/PyTorch/</loc>
-    <lastmod>2020-11-10</lastmod>
+    <lastmod>2020-12-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://vincent507cpu.github.io/tags/NLP/</loc>
-    <lastmod>2020-11-10</lastmod>
+    <lastmod>2020-12-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://vincent507cpu.github.io/tags/Python/</loc>
-    <lastmod>2020-11-10</lastmod>
+    <lastmod>2020-12-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://vincent507cpu.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99/</loc>
-    <lastmod>2020-11-10</lastmod>
+    <lastmod>2020-12-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -266,7 +273,7 @@
   
   <url>
     <loc>https://vincent507cpu.github.io/categories/others/</loc>
-    <lastmod>2020-11-10</lastmod>
+    <lastmod>2020-12-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
