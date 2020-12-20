@@ -187,6 +187,75 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/08/07/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E9%A1%B9%E7%9B%AE%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%882%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="翟文嘉">
+      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花解语">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/07/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E9%A1%B9%E7%9B%AE%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%882%EF%BC%89/" class="post-title-link" itemprop="url">[NLP] 新手的第一个 NLP 项目：文本分类（2）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-07 14:00:47 / 修改时间：14:27:43" itemprop="dateCreated datePublished" datetime="2020-08-07T14:00:47-04:00">2020-08-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>现在数据已经准备就绪，可以构建模型了。</p>
+<p>本文的模型参考了论文 <a href="https://arxiv.org/pdf/1408.5882.pdf" target="_blank" rel="noopener" title="Convolutional Neural Networks for Sentence Classification">《Convolutional Neural Networks for Sentence Classification》</a>，原文代码<a href="https://github.com/dennybritz/cnn-text-classification-tf" target="_blank" rel="noopener" title="论文代码">在此</a>。</p>
+<p>论文里使用了两个词嵌入：随模型进行训练的词嵌入和 Google 预训练好的 Word2Vec 词嵌入。本文里为了直观，没有采用预训练的词嵌入。</p>
+<h1 id="构建模型"><a href="#构建模型" class="headerlink" title="构建模型"></a>构建模型</h1><p>论文里使用了三个卷积核分别为 3、4、5 的二维卷积层，拼接后经过一个范围为 4 的池化层。最后经过一个全连接层，经过 sigmoid 函数处理后输出。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/07/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E9%A1%B9%E7%9B%AE%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%882%EF%BC%89/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/08/01/NLP-%E6%96%B0%E6%89%8B%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-NLP-%E4%BB%BB%E5%8A%A1%EF%BC%9A%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%EF%BC%881%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -331,83 +400,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/06/10/DL-PyTorch-%E6%8A%98%E6%A1%82-17%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/10/DL-PyTorch-%E6%8A%98%E6%A1%82-17%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB/" class="post-title-link" itemprop="url">[DL] PyTorch 折桂 17：使用 TorchText 和 transformers 进行情感分类(1)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-10 15:51:36" itemprop="dateCreated datePublished" datetime="2020-06-10T15:51:36-04:00">2020-06-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-01 12:10:05" itemprop="dateModified" datetime="2020-08-01T12:10:05-04:00">2020-08-01</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p> 我们已经了解了 PyTorch 的基本操作和功能，现在让我们实践一下。自从 transformer 横空出世以后，在 NLP 领域有”大一统“ 的趋势。但 transformer 的本质是什么？transformer 的本质是一个能够有效提取语义信息的词嵌入生成器，它比前辈 word2vec、GloVe 等等能够更有效地提取词语的语义信息，所以以 transformer 生成的词嵌入可以有 SOTA（state-of-the-art，最高水平）的性能。这等于电脑可以更好地理解文本中每个词语的意思，理解了每个词语的意思自然就可以更好地理解文本的整体意思。所以 transformer 只是取代了以前用的 Embedding 层，根据具体的任务的不同还可以接上 CNN、RNN 等层。</p>
-<p> 本文及下一篇文章中，我们将使用 PyTorch，TorchText 和 transformers 库里的 Bert 预训练模型来进行一个基本的情感分类任务：IMDB 影片评论的情感分类。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/10/DL-PyTorch-%E6%8A%98%E6%A1%82-17%EF%BC%9A%E4%BD%BF%E7%94%A8-TorchText-%E5%92%8C-transformers-%E8%BF%9B%E8%A1%8C%E6%83%85%E6%84%9F%E5%88%86%E7%B1%BB/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -475,7 +471,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -484,7 +480,7 @@
         <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
