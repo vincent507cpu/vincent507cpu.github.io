@@ -187,6 +187,70 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/12/28/DSU-%E9%98%BF%E9%87%8C%E4%BA%91%E5%A4%A9%E6%B1%A0-Python%E8%AE%AD%E7%BB%83%E8%90%A5-Task-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="翟文嘉">
+      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花解语">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/28/DSU-%E9%98%BF%E9%87%8C%E4%BA%91%E5%A4%A9%E6%B1%A0-Python%E8%AE%AD%E7%BB%83%E8%90%A5-Task-4/" class="post-title-link" itemprop="url">[DSU&阿里云天池] Python训练营 Task 4</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-28 10:36:48 / 修改时间：10:37:49" itemprop="dateCreated datePublished" datetime="2020-12-28T10:36:48-05:00">2020-12-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="数据处理-关联表格"><a href="#数据处理-关联表格" class="headerlink" title="数据处理:关联表格"></a>数据处理:关联表格</h1><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 读取候选人信息，由于原始数据没有表头，需要添加表头</span></span><br><span class="line">candidates = pd.read_csv(<span class="string">"weball20.txt"</span>, sep = <span class="string">'|'</span>,names=[<span class="string">'CAND_ID'</span>,<span class="string">'CAND_NAME'</span>,<span class="string">'CAND_ICI'</span>,<span class="string">'PTY_CD'</span>,<span class="string">'CAND_PTY_AFFILIATION'</span>,<span class="string">'TTL_RECEIPTS'</span>,</span><br><span class="line">                                                          <span class="string">'TRANS_FROM_AUTH'</span>,<span class="string">'TTL_DISB'</span>,<span class="string">'TRANS_TO_AUTH'</span>,<span class="string">'COH_BOP'</span>,<span class="string">'COH_COP'</span>,<span class="string">'CAND_CONTRIB'</span>,</span><br><span class="line">                                                          <span class="string">'CAND_LOANS'</span>,<span class="string">'OTHER_LOANS'</span>,<span class="string">'CAND_LOAN_REPAY'</span>,<span class="string">'OTHER_LOAN_REPAY'</span>,<span class="string">'DEBTS_OWED_BY'</span>,</span><br><span class="line">                                                          <span class="string">'TTL_INDIV_CONTRIB'</span>,<span class="string">'CAND_OFFICE_ST'</span>,<span class="string">'CAND_OFFICE_DISTRICT'</span>,<span class="string">'SPEC_ELECTION'</span>,<span class="string">'PRIM_ELECTION'</span>,<span class="string">'RUN_ELECTION'</span></span><br><span class="line">                                                          ,<span class="string">'GEN_ELECTION'</span>,<span class="string">'GEN_ELECTION_PRECENT'</span>,<span class="string">'OTHER_POL_CMTE_CONTRIB'</span>,<span class="string">'POL_PTY_CONTRIB'</span>,</span><br><span class="line">                                                          <span class="string">'CVG_END_DT'</span>,<span class="string">'INDIV_REFUNDS'</span>,<span class="string">'CMTE_REFUNDS'</span>])</span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line"><span class="comment"># 读取候选人和委员会的联系信息</span></span><br><span class="line">ccl = pd.read_csv(<span class="string">"ccl.txt"</span>, sep = <span class="string">'|'</span>,names=[<span class="string">'CAND_ID'</span>,<span class="string">'CAND_ELECTION_YR'</span>,<span class="string">'FEC_ELECTION_YR'</span>,<span class="string">'CMTE_ID'</span>,<span class="string">'CMTE_TP'</span>,<span class="string">'CMTE_DSGN'</span>,<span class="string">'LINKAGE_ID'</span>])</span><br></pre></td></tr></table></figure>
+<p><code>names</code> 指定列的名称。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 关联两个表数据</span></span><br><span class="line">ccl = pd.merge(ccl,candidates)</span><br><span class="line"><span class="comment"># 提取出所需要的列</span></span><br><span class="line">ccl = pd.DataFrame(ccl, columns=[ <span class="string">'CMTE_ID'</span>,<span class="string">'CAND_ID'</span>, <span class="string">'CAND_NAME'</span>,<span class="string">'CAND_PTY_AFFILIATION'</span>])</span><br></pre></td></tr></table></figure>
+<p><code>pd.merge</code> 合并两个 <code>dataframe</code>。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看目前ccl数据前10行</span></span><br><span class="line">ccl.head(<span class="number">10</span>)</span><br><span class="line">	CMTE_ID	CAND_ID	CAND_NAME	CAND_PTY_AFFILIATION</span><br><span class="line"><span class="number">0</span>	C00697789	H0AL01055	CARL, JERRY LEE, JR	REP</span><br><span class="line"><span class="number">1</span>	C00701557	H0AL01063	LAMBERT, DOUGLAS WESTLEY III	REP</span><br><span class="line"><span class="number">2</span>	C00701409	H0AL01071	PRINGLE, CHRISTOPHER PAUL	REP</span><br><span class="line"><span class="number">3</span>	C00703066	H0AL01089	HIGHTOWER, BILL	REP</span><br><span class="line"><span class="number">4</span>	C00708867	H0AL01097	AVERHART, JAMES	DEM</span><br><span class="line"><span class="number">5</span>	C00710947	H0AL01105	GARDNER, KIANI A	DEM</span><br><span class="line"><span class="number">6</span>	C00722512	H0AL01121	CASTORANI, JOHN	REP</span><br><span class="line"><span class="number">7</span>	C00725069	H0AL01139	COLLINS, FREDERICK G. RICK<span class="string">'	DEM</span></span><br><span class="line"><span class="string">8	C00462143	H0AL02087	ROBY, MARTHA	REP</span></span><br><span class="line"><span class="string">9	C00493783	H0AL02087	ROBY, MARTHA	REP</span></span><br></pre></td></tr></table></figure>
+<p>通过 <code>CMTE_ID</code> 将目前处理好的候选人和委员会关系表与人捐款档案表进行关联，得到候选人与捐赠人一一对应联系表 <code>cil</code>。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 读取个人捐赠数据，由于原始数据没有表头，需要添加表头</span></span><br><span class="line"><span class="comment"># 提示：读取本文件大概需要5-10s</span></span><br><span class="line">itcont = pd.read_csv(<span class="string">'itcont_2020_20200722_20200820.txt'</span>, sep=<span class="string">'|'</span>,names=[<span class="string">'CMTE_ID'</span>,<span class="string">'AMNDT_IND'</span>,<span class="string">'RPT_TP'</span>,<span class="string">'TRANSACTION_PGI'</span>,</span><br><span class="line">                                                                                  <span class="string">'IMAGE_NUM'</span>,<span class="string">'TRANSACTION_TP'</span>,<span class="string">'ENTITY_TP'</span>,<span class="string">'NAME'</span>,<span class="string">'CITY'</span>,</span><br><span class="line">                                                                                  <span class="string">'STATE'</span>,<span class="string">'ZIP_CODE'</span>,<span class="string">'EMPLOYER'</span>,<span class="string">'OCCUPATION'</span>,<span class="string">'TRANSACTION_DT'</span>,</span><br><span class="line">                                                                                  <span class="string">'TRANSACTION_AMT'</span>,<span class="string">'OTHER_ID'</span>,<span class="string">'TRAN_ID'</span>,<span class="string">'FILE_NUM'</span>,<span class="string">'MEMO_CD'</span>,</span><br><span class="line">                                                                                  <span class="string">'MEMO_TEXT'</span>,<span class="string">'SUB_ID'</span>])</span><br><span class="line"><span class="comment"># 将候选人与委员会关系表ccl和个人捐赠数据表itcont合并，通过 CMTE_ID</span></span><br><span class="line">c_itcont =  pd.merge(ccl,itcont)</span><br><span class="line"><span class="comment"># 提取需要的数据列</span></span><br><span class="line">c_itcont = pd.DataFrame(c_itcont, columns=[ <span class="string">'CAND_NAME'</span>,<span class="string">'NAME'</span>, <span class="string">'STATE'</span>,<span class="string">'EMPLOYER'</span>,<span class="string">'OCCUPATION'</span>,</span><br><span class="line">                                           <span class="string">'TRANSACTION_AMT'</span>, <span class="string">'TRANSACTION_DT'</span>,<span class="string">'CAND_PTY_AFFILIATION'</span>])</span><br><span class="line"><span class="comment"># 查看目前数据前10行</span></span><br><span class="line">c_itcont.head(<span class="number">10</span>)</span><br><span class="line">	CAND_NAME	NAME	STATE	EMPLOYER	OCCUPATION	TRANSACTION_AMT	TRANSACTION_DT	CAND_PTY_AFFILIATION</span><br><span class="line"><span class="number">0</span>	MORGAN, JOSEPH DAVID	MARTIN, WILLIAM II	AZ	RETIRED	RETIRED	<span class="number">100</span>	<span class="number">7242020</span>	REP</span><br><span class="line"><span class="number">1</span>	MORGAN, JOSEPH DAVID	RODRIGUEZ, GERARDO	AZ	VA HOSPITAL	LAB TECH	<span class="number">40</span>	<span class="number">7242020</span>	REP</span><br><span class="line"><span class="number">2</span>	MORGAN, JOSEPH DAVID	RODRIGUEZ, GERARDO	AZ	VA HOSPITAL	LAB TECH	<span class="number">40</span>	<span class="number">7312020</span>	REP</span><br><span class="line"><span class="number">3</span>	WOOD, DANIEL	HOPKINS, RICHARD	AZ	POWERS-LEAVITT	INSURANCE AGENT	<span class="number">300</span>	<span class="number">8102020</span>	REP</span><br><span class="line"><span class="number">4</span>	WOOD, DANIEL	PENDLETON, DIANE	AZ	UNEMPLOYED	NaN	<span class="number">500</span>	<span class="number">8072020</span>	REP</span><br><span class="line"><span class="number">5</span>	WOOD, DANIEL	PREVATT, WILLIAM	AZ	SELF-EMPLOYED	DVM	<span class="number">500</span>	<span class="number">7312020</span>	REP</span><br><span class="line"><span class="number">6</span>	WOOD, DANIEL	HARDING, DOUG	AZ	MICROSURE	OPERATIONS MANAGER	<span class="number">2800</span>	<span class="number">8102020</span>	REP</span><br><span class="line"><span class="number">7</span>	WOOD, DANIEL	HARDING, MARI	AZ	NaN	NaN	<span class="number">1400</span>	<span class="number">8152020</span>	REP</span><br><span class="line"><span class="number">8</span>	WOOD, DANIEL	HEDGER, CYNTHIA	TX	NaN	NaN	<span class="number">200</span>	<span class="number">7312020</span>	REP</span><br><span class="line"><span class="number">9</span>	HUANG, PEGGY	HUANG - PERSONAL FUNDS, PEGGY	CA	OFFICE OF THE ATTORNEY GENERAL	DEPUTY ATTORNEY GENERAL	<span class="number">2600</span>	<span class="number">7252020</span>	REP</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/12/26/%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93-%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%8C%E6%88%90%E4%B8%80%E4%B8%AA%E4%BB%BB%E5%8A%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -324,83 +388,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://vincent507cpu.github.io/2020/12/21/DSU-%E9%98%BF%E9%87%8C%E4%BA%91%E5%A4%A9%E6%B1%A0-Python%E8%AE%AD%E7%BB%83%E8%90%A5-Task-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="翟文嘉">
-      <meta itemprop="description" content="一个专注于 computational linguistics 与 natural language processing 的初学者">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花解语">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/21/DSU-%E9%98%BF%E9%87%8C%E4%BA%91%E5%A4%A9%E6%B1%A0-Python%E8%AE%AD%E7%BB%83%E8%90%A5-Task-2/" class="post-title-link" itemprop="url">[DSU&阿里云天池] Python训练营 Task 2</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-21 21:30:03" itemprop="dateCreated datePublished" datetime="2020-12-21T21:30:03-05:00">2020-12-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-23 11:23:45" itemprop="dateModified" datetime="2020-12-23T11:23:45-05:00">2020-12-23</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>[TOC]</p>
-<h1 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>列表是有序不定长集合语法为 <code>[元素 1, 元素 2, 元素 3,..., 元素 N]</code></p>
-<h2 id="列表的创建"><a href="#列表的创建" class="headerlink" title="列表的创建"></a>列表的创建</h2><h3 id="创建一个普通列表"><a href="#创建一个普通列表" class="headerlink" title="创建一个普通列表"></a>创建一个普通列表</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] <span class="comment"># [1, 2, 3]</span></span><br><span class="line">b = list(<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>) <span class="comment"># [4, 5, 6]</span></span><br></pre></td></tr></table></figure>
-<h3 id="使用列表解析式"><a href="#使用列表解析式" class="headerlink" title="使用列表解析式"></a>使用列表解析式</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>)] <span class="comment"># [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span></span><br></pre></td></tr></table></figure>
-<p><strong>列表内的元素可以是不同类型。</strong></p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mix = [<span class="number">1</span>, <span class="string">'lsgo'</span>, <span class="number">3.14</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]] <span class="comment"># mix = [1, 'lsgo', 3.14, [1, 2, 3]]</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/21/DSU-%E9%98%BF%E9%87%8C%E4%BA%91%E5%A4%A9%E6%B1%A0-Python%E8%AE%AD%E7%BB%83%E8%90%A5-Task-2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -472,7 +459,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
